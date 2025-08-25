@@ -348,19 +348,6 @@ function Scan({ kiosk }) {
       <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <div className="camera-wrap shadow-xl">
-            <div className="absolute top-0 right-0 p-4">
-              <button onClick={() => setMenuOpen(!menuOpen)} className="bg-white/90 rounded-full shadow px-2 py-2">
-                <img src={menuIcon} alt="menu" className="w-10 h-10" />
-              </button>
-              {menuOpen && (
-                <div className="mt-3 bg-white rounded-2xl shadow-xl p-4 w-64 text-center">
-                  <div className="text-[#12356F] font-extrabold uppercase text-lg border-b pb-3 cursor-pointer" onClick={() => { setMenuOpen(false); history.replaceState({}, "", "/startmeasure/options"); }}>OPCIONES NUEVO FLUJO</div>
-                  <div className="text-[#12356F] font-extrabold uppercase text-lg border-b pb-3 cursor-pointer" onClick={() => { setMenuOpen(false); location.href='/rules'; }}>MALETA NO PERMITIDA</div>
-                  <div className="text-[#12356F] font-extrabold uppercase text-lg border-b py-3 cursor-pointer" onClick={() => { setMenuOpen(false); location.href='/weigh'; }}>PESAJE LIBRE</div>
-                  <div className="text-[#12356F] font-extrabold uppercase text-lg pt-3 cursor-pointer" onClick={() => { setMenuOpen(false); location.href='/train'; }}>ENTRENAMIENTO IA</div>
-                </div>
-              )}
-            </div>
             <video ref={videoRef} className="w-full h-[520px] object-cover rounded-2xl" />
             <canvas ref={canvasRef} className="camera-overlay" />
           </div>
