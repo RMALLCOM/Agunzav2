@@ -175,6 +175,28 @@ function SetupPage({ kiosk }) {
   );
 }
 
+// Welcome screen (Inicio)
+function Welcome({ kiosk }) {
+  const nav = useNavigate();
+  const tr = strings[kiosk.lang];
+  const bgUrl = "https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/uqbelias_image%2012.png";
+  return (
+    <div className="relative min-h-screen kiosk-bg" style={{ backgroundImage: `url(${bgUrl})` }}>
+      <div className="absolute top-0 right-0 p-4 flex items-center gap-2">
+        <Languages />
+        <Button variant="ghost" onClick={() => kiosk.setLang(kiosk.lang === "es" ? "en" : "es")}>{kiosk.lang.toUpperCase()}</Button>
+      </div>
+      <div className="hero-overlay absolute inset-0 flex items-center justify-center">
+        <div className="text-center max-w-3xl p-8">
+          <h1 className="text-5xl font-extrabold text-gray-900 mb-4">JetSMART</h1>
+          <p className="text-gray-700 mb-8">Bienvenido</p>
+          <Button className="text-2xl px-10 py-6" variant="accent" onClick={() => nav("/start")}>{tr.start}</Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Start tab screen (default)
 function StartScanTab({ kiosk }) {
   const nav = useNavigate();
