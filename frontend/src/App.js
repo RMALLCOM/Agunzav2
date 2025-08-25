@@ -77,8 +77,8 @@ function useKiosk() {
   const [lang, setLang] = useState("es");
   const [session, setSession] = useState(null);
 
-  useEffect(() =&gt; {
-    const init = async () =&gt; {
+  useEffect(() => {
+    const init = async () => {
       try {
         const { data: airlines } = await axios.get(`${API}/config/airlines`);
         const current = airlines.find(a =&gt; a.code === "JSM") || airlines[0];
