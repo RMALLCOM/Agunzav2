@@ -142,39 +142,39 @@ function Menu({ kiosk }) {
           </div>
         </div>
 
-        &lt;div className="grid grid-cols-1 md:grid-cols-3 gap-6"&gt;
-          &lt;Card className="p-6 hover:shadow-2xl transition-shadow duration-200"&gt;
-            &lt;Button className="w-full h-28" variant="primary" onClick={() => nav("/scan")}&gt;
-              &lt;ScanLine className="mr-3" /&gt; {tr.scan}
-            &lt;/Button&gt;
-          &lt;/Card&gt;
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card className="p-6 hover:shadow-2xl transition-shadow duration-200">
+            <Button className="w-full h-28" variant="primary" onClick={() => nav("/scan")}>
+              <ScanLine className="mr-3" /> {tr.scan}
+            </Button>
+          </Card>
 
-          &lt;Card className="p-6 hover:shadow-2xl transition-shadow duration-200"&gt;
-            &lt;Button className="w-full h-28" variant="primary" onClick={() => nav("/weigh")}&gt;
-              &lt;Weight className="mr-3" /&gt; {tr.freeWeigh}
-            &lt;/Button&gt;
-          &lt;/Card&gt;
+          <Card className="p-6 hover:shadow-2xl transition-shadow duration-200">
+            <Button className="w-full h-28" variant="primary" onClick={() => nav("/weigh")}>
+              <Weight className="mr-3" /> {tr.freeWeigh}
+            </Button>
+          </Card>
 
-          &lt;Card className="p-6 hover:shadow-2xl transition-shadow duration-200"&gt;
-            &lt;Button className="w-full h-28" variant="primary" onClick={() => nav("/train")}&gt;
-              &lt;Wrench className="mr-3" /&gt; {tr.aiTrain}
-            &lt;/Button&gt;
-          &lt;/Card&gt;
+          <Card className="p-6 hover:shadow-2xl transition-shadow duration-200">
+            <Button className="w-full h-28" variant="primary" onClick={() => nav("/train")}>
+              <Wrench className="mr-3" /> {tr.aiTrain}
+            </Button>
+          </Card>
 
-          &lt;Card className="p-6 hover:shadow-2xl transition-shadow duration-200"&gt;
-            &lt;Button className="w-full h-28" variant="outline" onClick={() => nav("/login/operator")}>&lt;Home className="mr-3" /&gt; {tr.opLogin}&lt;/Button&gt;
-          &lt;/Card&gt;
+          <Card className="p-6 hover:shadow-2xl transition-shadow duration-200">
+            <Button className="w-full h-28" variant="outline" onClick={() => nav("/login/operator")}><Home className="mr-3" /> {tr.opLogin}</Button>
+          </Card>
 
-          &lt;Card className="p-6 hover:shadow-2xl transition-shadow duration-200"&gt;
-            &lt;Button className="w-full h-28" variant="outline" onClick={() => nav("/login/admin")}>&lt;Home className="mr-3" /&gt; {tr.adminLogin}&lt;/Button&gt;
-          &lt;/Card&gt;
-        &lt;/div&gt;
+          <Card className="p-6 hover:shadow-2xl transition-shadow duration-200">
+            <Button className="w-full h-28" variant="outline" onClick={() => nav("/login/admin")}><Home className="mr-3" /> {tr.adminLogin}</Button>
+          </Card>
+        </div>
 
-        &lt;div className="mt-10"&gt;
-          &lt;Button variant="ghost" onClick={() => nav("/")}&gt;{tr.back}&lt;/Button&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
+        <div className="mt-10">
+          <Button variant="ghost" onClick={() => nav("/")}>{tr.back}</Button>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -251,62 +251,62 @@ function Scan({ kiosk }) {
   };
 
   return (
-    &lt;div className="min-h-screen" style={{ backgroundColor: kiosk.airline?.palette?.bg || "#F7FAFF" }}&gt;
-      &lt;div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6"&gt;
-        &lt;div className="lg:col-span-2"&gt;
-          &lt;div className="camera-wrap shadow-xl"&gt;
-            &lt;video ref={videoRef} className="w-full h-[520px] object-cover rounded-2xl" /&gt;
-            &lt;canvas ref={canvasRef} className="camera-overlay" /&gt;
-          &lt;/div&gt;
-          &lt;div className="flex gap-4 mt-4"&gt;
-            &lt;Button variant="ghost" onClick={() => nav("/menu")}&gt;{tr.back}&lt;/Button&gt;
-            &lt;Button variant="accent" onClick={runValidation}&gt;{tr.continue}&lt;/Button&gt;
-            &lt;Button variant="primary" onClick={readWeight}&gt;{tr.readWeight}&lt;/Button&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div&gt;
-          &lt;Card&gt;
-            &lt;CardHeader&gt;
-              &lt;CardTitle&gt;Datos de pieza&lt;/CardTitle&gt;
-            &lt;/CardHeader&gt;
-            &lt;CardContent&gt;
-              &lt;div className="space-y-2 text-lg"&gt;
-                &lt;div&gt;&lt;b&gt;Ancho:&lt;/b&gt; {dims?.width ?? "-"} cm&lt;/div&gt;
-                &lt;div&gt;&lt;b&gt;Alto:&lt;/b&gt; {dims?.height ?? "-"} cm&lt;/div&gt;
-                &lt;div&gt;&lt;b&gt;Largo:&lt;/b&gt; {dims?.length ?? "-"} cm&lt;/div&gt;
-                &lt;div className="text-2xl mt-3"&gt;&lt;b&gt;Peso:&lt;/b&gt; {weight ?? "-"} kg&lt;/div&gt;
-              &lt;/div&gt;
+    <div className="min-h-screen" style={{ backgroundColor: kiosk.airline?.palette?.bg || "#F7FAFF" }}>
+      <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <div className="camera-wrap shadow-xl">
+            <video ref={videoRef} className="w-full h-[520px] object-cover rounded-2xl" />
+            <canvas ref={canvasRef} className="camera-overlay" />
+          </div>
+          <div className="flex gap-4 mt-4">
+            <Button variant="ghost" onClick={() => nav("/menu")}>{tr.back}</Button>
+            <Button variant="accent" onClick={runValidation}>{tr.continue}</Button>
+            <Button variant="primary" onClick={readWeight}>{tr.readWeight}</Button>
+          </div>
+        </div>
+        <div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Datos de pieza</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2 text-lg">
+                <div><b>Ancho:</b> {dims?.width ?? "-"} cm</div>
+                <div><b>Alto:</b> {dims?.height ?? "-"} cm</div>
+                <div><b>Largo:</b> {dims?.length ?? "-"} cm</div>
+                <div className="text-2xl mt-3"><b>Peso:</b> {weight ?? "-"} kg</div>
+              </div>
               {result &amp;&amp; (
-                &lt;div className="mt-6"&gt;
+                <div className="mt-6">
                   {result.compliant ? (
-                    &lt;div className="badge success"&gt;&lt;CheckCircle2 /&gt; {strings[kiosk.lang].validationOk}&lt;/div&gt;
+                    <div className="badge success"><CheckCircle2 /> {strings[kiosk.lang].validationOk}</div>
                   ) : (
-                    &lt;div className="badge error"&gt;&lt;CircleAlert /&gt; {strings[kiosk.lang].validationFail}&lt;/div&gt;
+                    <div className="badge error"><CircleAlert /> {strings[kiosk.lang].validationFail}</div>
                   )}
                   {!result.compliant &amp;&amp; (
-                    &lt;ul className="list-disc pl-5 mt-3 text-red-700 space-y-1"&gt;
-                      {result.errors.map((e, i) => (&lt;li key={i}&gt;{e}&lt;/li&gt;))}
-                    &lt;/ul&gt;
+                    <ul className="list-disc pl-5 mt-3 text-red-700 space-y-1">
+                      {result.errors.map((e, i) => (<li key={i}>{e}</li>))}
+                    </ul>
                   )}
-                  &lt;div className="flex gap-3 mt-6"&gt;
+                  <div className="flex gap-3 mt-6">
                     {result.compliant ? (
-                      &lt;&gt;
-                        &lt;Button variant="accent" onClick={() => nav("/goodbye")}&gt;{strings[kiosk.lang].continue}&lt;/Button&gt;
-                      &lt;/&gt;
+                      <>
+                        <Button variant="accent" onClick={() => nav("/goodbye")}>{strings[kiosk.lang].continue}</Button>
+                      </>
                     ) : (
-                      &lt;&gt;
-                        &lt;Button variant="ghost" onClick={() => { setResult(null); setDims(null); }}&gt;{strings[kiosk.lang].retryMeasure}&lt;/Button&gt;
-                        &lt;Button variant="primary" onClick={() => nav("/payment", { state: { result } })}&gt;{strings[kiosk.lang].goToPayment}&lt;/Button&gt;
-                      &lt;/&gt;
+                      <>
+                        <Button variant="ghost" onClick={() => { setResult(null); setDims(null); }}>{strings[kiosk.lang].retryMeasure}</Button>
+                        <Button variant="primary" onClick={() => nav("/payment", { state: { result } })}>{strings[kiosk.lang].goToPayment}</Button>
+                      </>
                     )}
-                  &lt;/div&gt;
-                &lt;/div&gt;
+                  </div>
+                </div>
               )}
-            &lt;/CardContent&gt;
-          &lt;/Card&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -328,9 +328,9 @@ function Payment() {
         const rules = (await axios.get(`${API}/rules/${current.code}`)).data;
         let overweight = 0; let oversize = 0;
         if (result) {
-          if (result.weight_kg &gt; rules.max_weight_kg) overweight = (result.weight_kg - rules.max_weight_kg) * rules.overweight_fee_per_kg;
+          if (result.weight_kg > rules.max_weight_kg) overweight = (result.weight_kg - rules.max_weight_kg) * rules.overweight_fee_per_kg;
           const linear = result.dims_cm.length + result.dims_cm.width + result.dims_cm.height;
-          if (linear &gt; rules.max_linear_cm || result.dims_cm.length &gt; rules.dims_cm.length || result.dims_cm.width &gt; rules.dims_cm.width || result.dims_cm.height &gt; rules.dims_cm.height) {
+          if (linear > rules.max_linear_cm || result.dims_cm.length > rules.dims_cm.length || result.dims_cm.width > rules.dims_cm.width || result.dims_cm.height > rules.dims_cm.height) {
             oversize = rules.oversize_fee_flat;
           }
         }
@@ -352,48 +352,48 @@ function Payment() {
   };
 
   return (
-    &lt;div className="min-h-screen bg-white"&gt;
-      &lt;div className="max-w-3xl mx-auto px-6 py-10"&gt;
-        &lt;h2 className="text-3xl font-bold mb-6"&gt;Tarifas y Pago&lt;/h2&gt;
+    <div className="min-h-screen bg-white">
+      <div className="max-w-3xl mx-auto px-6 py-10">
+        <h2 className="text-3xl font-bold mb-6">Tarifas y Pago</h2>
         {result &amp;&amp; (
-          &lt;Card className="mb-6"&gt;
-            &lt;CardContent&gt;
-              &lt;div className="breakdown-row"&gt;&lt;span&gt;Exceso por peso&lt;/span&gt;&lt;span&gt;{result.weight_kg} kg&lt;/span&gt;&lt;/div&gt;
-              &lt;div className="breakdown-row"&gt;&lt;span&gt;Exceso por dimensiones&lt;/span&gt;&lt;span&gt;{result.dims_cm.length + result.dims_cm.width + result.dims_cm.height} cm&lt;/span&gt;&lt;/div&gt;
-              &lt;div className="breakdown-row font-bold"&gt;&lt;span&gt;Total&lt;/span&gt;&lt;span&gt;${'{'}total.toFixed(2){'}'} {kiosk?.rules?.currency || "USD"}&lt;/span&gt;&lt;/div&gt;
-            &lt;/CardContent&gt;
-          &lt;/Card&gt;
+          <Card className="mb-6">
+            <CardContent>
+              <div className="breakdown-row"><span>Exceso por peso</span><span>{result.weight_kg} kg</span></div>
+              <div className="breakdown-row"><span>Exceso por dimensiones</span><span>{result.dims_cm.length + result.dims_cm.width + result.dims_cm.height} cm</span></div>
+              <div className="breakdown-row font-bold"><span>Total</span><span>${'{'}total.toFixed(2){'}'} {kiosk?.rules?.currency || "USD"}</span></div>
+            </CardContent>
+          </Card>
         )}
 
-        &lt;div className="mb-4"&gt;
-          &lt;label className="block font-semibold mb-2"&gt;Método de pago&lt;/label&gt;
-          &lt;div className="flex gap-3"&gt;
-            &lt;Button variant={method === "card" ? "primary" : "outline"} onClick={() => setMethod("card")} &gt;&lt;CreditCard className="mr-2" /&gt; Tarjeta&lt;/Button&gt;
-            &lt;Button variant={method === "qr" ? "primary" : "outline"} onClick={() => setMethod("qr")} &gt;QR&lt;/Button&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
+        <div className="mb-4">
+          <label className="block font-semibold mb-2">Método de pago</label>
+          <div className="flex gap-3">
+            <Button variant={method === "card" ? "primary" : "outline"} onClick={() => setMethod("card")} ><CreditCard className="mr-2" /> Tarjeta</Button>
+            <Button variant={method === "qr" ? "primary" : "outline"} onClick={() => setMethod("qr")} >QR</Button>
+          </div>
+        </div>
 
-        &lt;div className="flex gap-4"&gt;
-          &lt;Button variant="accent" onClick={pay}&gt;Pagar&lt;/Button&gt;
-          &lt;Button variant="ghost" onClick={() => nav("/scan")} &gt;Volver&lt;/Button&gt;
-        &lt;/div&gt;
+        <div className="flex gap-4">
+          <Button variant="accent" onClick={pay}>Pagar</Button>
+          <Button variant="ghost" onClick={() => nav("/scan")} >Volver</Button>
+        </div>
 
         {status &amp;&amp; (
-          &lt;div className="mt-6"&gt;
+          <div className="mt-6">
             {status === "approved" ? (
-              &lt;div className="badge success"&gt;&lt;CheckCircle2 /&gt; Pago aprobado&lt;/div&gt;
+              <div className="badge success"><CheckCircle2 /> Pago aprobado</div>
             ) : (
-              &lt;div className="badge error"&gt;&lt;CircleAlert /&gt; Pago rechazado&lt;/div&gt;
+              <div className="badge error"><CircleAlert /> Pago rechazado</div>
             )}
             {status === "approved" &amp;&amp; (
-              &lt;div className="mt-4 flex gap-3"&gt;
-                &lt;Button variant="primary" onClick={() => nav("/goodbye")}&gt;Finalizar&lt;/Button&gt;
-              &lt;/div&gt;
+              <div className="mt-4 flex gap-3">
+                <Button variant="primary" onClick={() => nav("/goodbye")}>Finalizar</Button>
+              </div>
             )}
-          &lt;/div&gt;
+          </div>
         )}
-      &lt;/div&gt;
-    &lt;/div&gt;
+      </div>
+    </div>
   );
 }
 
@@ -405,14 +405,14 @@ function FreeWeigh() {
     return () => clearInterval(id);
   }, []);
   return (
-    &lt;div className="min-h-screen flex items-center justify-center" style={{ background: "#F7FAFF" }}&gt;
-      &lt;Card className="w-full max-w-xl text-center"&gt;
-        &lt;CardContent&gt;
-          &lt;div className="text-6xl font-extrabold mb-6"&gt;{w} kg&lt;/div&gt;
-          &lt;Button variant="ghost" onClick={() => nav("/menu")} &gt;Volver&lt;/Button&gt;
-        &lt;/CardContent&gt;
-      &lt;/Card&gt;
-    &lt;/div&gt;
+    <div className="min-h-screen flex items-center justify-center" style={{ background: "#F7FAFF" }}>
+      <Card className="w-full max-w-xl text-center">
+        <CardContent>
+          <div className="text-6xl font-extrabold mb-6">{w} kg</div>
+          <Button variant="ghost" onClick={() => nav("/menu")} >Volver</Button>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 
@@ -438,30 +438,30 @@ function Train() {
   };
 
   return (
-    &lt;div className="min-h-screen" style={{ background: "#F7FAFF" }}&gt;
-      &lt;div className="max-w-4xl mx-auto px-6 py-10"&gt;
-        &lt;h2 className="text-3xl font-bold mb-4"&gt;Entrenamiento de IA&lt;/h2&gt;
-        &lt;div className="mb-4"&gt;
-          &lt;label className="mr-3 font-semibold"&gt;Etiqueta:&lt;/label&gt;
-          &lt;select className="border rounded px-3 py-2" value={label} onChange={e => setLabel(e.target.value)}&gt;
-            &lt;option value="maleta"&gt;maleta&lt;/option&gt;
-            &lt;option value="mochila"&gt;mochila&lt;/option&gt;
-            &lt;option value="bolso"&gt;bolso&lt;/option&gt;
-            &lt;option value="otro"&gt;otro&lt;/option&gt;
-          &lt;/select&gt;
-        &lt;/div&gt;
-        &lt;input type="file" multiple onChange={onFiles} className="mb-4" /&gt;
-        &lt;div className="mb-6"&gt;
+    <div className="min-h-screen" style={{ background: "#F7FAFF" }}>
+      <div className="max-w-4xl mx-auto px-6 py-10">
+        <h2 className="text-3xl font-bold mb-4">Entrenamiento de IA</h2>
+        <div className="mb-4">
+          <label className="mr-3 font-semibold">Etiqueta:</label>
+          <select className="border rounded px-3 py-2" value={label} onChange={e => setLabel(e.target.value)}>
+            <option value="maleta">maleta</option>
+            <option value="mochila">mochila</option>
+            <option value="bolso">bolso</option>
+            <option value="otro">otro</option>
+          </select>
+        </div>
+        <input type="file" multiple onChange={onFiles} className="mb-4" />
+        <div className="mb-6">
           {images.map((im, i) => (
-            &lt;div key={i} className="text-sm text-gray-700"&gt;{im.name} - {im.label}&lt;/div&gt;
+            <div key={i} className="text-sm text-gray-700">{im.name} - {im.label}</div>
           ))}
-        &lt;/div&gt;
-        &lt;Button variant="primary" onClick={startTrain}&gt;Entrenar YOLO (simulado)&lt;/Button&gt;
-        &lt;div className="mt-6 space-y-1 text-sm text-gray-600"&gt;
-          {log.map((l, i) => (&lt;div key={i}&gt;{l}&lt;/div&gt;))}
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
+        </div>
+        <Button variant="primary" onClick={startTrain}>Entrenar YOLO (simulado)</Button>
+        <div className="mt-6 space-y-1 text-sm text-gray-600">
+          {log.map((l, i) => (<div key={i}>{l}</div>))}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -472,28 +472,28 @@ function Goodbye() {
     return () => clearTimeout(t);
   }, []);
   return (
-    &lt;div className="min-h-screen flex items-center justify-center" style={{ background: "#F7FAFF" }}&gt;
-      &lt;div className="text-center"&gt;
-        &lt;CheckCircle2 className="mx-auto text-green-600" size={64} /&gt;
-        &lt;div className="mt-3 text-2xl font-bold"&gt;¡Gracias!&lt;/div&gt;
-        &lt;div className="text-gray-600"&gt;Volviendo a inicio...&lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
+    <div className="min-h-screen flex items-center justify-center" style={{ background: "#F7FAFF" }}>
+      <div className="text-center">
+        <CheckCircle2 className="mx-auto text-green-600" size={64} />
+        <div className="mt-3 text-2xl font-bold">¡Gracias!</div>
+        <div className="text-gray-600">Volviendo a inicio...</div>
+      </div>
+    </div>
   );
 }
 
 function Shell() {
   const kiosk = useKiosk();
   return (
-    &lt;Routes&gt;
-      &lt;Route path="/" element={&lt;Welcome kiosk={kiosk} /&gt;} /&gt;
-      &lt;Route path="/menu" element={&lt;Menu kiosk={kiosk} /&gt;} /&gt;
-      &lt;Route path="/scan" element={&lt;Scan kiosk={kiosk} /&gt;} /&gt;
-      &lt;Route path="/payment" element={&lt;Payment /&gt;} /&gt;
-      &lt;Route path="/weigh" element={&lt;FreeWeigh /&gt;} /&gt;
-      &lt;Route path="/train" element={&lt;Train /&gt;} /&gt;
-      &lt;Route path="/goodbye" element={&lt;Goodbye /&gt;} /&gt;
-    &lt;/Routes&gt;
+    <Routes>
+      <Route path="/" element={<Welcome kiosk={kiosk} />} />
+      <Route path="/menu" element={<Menu kiosk={kiosk} />} />
+      <Route path="/scan" element={<Scan kiosk={kiosk} />} />
+      <Route path="/payment" element={<Payment />} />
+      <Route path="/weigh" element={<FreeWeigh />} />
+      <Route path="/train" element={<Train />} />
+      <Route path="/goodbye" element={<Goodbye />} />
+    </Routes>
   );
 }
 
@@ -503,11 +503,11 @@ function App() {
     axios.get(`${API}/`).catch(() => {});
   }, []);
   return (
-    &lt;div className="App"&gt;
-      &lt;BrowserRouter&gt;
-        &lt;Shell /&gt;
-      &lt;/BrowserRouter&gt;
-    &lt;/div&gt;
+    <div className="App">
+      <BrowserRouter>
+        <Shell />
+      </BrowserRouter>
+    </div>
   );
 }
 
