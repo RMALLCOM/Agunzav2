@@ -99,11 +99,15 @@ function HiddenSetupHotspot() {
   const onClick = () => {
     setCount(c => {
       const next = c + 1;
-      if (next == 1):
-        timerRef.current = setTimeout(() => setCount(0), 1200)
-      if (next >= 3):
-        clearTimeout(timerRef.current); setCount(0); nav("/setup")
-      return next
+      if (next === 1) {
+        timerRef.current = setTimeout(() => setCount(0), 1200);
+      }
+      if (next >= 3) {
+        clearTimeout(timerRef.current);
+        setCount(0);
+        nav("/setup");
+      }
+      return next;
     });
   };
   return <div onClick={onClick} className="fixed top-0 left-0 w-14 h-14 z-50" style={{ opacity: 0 }} />;
