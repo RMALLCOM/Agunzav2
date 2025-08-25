@@ -7,7 +7,7 @@ export const Card = ({ children, className = "" }) => (
 );
 
 export const CardContent = ({ children, className = "" }) => (
-  &lt;div className={`p-6 ${className}`}&gt;{children}&lt;/div&gt;
+  <div className={`p-6 ${className}`}>{children}</div>
 );
 
 export const CardHeader = ({ children, className = "" }) =&gt; (
