@@ -542,15 +542,15 @@ function Train() {
 function Goodbye() {
   const nav = useNavigate();
   useEffect(() => {
-    const t = setTimeout(() => nav("/start"), 2000);
+    const t = setTimeout(() => nav("/start"), 10000);
     return () => clearTimeout(t);
   }, []);
   return (
     <div className="min-h-screen flex items-center justify-center" style={{ background: "#F7FAFF" }}>
       <div className="text-center">
         <CheckCircle2 className="mx-auto text-green-600" size={64} />
-        <div className="mt-3 text-2xl font-bold">¡Gracias!</div>
-        <div className="text-gray-600">Volviendo…</div>
+        <div className="mt-3 text-2xl font-bold">¡Gracias, vuelva pronto!</div>
+        <div className="text-gray-600">Regresando a Comenzar escaneo…</div>
       </div>
     </div>
   );
