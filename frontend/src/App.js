@@ -124,7 +124,7 @@ function SetupPage({ kiosk }) {
       const { data } = await axios.post(`${API}/setup`, payload);
       kiosk.setSetup(data);
       await axios.post(`${API}/interactions`, { event: "setup_saved_client", payload, setup_id: data.id });
-      nav("/");
+      nav("/start");
     } catch (e) {
       console.error("setup save failed", e?.message);
     }
