@@ -81,7 +81,7 @@ function useKiosk() {
     const init = async () => {
       try {
         const { data: airlines } = await axios.get(`${API}/config/airlines`);
-        const current = airlines.find(a =&gt; a.code === "JSM") || airlines[0];
+        const current = airlines.find(a => a.code === "JSM") || airlines[0];
         setAirline(current);
         if (current) {
           const { data: r } = await axios.get(`${API}/rules/${current.code}`);
