@@ -533,7 +533,8 @@ function Shell() {
     <>
       <HiddenSetupHotspot />
       <Routes>
-        <Route path="/" element={<StartScanTab kiosk={kiosk} />} />
+        <Route path="/" element={<Welcome kiosk={kiosk} />} />
+        <Route path="/start" element={<StartScanTab kiosk={kiosk} />} />
         <Route path="/setup" element={<SetupPage kiosk={kiosk} />} />
         <Route path="/scan" element={<Scan kiosk={kiosk} />} />
         <Route path="/payment" element={<Payment />} />
