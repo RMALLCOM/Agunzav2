@@ -1,8 +1,10 @@
 /* Kiosk base styles. Avoid universal transitions, focus on clarity */
 :root {
-  --primary: #003595; /* JetSMART blue */
+  --primary: #003595; /* JetSMART blue default */
   --accent: #E20C18;  /* JetSMART red */
   --bg: #F7FAFF;      /* Soft background */
+  --brand-blue: #1E3F8A; /* Requested brand */
+  --brand-accent: #E51937;
 }
 
 html, body, #root {
@@ -62,4 +64,93 @@ html, body, #root {
   justify-content: space-between;
   padding: 10px 0;
   border-bottom: 1px dashed rgba(0,0,0,0.1);
+}
+
+/* Start Measure Card */
+.sm-card {
+  width: 100%;
+  max-width: 900px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  background: #fff;
+}
+.sm-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 0 16px;
+}
+.sm-title {
+  font-size: 12px;
+  color: #9aa3b2;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.sm-hero {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  border-radius: 16px;
+  overflow: hidden;
+  background-position: center;
+  background-size: cover;
+}
+.sm-badge {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 9999px;
+  background: #fff;
+  border: 2px solid #eef2ff;
+  margin: -60px auto 16px auto; /* overlap hero */
+  display: grid;
+  place-items: center;
+  z-index: 5;
+}
+.sm-primary-btn {
+  display: inline-block;
+  margin: 12px auto;
+  padding: 18px 24px;
+  font-weight: 800;
+  border-radius: 16px;
+  border: 2px solid var(--brand-blue);
+  color: var(--brand-blue);
+  background: #fff;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+.sm-primary-btn:hover {
+  background: #F2F5FF;
+}
+.sm-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px 16px 12px;
+}
+
+/* Floating options panel */
+.options-panel {
+  position: absolute;
+  top: 56px; /* below topbar */
+  right: 16px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+  width: 260px;
+  padding: 12px;
+  z-index: 20;
+}
+.options-btn {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  color: #1E3F8A;
+  border: 1.5px solid #e5e7f9;
+  background: #fff;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+.options-btn:hover {
+  background: #F2F5FF;
 }

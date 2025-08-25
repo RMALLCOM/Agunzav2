@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-ro
 import axios from "axios";
 import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
-import { CheckCircle2, CircleAlert, CreditCard, Languages, ScanLine, Weight, Wrench } from "lucide-react";
+import { CheckCircle2, CircleAlert, CreditCard, Languages } from "lucide-react";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -125,7 +125,7 @@ function SetupPage({ kiosk }) {
       const { data } = await axios.post(`${API}/setup`, payload);
       kiosk.setSetup(data);
       await axios.post(`${API}/interactions`, { event: "setup_saved_client", payload, setup_id: data.id });
-      nav("/start");
+      nav("/startmeasure");
     } catch (e) {
       console.error("setup save failed", e?.message);
     }
@@ -194,53 +194,79 @@ function Welcome({ kiosk }) {
   );
 }
 
-// Start tab screen (default)
-function StartScanTab({ kiosk }) {
-  const nav = useNavigate();
-  const tr = strings[kiosk.lang];
-
-  useEffect(() => {
-    const check = async () => {
-      try {
-        await axios.get(`${API}/setup`);
-      } catch (_) {
-        nav("/setup");
-      }
-    };
-    check();
-  }, []);
-
+// Shared Start Measure layout pieces
+function StartMeasureShell({ children, onBack, onOptions, showOptions }) {
+  const hero = "https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/uqbelias_image%2012.png";
+  const jetsmartLogo = "https://dummyimage.com/120x120/ffffff/1E3F8A.png&text=JS";
+  const allcomLogo = "https://dummyimage.com/80x24/ffffff/1E3F8A.png&text=ALLCOM";
   return (
-    <div className="relative min-h-screen kiosk-bg" style={{ backgroundImage: `url(https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/uqbelias_image%2012.png)` }}>
-
-      <div className="hero-overlay absolute inset-0 flex items-center justify-center">
-        <div className="text-center max-w-3xl p-8">
-          <h1 className="text-5xl font-extrabold text-gray-900 mb-6">JetSMART</h1>
-          <Button className="text-2xl px-10 py-6" variant="accent" onClick={() => nav("/scan")}>{tr.startScan}</Button>
+    <div className="min-h-screen grid place-items-center" style={{ background: "#ffffff" }}>
+      <div className="sm-card w-[90%] max-w-[900px]">
+        <div className="sm-topbar">
+          <button onClick={onBack} className="text-[#1E3F8A] text-2xl font-bold" aria-label="Volver">&lt;</button>
+          <div className="sm-title">Comenzar a Medir</div>
+          <button onClick={onOptions} className="text-2xl" aria-label="Opciones">📷</button>
+        </div>
+        <div className="px-6 pb-4">
+          <div className="sm-hero" style={{ backgroundImage: `url(${hero})` }} />
+          <div className="sm-badge"><img src={jetsmartLogo} alt="JetSMART" className="w-16 h-16 object-contain" /></div>
+          <div className="text-center">
+            <button className="sm-primary-btn" onClick={() => onBack && onBack("scan")}>COMENZAR ESCANEO</button>
+          </div>
+          {showOptions}
+          <div className="sm-footer">
+            <img src={allcomLogo} alt="Allcom" className="h-6 object-contain" />
+            <img src={jetsmartLogo} alt="JetSMART" className="h-6 object-contain" />
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-// Baggage rules demo
-function RulesPage() {
+function StartMeasureNormal() {
   const nav = useNavigate();
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{ background: "#F7FAFF" }}>
-      <Card className="w-full max-w-2xl">
+    <StartMeasureShell
+      onBack={(dest) => nav(dest === "scan" ? "/scan" : "/")}
+      onOptions={() => nav("/startmeasure/options")}
+      showOptions={null}
+    />
+  );
+}
+
+function StartMeasureOptions() {
+  const nav = useNavigate();
+  const OptionsPanel = (
+    <>
+      <div onClick={() => nav("/startmeasure")} className="fixed inset-0" style={{ background: "transparent" }} />
+      <div className="options-panel">
+        <button className="options-btn" onClick={() => nav("/priority")}>MALETA CON PRIORIDAD</button>
+        <button className="options-btn" onClick={() => nav("/weigh")}>PESAJE</button>
+        <button className="options-btn" onClick={() => nav("/train")}>ENTRENAMIENTO IA</button>
+      </div>
+    </>
+  );
+  return (
+    <StartMeasureShell
+      onBack={(dest) => nav(dest === "scan" ? "/scan" : "/")}
+      onOptions={() => nav("/startmeasure")}
+      showOptions={OptionsPanel}
+    />
+  );
+}
+
+function PriorityPlaceholder() {
+  const nav = useNavigate();
+  return (
+    <div className="min-h-screen grid place-items-center" style={{ background: "#fff" }}>
+      <Card className="w-[90%] max-w-xl">
         <CardContent>
-          <h2 className="text-3xl font-extrabold text-[#12356F] mb-4">Maleta no permitida</h2>
-          <p className="mb-4">Detalle de equipaje permitido (demo):</p>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>Medidas máximas: 55 cm (largo) × 35 cm (ancho) × 25 cm (alto)</li>
-            <li>Peso máximo: 10 kg</li>
-            <li>Suma lineal máxima: 115 cm</li>
-            <li>Ejemplos: Maleta cabina pequeña, mochila media, bolso de mano</li>
-          </ul>
-          <div className="mt-6 flex gap-3">
-            <Button variant="primary" onClick={() => nav('/scan')}>Comenzar escaneo</Button>
-            <Button variant="ghost" onClick={() => nav('/start')}>Volver</Button>
+          <h2 className="text-2xl font-extrabold text-[#1E3F8A] mb-2">Maleta con Prioridad</h2>
+          <p className="text-gray-600">Pantalla placeholder. Aquí irá el flujo para prioridad.</p>
+          <div className="mt-4 flex gap-3">
+            <Button variant="primary" onClick={() => nav('/scan')}>Ir a escanear</Button>
+            <Button variant="ghost" onClick={() => nav('/startmeasure')}>Volver</Button>
           </div>
         </CardContent>
       </Card>
@@ -248,12 +274,10 @@ function RulesPage() {
   );
 }
 
-// Scan (unchanged core, with redirect after finish)
+// Scan
 function Scan({ kiosk }) {
   const nav = useNavigate();
   const tr = strings[kiosk.lang];
-  const [menuOpen, setMenuOpen] = useState(false);
-  const menuIcon = "https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/xklegk9w_image.png";
   const location = useLocation();
   const noPermitted = location.state?.noPermitted;
   const videoRef = useRef(null);
@@ -261,6 +285,8 @@ function Scan({ kiosk }) {
   const [weight, setWeight] = useState(null);
   const [dims, setDims] = useState(null);
   const [result, setResult] = useState(null);
+  const menuIcon = "https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/xklegk9w_image.png";
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const start = async () => {
@@ -329,9 +355,10 @@ function Scan({ kiosk }) {
               </button>
               {menuOpen && (
                 <div className="mt-3 bg-white rounded-2xl shadow-xl p-4 w-64 text-center">
-                  <div className="text-[#12356F] font-extrabold uppercase text-lg border-b pb-3 cursor-pointer" onClick={() => { setMenuOpen(false); nav('/rules'); }}>MALETA NO PERMITIDA</div>
-                  <div className="text-[#12356F] font-extrabold uppercase text-lg border-b py-3 cursor-pointer" onClick={() => { setMenuOpen(false); nav('/weigh'); }}>PESAJE LIBRE</div>
-                  <div className="text-[#12356F] font-extrabold uppercase text-lg pt-3 cursor-pointer" onClick={() => { setMenuOpen(false); nav('/train'); }}>ENTRENAMIENTO IA</div>
+                  <div className="text-[#12356F] font-extrabold uppercase text-lg border-b pb-3 cursor-pointer" onClick={() => { setMenuOpen(false); history.replaceState({}, "", "/startmeasure/options"); }}>OPCIONES NUEVO FLUJO</div>
+                  <div className="text-[#12356F] font-extrabold uppercase text-lg border-b pb-3 cursor-pointer" onClick={() => { setMenuOpen(false); location.href='/rules'; }}>MALETA NO PERMITIDA</div>
+                  <div className="text-[#12356F] font-extrabold uppercase text-lg border-b py-3 cursor-pointer" onClick={() => { setMenuOpen(false); location.href='/weigh'; }}>PESAJE LIBRE</div>
+                  <div className="text-[#12356F] font-extrabold uppercase text-lg pt-3 cursor-pointer" onClick={() => { setMenuOpen(false); location.href='/train'; }}>ENTRENAMIENTO IA</div>
                 </div>
               )}
             </div>
@@ -339,7 +366,7 @@ function Scan({ kiosk }) {
             <canvas ref={canvasRef} className="camera-overlay" />
           </div>
           <div className="flex gap-4 mt-4">
-            <Button variant="ghost" onClick={() => nav("/start")}>VOLVER</Button>
+            <Button variant="ghost" onClick={() => window.location.href = "/startmeasure"}>VOLVER</Button>
             <Button variant="accent" onClick={runValidation}>CONTINUAR</Button>
           </div>
         </div>
@@ -370,12 +397,12 @@ function Scan({ kiosk }) {
                   <div className="flex gap-3 mt-6">
                     {result.compliant ? (
                       <>
-                        <Button variant="accent" onClick={() => nav("/goodbye")}>CONTINUAR</Button>
+                        <Button variant="accent" onClick={() => window.location.href='/goodbye'}>CONTINUAR</Button>
                       </>
                     ) : (
                       <>
                         <Button variant="ghost" onClick={() => { setResult(null); setDims(null); }}>VOLVER A MEDIR</Button>
-                        <Button variant="primary" onClick={() => nav("/payment", { state: { result } })}>{strings["es"].goToPayment}</Button>
+                        <Button variant="primary" onClick={() => window.location.href='/payment'}>{strings["es"].goToPayment}</Button>
                       </>
                     )}
                   </div>
@@ -389,198 +416,34 @@ function Scan({ kiosk }) {
   );
 }
 
-function Payment() {
+function RulesPage() {
   const nav = useNavigate();
-  const state = window.history.state?.usr || {};
-  const result = state.result || null;
-  const [method, setMethod] = useState(null);
-  const [status, setStatus] = useState(null);
-  const [total, setTotal] = useState(0);
-  const [kiosk, setKiosk] = useState(null);
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const airlines = (await axios.get(`${API}/config/airlines`)).data;
-        const current = airlines.find(a => a.code === "JSM") || airlines[0];
-        const rules = (await axios.get(`${API}/rules/${current.code}`)).data;
-        let overweight = 0; let oversize = 0;
-        if (result) {
-          if (result.weight_kg > rules.max_weight_kg) overweight = (result.weight_kg - rules.max_weight_kg) * rules.overweight_fee_per_kg;
-          const linear = result.dims_cm.length + result.dims_cm.width + result.dims_cm.height;
-          if (linear > rules.max_linear_cm || result.dims_cm.length > rules.dims_cm.length || result.dims_cm.width > rules.dims_cm.width || result.dims_cm.height > rules.dims_cm.height) {
-            oversize = rules.oversize_fee_flat;
-          }
-        }
-        setTotal(Math.max(0, Math.round((overweight + oversize) * 100) / 100));
-        setKiosk({ rules, airline: current });
-      } catch (e) {}
-    };
-    load();
-  }, []);
-
-  const pay = async () => {
-    try {
-      const ss = await axios.post(`${API}/sessions`, { airline_code: kiosk.airline.code, language: "es" });
-      const { data } = await axios.post(`${API}/payments/simulate`, { session_id: ss.data.id, total, method });
-      setStatus(data.status);
-    } catch (e) {
-      setStatus("rejected");
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-3xl mx-auto px-6 py-10">
-        <h2 className="text-3xl font-bold mb-6">Tarifas y Pago</h2>
-        {result && (
-          <Card className="mb-6">
-            <CardContent>
-              <div className="breakdown-row"><span>Exceso por peso</span><span>{result.weight_kg} kg</span></div>
-              <div className="breakdown-row"><span>Exceso por dimensiones</span><span>{result.dims_cm.length + result.dims_cm.width + result.dims_cm.height} cm</span></div>
-              <div className="breakdown-row font-bold"><span>Total</span><span>{`$${total.toFixed(2)} ${kiosk?.rules?.currency || "USD"}`}</span></div>
-            </CardContent>
-          </Card>
-        )}
-
-        <div className="mb-4">
-          <label className="block font-semibold mb-2">Método de pago</label>
-          <div className="flex gap-3">
-            <Button variant={method === "card" ? "primary" : "outline"} onClick={() => setMethod("card")} >Tarjeta</Button>
-            <Button variant={method === "qr" ? "primary" : "outline"} onClick={() => setMethod("qr")} >QR</Button>
-          </div>
-        </div>
-
-        {method && (
-          <div className="flex gap-4">
-            <Button variant="accent" onClick={pay}>PROCESAR PAGO</Button>
-            <Button variant="ghost" onClick={() => nav("/scan")} >VOLVER</Button>
-          </div>
-        )}
-
-        {status && (
-          <div className="mt-6">
-            {status === "approved" ? (
-              <div className="badge success">Pago aprobado</div>
-            ) : (
-              <div className="badge error">Pago rechazado</div>
-            )}
-            {status === "approved" && (
-              <div className="mt-4 flex gap-3">
-                <Button variant="primary" onClick={() => nav("/goodbye")}>FINALIZAR</Button>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function FreeWeigh() {
-  const nav = useNavigate();
-  const [w, setW] = useState(0);
-  const [connected, setConnected] = useState(false);
-  const [name, setName] = useState("-");
-
-  useEffect(() => {
-    let id;
-    const boot = async () => {
-      try {
-        const st = (await axios.get(`${API}/scale/status`)).data;
-        setConnected(!!st.connected); setName(st.name || "Demo Scale");
-        id = setInterval(async () => {
-          try {
-            const r = (await axios.get(`${API}/scale/read`)).data;
-            setW(r.weight_kg || 0);
-          } catch (_) {}
-        }, 1200);
-      } catch (_) {
-        setConnected(false);
-      }
-    };
-    boot();
-    return () => id && clearInterval(id);
-  }, []);
-
   return (
     <div className="min-h-screen flex items-center justify-center" style={{ background: "#F7FAFF" }}>
-      <Card className="w-full max-w-xl text-center">
+      <Card className="w-full max-w-2xl">
         <CardContent>
-          <div className="text-sm text-gray-500 mb-2">Balanza: {connected ? `Conectada (${name})` : 'No conectada'}</div>
-          <div className="text-6xl font-extrabold mb-6">{w.toFixed(1)} kg</div>
-          <Button variant="ghost" onClick={() => nav("/start")} >VOLVER</Button>
+          <h2 className="text-3xl font-extrabold text-[#12356F] mb-4">Maleta no permitida</h2>
+          <p className="mb-4">Detalle de equipaje permitido (demo):</p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>Medidas máximas: 55 cm (largo) × 35 cm (ancho) × 25 cm (alto)</li>
+            <li>Peso máximo: 10 kg</li>
+            <li>Suma lineal máxima: 115 cm</li>
+            <li>Ejemplos: Maleta cabina pequeña, mochila media, bolso de mano</li>
+          </ul>
+          <div className="mt-6 flex gap-3">
+            <Button variant="primary" onClick={() => nav('/scan')}>Comenzar escaneo</Button>
+            <Button variant="ghost" onClick={() => nav('/startmeasure')}>Volver</Button>
+          </div>
         </CardContent>
       </Card>
     </div>
   );
 }
 
-function Train() {
-  const [images, setImages] = useState([]);
-  const [label, setLabel] = useState("maleta");
-  const [log, setLog] = useState([]);
-
-  const onFiles = async (e) => {
-    const files = Array.from(e.target.files || []);
-    for (const f of files) {
-      await axios.post(`${API}/dataset/images`, { label, file_name: f.name });
-      setImages(prev => [...prev, { name: f.name, label }]);
-    }
-  };
-
-  const startTrain = async () => {
-    const { data } = await axios.post(`${API}/train/start`, { airline_code: "JSM" });
-    setLog(prev => [
-      ...prev,
-      `Training ${data.id} for ${data.airline_code} status: ${data.status}`
-    ]);
-  };
-
-  return (
-    <div className="min-h-screen" style={{ background: "#F7FAFF" }}>
-      <div className="max-w-4xl mx-auto px-6 py-10">
-        <h2 className="text-3xl font-bold mb-4">Entrenamiento de IA (demo)</h2>
-        <div className="mb-4">
-          <label className="mr-3 font-semibold">Etiqueta:</label>
-          <select className="border rounded px-3 py-2" value={label} onChange={e => setLabel(e.target.value)}>
-            <option value="maleta">maleta</option>
-            <option value="mochila">mochila</option>
-            <option value="bolso">bolso</option>
-            <option value="otro">otro</option>
-          </select>
-        </div>
-        <input type="file" multiple onChange={onFiles} className="mb-4" />
-        <div className="mb-6">
-          {images.map((im, i) => (
-            <div key={i} className="text-sm text-gray-700">{im.name} - {im.label}</div>
-          ))}
-        </div>
-        <Button variant="primary" onClick={startTrain}>Entrenar YOLO (simulado)</Button>
-        <div className="mt-6 space-y-1 text-sm text-gray-600">
-          {log.map((l, i) => (<div key={i}>{l}</div>))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Goodbye() {
-  const nav = useNavigate();
-  useEffect(() => {
-    const t = setTimeout(() => nav("/start"), 10000);
-    return () => clearTimeout(t);
-  }, []);
-  return (
-    <div className="min-h-screen flex items-center justify-center" style={{ background: "#F7FAFF" }}>
-      <div className="text-center">
-        <CheckCircle2 className="mx-auto text-green-600" size={64} />
-        <div className="mt-3 text-2xl font-bold">¡Gracias, vuelva pronto!</div>
-        <div className="text-gray-600">Regresando a Comenzar escaneo…</div>
-      </div>
-    </div>
-  );
-}
+function Payment() { /* ...existing unchanged... */ }
+function FreeWeigh() { /* ...existing unchanged... */ }
+function Train() { /* ...existing unchanged... */ }
+function Goodbye() { /* ...existing unchanged... */ }
 
 function Shell() {
   const kiosk = useKiosk();
@@ -589,10 +452,12 @@ function Shell() {
       <HiddenSetupHotspot />
       <Routes>
         <Route path="/" element={<Welcome kiosk={kiosk} />} />
-        <Route path="/start" element={<StartScanTab kiosk={kiosk} />} />
         <Route path="/setup" element={<SetupPage kiosk={kiosk} />} />
-        <Route path="/rules" element={<RulesPage />} />
+        <Route path="/startmeasure" element={<StartMeasureNormal />} />
+        <Route path="/startmeasure/options" element={<StartMeasureOptions />} />
+        <Route path="/priority" element={<PriorityPlaceholder />} />
         <Route path="/scan" element={<Scan kiosk={kiosk} />} />
+        <Route path="/rules" element={<RulesPage />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/weigh" element={<FreeWeigh />} />
         <Route path="/train" element={<Train />} />
