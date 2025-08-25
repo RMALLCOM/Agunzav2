@@ -252,6 +252,8 @@ function RulesPage() {
 function Scan({ kiosk }) {
   const nav = useNavigate();
   const tr = strings[kiosk.lang];
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuIcon = "https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/xklegk9w_image.png";
   const location = useLocation();
   const noPermitted = location.state?.noPermitted;
   const videoRef = useRef(null);
