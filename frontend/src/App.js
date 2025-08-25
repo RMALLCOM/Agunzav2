@@ -111,7 +111,7 @@ function Welcome({ kiosk }) {
   const tr = strings[kiosk.lang];
 
   return (
-    &lt;div className="relative h-screen w-full kiosk-bg" style={{ backgroundImage: `url(${bgUrl})` }}&gt;
+    <div className="relative h-screen w-full kiosk-bg" style={{ backgroundImage: `url(${bgUrl})` }}>
       <div className="absolute top-0 right-0 p-4 flex items-center gap-2">
         <Languages className="text-gray-700" />
         <Button variant="ghost" onClick={() => kiosk.setLang(kiosk.lang === "es" ? "en" : "es")}>{kiosk.lang.toUpperCase()}</Button>
