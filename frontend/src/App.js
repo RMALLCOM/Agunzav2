@@ -454,7 +454,7 @@ function FreeWeigh() {
       <Card className="w-full max-w-xl text-center">
         <CardContent>
           <div className="text-6xl font-extrabold mb-6">{w} kg</div>
-          <Button variant="ghost" onClick={() => nav("/")} >VOLVER</Button>
+          <Button variant="ghost" onClick={() => nav("/start")} >VOLVER</Button>
         </CardContent>
       </Card>
     </div>
