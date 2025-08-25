@@ -3,7 +3,7 @@ import React from "react";
 export const Card = ({ children, className = "" }) => (
   <div className={`rounded-2xl bg-white/80 backdrop-blur-xl shadow-xl border border-white/50 ${className}`}>
     {children}
-  &lt;/div&gt;
+  </div>
 );
 
 export const CardContent = ({ children, className = "" }) =&gt; (
