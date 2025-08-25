@@ -132,15 +132,15 @@ function Menu({ kiosk }) {
   const nav = useNavigate();
   const tr = strings[kiosk.lang];
   return (
-    &lt;div className="min-h-screen" style={{ backgroundColor: kiosk.airline?.palette?.bg || "#F7FAFF" }}&gt;
-      &lt;div className="max-w-6xl mx-auto px-6 py-10"&gt;
-        &lt;div className="flex items-center justify-between mb-8"&gt;
-          &lt;h2 className="text-3xl font-bold"&gt;{tr.menu}&lt;/h2&gt;
-          &lt;div className="flex items-center gap-2"&gt;
-            &lt;Languages /&gt;
-            &lt;Button variant="ghost" onClick={() =&gt; kiosk.setLang(kiosk.lang === "es" ? "en" : "es")}&gt;{kiosk.lang.toUpperCase()}&lt;/Button&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
+    <div className="min-h-screen" style={{ backgroundColor: kiosk.airline?.palette?.bg || "#F7FAFF" }}>
+      <div className="max-w-6xl mx-auto px-6 py-10">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-3xl font-bold">{tr.menu}</h2>
+          <div className="flex items-center gap-2">
+            <Languages />
+            <Button variant="ghost" onClick={() => kiosk.setLang(kiosk.lang === "es" ? "en" : "es")}>{kiosk.lang.toUpperCase()}</Button>
+          </div>
+        </div>
 
         &lt;div className="grid grid-cols-1 md:grid-cols-3 gap-6"&gt;
           &lt;Card className="p-6 hover:shadow-2xl transition-shadow duration-200"&gt;
