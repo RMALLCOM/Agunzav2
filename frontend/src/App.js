@@ -300,7 +300,7 @@ function Scan({ kiosk }) {
       ctx.strokeStyle = "#E20C18"; ctx.lineWidth = 4; ctx.strokeRect(x, y, w, h);
       ctx.fillStyle = "rgba(226,12,24,0.8)"; ctx.font = "20px sans-serif";
       ctx.fillRect(x, y - 28, 120, 24);
-      ctx.fillStyle = "#fff"; ctx.fillText("maleta", x + 8, y - 10);
+      ctx.fillStyle = "#fff"; ctx.fillText(noPermitted ? "no permitido" : "maleta", x + 8, y - 10);
       raf = requestAnimationFrame(draw);
     };
     raf = requestAnimationFrame(draw);
