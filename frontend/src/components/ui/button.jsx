@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Button = ({ children, className = "", variant = "primary", ...props }) =&gt; {
+export const Button = ({ children, className = "", variant = "primary", ...props }) => {
   const base = "px-6 py-4 text-lg font-semibold rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200";
   const styles = {
     primary: "bg-[#003595] text-white hover:bg-[#0a49c1] focus:ring-[#003595]",
