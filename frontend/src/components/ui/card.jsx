@@ -6,7 +6,7 @@ export const Card = ({ children, className = "" }) => (
   </div>
 );
 
-export const CardContent = ({ children, className = "" }) =&gt; (
+export const CardContent = ({ children, className = "" }) => (
   &lt;div className={`p-6 ${className}`}&gt;{children}&lt;/div&gt;
 );
 
