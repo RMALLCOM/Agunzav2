@@ -120,7 +120,7 @@ function Welcome({ kiosk }) {
         &lt;div className="text-center max-w-3xl p-8"&gt;
           &lt;h1 className="text-5xl font-extrabold text-gray-900 mb-4"&gt;{kiosk.airline?.name || "Kiosk"}&lt;/h1&gt;
           &lt;p className="text-gray-700 mb-8"&gt;{tr.welcome}&lt;/p&gt;
-          &lt;Button className="text-2xl px-10 py-6" variant="accent" onClick={() =&gt; nav("/menu")}&gt;{tr.start}&lt;/Button&gt;
+          <Button className="text-2xl px-10 py-6" variant="accent" onClick={() => nav("/menu")}>{tr.start}</Button>
         &lt;/div&gt;
       &lt;/div&gt;
     &lt;/div&gt;
