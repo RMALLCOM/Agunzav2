@@ -15,7 +15,7 @@ html, body, #root {
 }
 
 .hero-overlay {
-  background: radial-gradient(ellipse at center, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.65) 45%, rgba(255,255,255,0.35) 100%);
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.75) 45%, rgba(255,255,255,0.40) 100%);
 }
 
 .btn-row {
