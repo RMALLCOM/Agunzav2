@@ -112,10 +112,10 @@ function Welcome({ kiosk }) {
 
   return (
     &lt;div className="relative h-screen w-full kiosk-bg" style={{ backgroundImage: `url(${bgUrl})` }}&gt;
-      &lt;div className="absolute top-0 right-0 p-4 flex items-center gap-2"&gt;
-        &lt;Languages className="text-gray-700" /&gt;
-        &lt;Button variant="ghost" onClick={() =&gt; kiosk.setLang(kiosk.lang === "es" ? "en" : "es")}&gt;{kiosk.lang.toUpperCase()}&lt;/Button&gt;
-      &lt;/div&gt;
+      <div className="absolute top-0 right-0 p-4 flex items-center gap-2">
+        <Languages className="text-gray-700" />
+        <Button variant="ghost" onClick={() => kiosk.setLang(kiosk.lang === "es" ? "en" : "es")}>{kiosk.lang.toUpperCase()}</Button>
+      </div>
       &lt;div className="hero-overlay absolute inset-0 flex items-center justify-center"&gt;
         &lt;div className="text-center max-w-3xl p-8"&gt;
           &lt;h1 className="text-5xl font-extrabold text-gray-900 mb-4"&gt;{kiosk.airline?.name || "Kiosk"}&lt;/h1&gt;
