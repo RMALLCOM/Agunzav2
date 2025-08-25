@@ -254,6 +254,8 @@ function StartScanTab({ kiosk }) {
 function Scan({ kiosk }) {
   const nav = useNavigate();
   const tr = strings[kiosk.lang];
+  const location = useLocation();
+  const noPermitted = location.state?.noPermitted;
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [weight, setWeight] = useState(null);
