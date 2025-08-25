@@ -144,34 +144,34 @@ function Menu({ kiosk }) {
 
         &lt;div className="grid grid-cols-1 md:grid-cols-3 gap-6"&gt;
           &lt;Card className="p-6 hover:shadow-2xl transition-shadow duration-200"&gt;
-            &lt;Button className="w-full h-28" variant="primary" onClick={() =&gt; nav("/scan")}&gt;
+            &lt;Button className="w-full h-28" variant="primary" onClick={() => nav("/scan")}&gt;
               &lt;ScanLine className="mr-3" /&gt; {tr.scan}
             &lt;/Button&gt;
           &lt;/Card&gt;
 
           &lt;Card className="p-6 hover:shadow-2xl transition-shadow duration-200"&gt;
-            &lt;Button className="w-full h-28" variant="primary" onClick={() =&gt; nav("/weigh")}&gt;
+            &lt;Button className="w-full h-28" variant="primary" onClick={() => nav("/weigh")}&gt;
               &lt;Weight className="mr-3" /&gt; {tr.freeWeigh}
             &lt;/Button&gt;
           &lt;/Card&gt;
 
           &lt;Card className="p-6 hover:shadow-2xl transition-shadow duration-200"&gt;
-            &lt;Button className="w-full h-28" variant="primary" onClick={() =&gt; nav("/train")}&gt;
+            &lt;Button className="w-full h-28" variant="primary" onClick={() => nav("/train")}&gt;
               &lt;Wrench className="mr-3" /&gt; {tr.aiTrain}
             &lt;/Button&gt;
           &lt;/Card&gt;
 
           &lt;Card className="p-6 hover:shadow-2xl transition-shadow duration-200"&gt;
-            &lt;Button className="w-full h-28" variant="outline" onClick={() =&gt; nav("/login/operator")}>&lt;Home className="mr-3" /&gt; {tr.opLogin}&lt;/Button&gt;
+            &lt;Button className="w-full h-28" variant="outline" onClick={() => nav("/login/operator")}>&lt;Home className="mr-3" /&gt; {tr.opLogin}&lt;/Button&gt;
           &lt;/Card&gt;
 
           &lt;Card className="p-6 hover:shadow-2xl transition-shadow duration-200"&gt;
-            &lt;Button className="w-full h-28" variant="outline" onClick={() =&gt; nav("/login/admin")}>&lt;Home className="mr-3" /&gt; {tr.adminLogin}&lt;/Button&gt;
+            &lt;Button className="w-full h-28" variant="outline" onClick={() => nav("/login/admin")}>&lt;Home className="mr-3" /&gt; {tr.adminLogin}&lt;/Button&gt;
           &lt;/Card&gt;
         &lt;/div&gt;
 
         &lt;div className="mt-10"&gt;
-          &lt;Button variant="ghost" onClick={() =&gt; nav("/")}&gt;{tr.back}&lt;/Button&gt;
+          &lt;Button variant="ghost" onClick={() => nav("/")}&gt;{tr.back}&lt;/Button&gt;
         &lt;/div&gt;
       &lt;/div&gt;
     &lt;/div&gt;
@@ -188,8 +188,8 @@ function Scan({ kiosk }) {
   const [dims, setDims] = useState(null);
   const [result, setResult] = useState(null);
 
-  useEffect(() =&gt; {
-    const start = async () =&gt; {
+  useEffect(() => {
+    const start = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false });
         if (videoRef.current) {
@@ -201,18 +201,18 @@ function Scan({ kiosk }) {
       }
     };
     start();
-    return () =&gt; {
+    return () => {
       if (videoRef.current?.srcObject) {
         const tracks = videoRef.current.srcObject.getTracks();
-        tracks.forEach(t =&gt; t.stop());
+        tracks.forEach(t => t.stop());
       }
     };
   }, []);
 
   // Simulate YOLO overlay
-  useEffect(() =&gt; {
+  useEffect(() => {
     let raf;
-    const draw = () =&gt; {
+    const draw = () => {
       const canvas = canvasRef.current;
       const video = videoRef.current;
       if (!canvas || !video) { raf = requestAnimationFrame(draw); return; }
@@ -230,16 +230,16 @@ function Scan({ kiosk }) {
       raf = requestAnimationFrame(draw);
     };
     raf = requestAnimationFrame(draw);
-    return () =&gt; cancelAnimationFrame(raf);
+    return () => cancelAnimationFrame(raf);
   }, []);
 
-  const readWeight = () =&gt; {
+  const readWeight = () => {
     // simulate scale reading
     const val = Math.round((Math.random() * 8 + 6) * 10) / 10; // 6-14kg
     setWeight(val);
   };
 
-  const runValidation = async () =&gt; {
+  const runValidation = async () => {
     try {
       const ss = kiosk.session || await kiosk.startSession();
       const { data } = await axios.post(`${API}/scan`, { session_id: ss.id, weight_kg: weight });
@@ -259,7 +259,7 @@ function Scan({ kiosk }) {
             &lt;canvas ref={canvasRef} className="camera-overlay" /&gt;
           &lt;/div&gt;
           &lt;div className="flex gap-4 mt-4"&gt;
-            &lt;Button variant="ghost" onClick={() =&gt; nav("/menu")}&gt;{tr.back}&lt;/Button&gt;
+            &lt;Button variant="ghost" onClick={() => nav("/menu")}&gt;{tr.back}&lt;/Button&gt;
             &lt;Button variant="accent" onClick={runValidation}&gt;{tr.continue}&lt;/Button&gt;
             &lt;Button variant="primary" onClick={readWeight}&gt;{tr.readWeight}&lt;/Button&gt;
           &lt;/div&gt;
@@ -285,18 +285,18 @@ function Scan({ kiosk }) {
                   )}
                   {!result.compliant &amp;&amp; (
                     &lt;ul className="list-disc pl-5 mt-3 text-red-700 space-y-1"&gt;
-                      {result.errors.map((e, i) =&gt; (&lt;li key={i}&gt;{e}&lt;/li&gt;))}
+                      {result.errors.map((e, i) => (&lt;li key={i}&gt;{e}&lt;/li&gt;))}
                     &lt;/ul&gt;
                   )}
                   &lt;div className="flex gap-3 mt-6"&gt;
                     {result.compliant ? (
                       &lt;&gt;
-                        &lt;Button variant="accent" onClick={() =&gt; nav("/goodbye")}&gt;{strings[kiosk.lang].continue}&lt;/Button&gt;
+                        &lt;Button variant="accent" onClick={() => nav("/goodbye")}&gt;{strings[kiosk.lang].continue}&lt;/Button&gt;
                       &lt;/&gt;
                     ) : (
                       &lt;&gt;
-                        &lt;Button variant="ghost" onClick={() =&gt; { setResult(null); setDims(null); }}&gt;{strings[kiosk.lang].retryMeasure}&lt;/Button&gt;
-                        &lt;Button variant="primary" onClick={() =&gt; nav("/payment", { state: { result } })}&gt;{strings[kiosk.lang].goToPayment}&lt;/Button&gt;
+                        &lt;Button variant="ghost" onClick={() => { setResult(null); setDims(null); }}&gt;{strings[kiosk.lang].retryMeasure}&lt;/Button&gt;
+                        &lt;Button variant="primary" onClick={() => nav("/payment", { state: { result } })}&gt;{strings[kiosk.lang].goToPayment}&lt;/Button&gt;
                       &lt;/&gt;
                     )}
                   &lt;/div&gt;
@@ -319,12 +319,12 @@ function Payment() {
   const [total, setTotal] = useState(0);
   const [kiosk, setKiosk] = useState(null);
 
-  useEffect(() =&gt; {
+  useEffect(() => {
     // quick pull of rules and session to compute pricing
-    const load = async () =&gt; {
+    const load = async () => {
       try {
         const airlines = (await axios.get(`${API}/config/airlines`)).data;
-        const current = airlines.find(a =&gt; a.code === "JSM") || airlines[0];
+        const current = airlines.find(a => a.code === "JSM") || airlines[0];
         const rules = (await axios.get(`${API}/rules/${current.code}`)).data;
         let overweight = 0; let oversize = 0;
         if (result) {
@@ -341,7 +341,7 @@ function Payment() {
     load();
   }, []);
 
-  const pay = async () =&gt; {
+  const pay = async () => {
     try {
       const ss = await axios.post(`${API}/sessions`, { airline_code: kiosk.airline.code, language: "es" });
       const { data } = await axios.post(`${API}/payments/simulate`, { session_id: ss.data.id, total, method });
@@ -368,14 +368,14 @@ function Payment() {
         &lt;div className="mb-4"&gt;
           &lt;label className="block font-semibold mb-2"&gt;Método de pago&lt;/label&gt;
           &lt;div className="flex gap-3"&gt;
-            &lt;Button variant={method === "card" ? "primary" : "outline"} onClick={() =&gt; setMethod("card")} &gt;&lt;CreditCard className="mr-2" /&gt; Tarjeta&lt;/Button&gt;
-            &lt;Button variant={method === "qr" ? "primary" : "outline"} onClick={() =&gt; setMethod("qr")} &gt;QR&lt;/Button&gt;
+            &lt;Button variant={method === "card" ? "primary" : "outline"} onClick={() => setMethod("card")} &gt;&lt;CreditCard className="mr-2" /&gt; Tarjeta&lt;/Button&gt;
+            &lt;Button variant={method === "qr" ? "primary" : "outline"} onClick={() => setMethod("qr")} &gt;QR&lt;/Button&gt;
           &lt;/div&gt;
         &lt;/div&gt;
 
         &lt;div className="flex gap-4"&gt;
           &lt;Button variant="accent" onClick={pay}&gt;Pagar&lt;/Button&gt;
-          &lt;Button variant="ghost" onClick={() =&gt; nav("/scan")} &gt;Volver&lt;/Button&gt;
+          &lt;Button variant="ghost" onClick={() => nav("/scan")} &gt;Volver&lt;/Button&gt;
         &lt;/div&gt;
 
         {status &amp;&amp; (
@@ -387,7 +387,7 @@ function Payment() {
             )}
             {status === "approved" &amp;&amp; (
               &lt;div className="mt-4 flex gap-3"&gt;
-                &lt;Button variant="primary" onClick={() =&gt; nav("/goodbye")}&gt;Finalizar&lt;/Button&gt;
+                &lt;Button variant="primary" onClick={() => nav("/goodbye")}&gt;Finalizar&lt;/Button&gt;
               &lt;/div&gt;
             )}
           &lt;/div&gt;
@@ -400,16 +400,16 @@ function Payment() {
 function FreeWeigh() {
   const nav = useNavigate();
   const [w, setW] = useState(0);
-  useEffect(() =&gt; {
-    const id = setInterval(() =&gt; setW(Math.round((Math.random() * 12 + 1) * 10) / 10), 1200);
-    return () =&gt; clearInterval(id);
+  useEffect(() => {
+    const id = setInterval(() => setW(Math.round((Math.random() * 12 + 1) * 10) / 10), 1200);
+    return () => clearInterval(id);
   }, []);
   return (
     &lt;div className="min-h-screen flex items-center justify-center" style={{ background: "#F7FAFF" }}&gt;
       &lt;Card className="w-full max-w-xl text-center"&gt;
         &lt;CardContent&gt;
           &lt;div className="text-6xl font-extrabold mb-6"&gt;{w} kg&lt;/div&gt;
-          &lt;Button variant="ghost" onClick={() =&gt; nav("/menu")} &gt;Volver&lt;/Button&gt;
+          &lt;Button variant="ghost" onClick={() => nav("/menu")} &gt;Volver&lt;/Button&gt;
         &lt;/CardContent&gt;
       &lt;/Card&gt;
     &lt;/div&gt;
@@ -421,17 +421,17 @@ function Train() {
   const [label, setLabel] = useState("maleta");
   const [log, setLog] = useState([]);
 
-  const onFiles = async (e) =&gt; {
+  const onFiles = async (e) => {
     const files = Array.from(e.target.files || []);
     for (const f of files) {
       await axios.post(`${API}/dataset/images`, { label, file_name: f.name });
-      setImages(prev =&gt; [...prev, { name: f.name, label }]);
+      setImages(prev => [...prev, { name: f.name, label }]);
     }
   };
 
-  const startTrain = async () =&gt; {
+  const startTrain = async () => {
     const { data } = await axios.post(`${API}/train/start`, { airline_code: "JSM" });
-    setLog(prev =&gt; [
+    setLog(prev => [
       ...prev,
       `Training ${data.id} for ${data.airline_code} status: ${data.status}`
     ]);
@@ -443,7 +443,7 @@ function Train() {
         &lt;h2 className="text-3xl font-bold mb-4"&gt;Entrenamiento de IA&lt;/h2&gt;
         &lt;div className="mb-4"&gt;
           &lt;label className="mr-3 font-semibold"&gt;Etiqueta:&lt;/label&gt;
-          &lt;select className="border rounded px-3 py-2" value={label} onChange={e =&gt; setLabel(e.target.value)}&gt;
+          &lt;select className="border rounded px-3 py-2" value={label} onChange={e => setLabel(e.target.value)}&gt;
             &lt;option value="maleta"&gt;maleta&lt;/option&gt;
             &lt;option value="mochila"&gt;mochila&lt;/option&gt;
             &lt;option value="bolso"&gt;bolso&lt;/option&gt;
@@ -452,13 +452,13 @@ function Train() {
         &lt;/div&gt;
         &lt;input type="file" multiple onChange={onFiles} className="mb-4" /&gt;
         &lt;div className="mb-6"&gt;
-          {images.map((im, i) =&gt; (
+          {images.map((im, i) => (
             &lt;div key={i} className="text-sm text-gray-700"&gt;{im.name} - {im.label}&lt;/div&gt;
           ))}
         &lt;/div&gt;
         &lt;Button variant="primary" onClick={startTrain}&gt;Entrenar YOLO (simulado)&lt;/Button&gt;
         &lt;div className="mt-6 space-y-1 text-sm text-gray-600"&gt;
-          {log.map((l, i) =&gt; (&lt;div key={i}&gt;{l}&lt;/div&gt;))}
+          {log.map((l, i) => (&lt;div key={i}&gt;{l}&lt;/div&gt;))}
         &lt;/div&gt;
       &lt;/div&gt;
     &lt;/div&gt;
@@ -467,9 +467,9 @@ function Train() {
 
 function Goodbye() {
   const nav = useNavigate();
-  useEffect(() =&gt; {
-    const t = setTimeout(() =&gt; nav("/"), 2500);
-    return () =&gt; clearTimeout(t);
+  useEffect(() => {
+    const t = setTimeout(() => nav("/"), 2500);
+    return () => clearTimeout(t);
   }, []);
   return (
     &lt;div className="min-h-screen flex items-center justify-center" style={{ background: "#F7FAFF" }}&gt;
@@ -498,9 +498,9 @@ function Shell() {
 }
 
 function App() {
-  useEffect(() =&gt; {
+  useEffect(() => {
     // warm up API
-    axios.get(`${API}/`).catch(() =&gt; {});
+    axios.get(`${API}/`).catch(() => {});
   }, []);
   return (
     &lt;div className="App"&gt;
