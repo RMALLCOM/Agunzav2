@@ -15,5 +15,5 @@ export const CardHeader = ({ children, className = "" }) => (
 );
 
 export const CardTitle = ({ children, className = "" }) => (
-  &lt;h3 className={`text-xl font-bold ${className}`}&gt;{children}&lt;/h3&gt;
+  <h3 className={`text-xl font-bold ${className}`}>{children}</h3>
 );
