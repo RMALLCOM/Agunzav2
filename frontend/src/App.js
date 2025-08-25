@@ -12,6 +12,7 @@ const API = `${BACKEND_URL}/api`;
 // i18n minimal
 const strings = {
   es: {
+    start: "INICIAR",
     startScan: "COMENZAR ESCANEO",
     setupTitle: "Configuración previa",
     operator: "Operador",
@@ -28,9 +29,9 @@ const strings = {
     retryMeasure: "Volver a medir",
     goToPayment: "Continuar al pago",
     payTitle: "Tarifas y Pago",
-    start: "INICIAR",
   },
   en: {
+    start: "START",
     startScan: "START SCAN",
     setupTitle: "Pre-flight setup",
     operator: "Operator",
@@ -98,15 +99,11 @@ function HiddenSetupHotspot() {
   const onClick = () => {
     setCount(c => {
       const next = c + 1;
-      if (next === 1) {
-        timerRef.current = setTimeout(() => setCount(0), 1200);
-      }
-      if (next >= 3) {
-        clearTimeout(timerRef.current);
-        setCount(0);
-        nav("/setup");
-      }
-      return next;
+      if (next == 1):
+        timerRef.current = setTimeout(() => setCount(0), 1200)
+      if (next >= 3):
+        clearTimeout(timerRef.current); setCount(0); nav("/setup")
+      return next
     });
   };
   return <div onClick={onClick} className="fixed top-0 left-0 w-14 h-14 z-50" style={{ opacity: 0 }} />;
@@ -184,8 +181,6 @@ function Welcome({ kiosk }) {
   const bgUrl = "https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/uqbelias_image%2012.png";
   return (
     <div className="relative min-h-screen kiosk-bg" style={{ backgroundImage: `url(${bgUrl})` }}>
-
-
       <div className="hero-overlay absolute inset-0 flex items-center justify-center">
         <div className="text-center max-w-3xl p-8">
           <h1 className="text-5xl font-extrabold text-gray-900 mb-4">JetSMART</h1>
@@ -223,7 +218,7 @@ function StartScanTab({ kiosk }) {
         </button>
         {menuOpen && (
           <div className="mt-3 bg-white rounded-2xl shadow-xl p-4 w-64 text-center">
-            <div className="text-[#12356F] font-extrabold uppercase text-lg border-b pb-3 cursor-pointer" onClick={() => { setMenuOpen(false); nav('/scan', { state: { noPermitted: true } }); }}>MALETA NO PERMITIDA</div>
+            <div className="text-[#12356F] font-extrabold uppercase text-lg border-b pb-3 cursor-pointer" onClick={() => { setMenuOpen(false); nav('/rules'); }}>MALETA NO PERMITIDA</div>
             <div className="text-[#12356F] font-extrabold uppercase text-lg border-b py-3 cursor-pointer" onClick={() => { setMenuOpen(false); nav('/weigh'); }}>PESAJE LIBRE</div>
             <div className="text-[#12356F] font-extrabold uppercase text-lg pt-3 cursor-pointer" onClick={() => { setMenuOpen(false); nav('/train'); }}>ENTRENAMIENTO IA</div>
           </div>
@@ -235,6 +230,31 @@ function StartScanTab({ kiosk }) {
           <Button className="text-2xl px-10 py-6" variant="accent" onClick={() => nav("/scan")}>{tr.startScan}</Button>
         </div>
       </div>
+    </div>
+  );
+}
+
+// Baggage rules demo
+function RulesPage() {
+  const nav = useNavigate();
+  return (
+    <div className="min-h-screen flex items-center justify-center" style={{ background: "#F7FAFF" }}>
+      <Card className="w-full max-w-2xl">
+        <CardContent>
+          <h2 className="text-3xl font-extrabold text-[#12356F] mb-4">Maleta no permitida</h2>
+          <p className="mb-4">Detalle de equipaje permitido (demo):</p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>Medidas máximas: 55 cm (largo) × 35 cm (ancho) × 25 cm (alto)</li>
+            <li>Peso máximo: 10 kg</li>
+            <li>Suma lineal máxima: 115 cm</li>
+            <li>Ejemplos: Maleta cabina pequeña, mochila media, bolso de mano</li>
+          </ul>
+          <div className="mt-6 flex gap-3">
+            <Button variant="primary" onClick={() => nav('/scan')}>Comenzar escaneo</Button>
+            <Button variant="ghost" onClick={() => nav('/start')}>Volver</Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
@@ -288,18 +308,13 @@ function Scan({ kiosk }) {
       const w = canvas.width * 0.6; const h = canvas.height * 0.6;
       ctx.strokeStyle = "#E20C18"; ctx.lineWidth = 4; ctx.strokeRect(x, y, w, h);
       ctx.fillStyle = "rgba(226,12,24,0.8)"; ctx.font = "20px sans-serif";
-      ctx.fillRect(x, y - 28, 120, 24);
+      ctx.fillRect(x, y - 28, 160, 24);
       ctx.fillStyle = "#fff"; ctx.fillText(noPermitted ? "no permitido" : "maleta", x + 8, y - 10);
       raf = requestAnimationFrame(draw);
     };
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
-  }, []);
-
-  const readWeight = () => {
-    const val = Math.round((Math.random() * 8 + 6) * 10) / 10; // 6-14kg
-    setWeight(val);
-  };
+  }, [noPermitted]);
 
   const runValidation = async () => {
     try {
@@ -323,7 +338,6 @@ function Scan({ kiosk }) {
           <div className="flex gap-4 mt-4">
             <Button variant="ghost" onClick={() => nav("/start")}>VOLVER</Button>
             <Button variant="accent" onClick={runValidation}>CONTINUAR</Button>
-
           </div>
         </div>
         <div>
@@ -341,9 +355,9 @@ function Scan({ kiosk }) {
               {result && (
                 <div className="mt-6">
                   {result.compliant ? (
-                    <div className="badge success">{strings[kiosk.lang].validationOk}</div>
+                    <div className="badge success">{strings["es"].validationOk}</div>
                   ) : (
-                    <div className="badge error">{strings[kiosk.lang].validationFail}</div>
+                    <div className="badge error">{strings["es"].validationFail}</div>
                   )}
                   {!result.compliant && (
                     <ul className="list-disc pl-5 mt-3 text-red-700 space-y-1">
@@ -358,7 +372,7 @@ function Scan({ kiosk }) {
                     ) : (
                       <>
                         <Button variant="ghost" onClick={() => { setResult(null); setDims(null); }}>VOLVER A MEDIR</Button>
-                        <Button variant="primary" onClick={() => nav("/payment", { state: { result } })}>{strings[kiosk.lang].goToPayment}</Button>
+                        <Button variant="primary" onClick={() => nav("/payment", { state: { result } })}>{strings["es"].goToPayment}</Button>
                       </>
                     )}
                   </div>
@@ -463,15 +477,35 @@ function Payment() {
 function FreeWeigh() {
   const nav = useNavigate();
   const [w, setW] = useState(0);
+  const [connected, setConnected] = useState(false);
+  const [name, setName] = useState("-");
+
   useEffect(() => {
-    const id = setInterval(() => setW(Math.round((Math.random() * 12 + 1) * 10) / 10), 1200);
-    return () => clearInterval(id);
+    let id;
+    const boot = async () => {
+      try {
+        const st = (await axios.get(`${API}/scale/status`)).data;
+        setConnected(!!st.connected); setName(st.name || "Demo Scale");
+        id = setInterval(async () => {
+          try {
+            const r = (await axios.get(`${API}/scale/read`)).data;
+            setW(r.weight_kg || 0);
+          } catch (_) {}
+        }, 1200);
+      } catch (_) {
+        setConnected(false);
+      }
+    };
+    boot();
+    return () => id && clearInterval(id);
   }, []);
+
   return (
     <div className="min-h-screen flex items-center justify-center" style={{ background: "#F7FAFF" }}>
       <Card className="w-full max-w-xl text-center">
         <CardContent>
-          <div className="text-6xl font-extrabold mb-6">{w} kg</div>
+          <div className="text-sm text-gray-500 mb-2">Balanza: {connected ? `Conectada (${name})` : 'No conectada'}</div>
+          <div className="text-6xl font-extrabold mb-6">{w.toFixed(1)} kg</div>
           <Button variant="ghost" onClick={() => nav("/start")} >VOLVER</Button>
         </CardContent>
       </Card>
@@ -503,7 +537,7 @@ function Train() {
   return (
     <div className="min-h-screen" style={{ background: "#F7FAFF" }}>
       <div className="max-w-4xl mx-auto px-6 py-10">
-        <h2 className="text-3xl font-bold mb-4">Entrenamiento de IA</h2>
+        <h2 className="text-3xl font-bold mb-4">Entrenamiento de IA (demo)</h2>
         <div className="mb-4">
           <label className="mr-3 font-semibold">Etiqueta:</label>
           <select className="border rounded px-3 py-2" value={label} onChange={e => setLabel(e.target.value)}>
@@ -554,6 +588,7 @@ function Shell() {
         <Route path="/" element={<Welcome kiosk={kiosk} />} />
         <Route path="/start" element={<StartScanTab kiosk={kiosk} />} />
         <Route path="/setup" element={<SetupPage kiosk={kiosk} />} />
+        <Route path="/rules" element={<RulesPage />} />
         <Route path="/scan" element={<Scan kiosk={kiosk} />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/weigh" element={<FreeWeigh />} />

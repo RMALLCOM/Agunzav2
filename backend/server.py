@@ -304,6 +304,18 @@ async def simulate_payment(req: PaymentRequest):
     return payment
 
 
+# Scale (demo)
+@api_router.get("/scale/status")
+async def scale_status():
+    return {"connected": True, "name": "Demo Scale USB", "port": "ttyUSB0", "units": "kg"}
+
+
+@api_router.get("/scale/read")
+async def scale_read():
+    import random
+    return {"connected": True, "weight_kg": round(random.uniform(0.2, 28.5), 1), "timestamp": now_iso()}
+
+
 # Auth (simple PIN demo)
 @api_router.post("/auth/login")
 async def login(req: LoginRequest):
