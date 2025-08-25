@@ -283,7 +283,7 @@ function Scan({ kiosk }) {
                   ) : (
                     <div className="badge error"><CircleAlert /> {strings[kiosk.lang].validationFail}</div>
                   )}
-                  {!result.compliant &amp;&amp; (
+                  {!result.compliant && (
                     <ul className="list-disc pl-5 mt-3 text-red-700 space-y-1">
                       {result.errors.map((e, i) => (<li key={i}>{e}</li>))}
                     </ul>
