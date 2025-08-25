@@ -107,7 +107,7 @@ function useKiosk() {
 // Welcome Screen
 function Welcome({ kiosk }) {
   const nav = useNavigate();
-  const bgUrl = "https://images.unsplash.com/photo-1704636885666-bbda58f4af70?crop=entropy&cs=srgb&fm=jpg&q=85";
+  const bgUrl = "https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/uqbelias_image%2012.png";
   const tr = strings[kiosk.lang];
 
   return (
