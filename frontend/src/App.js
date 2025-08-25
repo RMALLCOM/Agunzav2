@@ -330,7 +330,7 @@ function Scan({ kiosk }) {
     };
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
-  }, [noPermitted]);
+  }, []);
 
   const runValidation = async () => {
     try {
