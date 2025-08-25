@@ -116,14 +116,14 @@ function Welcome({ kiosk }) {
         <Languages className="text-gray-700" />
         <Button variant="ghost" onClick={() => kiosk.setLang(kiosk.lang === "es" ? "en" : "es")}>{kiosk.lang.toUpperCase()}</Button>
       </div>
-      &lt;div className="hero-overlay absolute inset-0 flex items-center justify-center"&gt;
-        &lt;div className="text-center max-w-3xl p-8"&gt;
-          &lt;h1 className="text-5xl font-extrabold text-gray-900 mb-4"&gt;{kiosk.airline?.name || "Kiosk"}&lt;/h1&gt;
-          &lt;p className="text-gray-700 mb-8"&gt;{tr.welcome}&lt;/p&gt;
+      <div className="hero-overlay absolute inset-0 flex items-center justify-center">
+        <div className="text-center max-w-3xl p-8">
+          <h1 className="text-5xl font-extrabold text-gray-900 mb-4">{kiosk.airline?.name || "Kiosk"}</h1>
+          <p className="text-gray-700 mb-8">{tr.welcome}</p>
           <Button className="text-2xl px-10 py-6" variant="accent" onClick={() => nav("/menu")}>{tr.start}</Button>
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
+        </div>
+      </div>
+    </div>
   );
 }
 
