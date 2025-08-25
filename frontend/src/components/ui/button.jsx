@@ -9,7 +9,7 @@ export const Button = ({ children, className = "", variant = "primary", ...props
     outline: "border border-gray-300 text-gray-900 hover:bg-gray-50",
   };
   return (
-    &lt;button className={`${base} ${styles[variant] || styles.primary} ${className}`} {...props}&gt;
+    <button className={`${base} ${styles[variant] || styles.primary} ${className}`} {...props}>
       {children}
     &lt;/button&gt;
   );
