@@ -378,7 +378,7 @@ function Payment() {
           <Button variant="ghost" onClick={() => nav("/scan")} >Volver</Button>
         </div>
 
-        {status &amp;&amp; (
+        {status && (
           <div className="mt-6">
             {status === "approved" ? (
               <div className="badge success"><CheckCircle2 /> Pago aprobado</div>
