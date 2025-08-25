@@ -427,10 +427,12 @@ function Payment() {
           </div>
         </div>
 
-        <div className="flex gap-4">
-          <Button variant="accent" onClick={pay}>PROCESAR PAGO</Button>
-          <Button variant="ghost" onClick={() => nav("/scan")} >VOLVER</Button>
-        </div>
+        {method && (
+          <div className="flex gap-4">
+            <Button variant="accent" onClick={pay}>PROCESAR PAGO</Button>
+            <Button variant="ghost" onClick={() => nav("/scan")} >VOLVER</Button>
+          </div>
+        )}
 
         {status && (
           <div className="mt-6">
