@@ -246,7 +246,7 @@ async def scan(payload: ScanRequest):
 @api_router.post("/payments/simulate", response_model=Payment)
 async def simulate_payment(req: PaymentRequest):
     import random
-    status = "approved" if random.random() &gt;= 0.15 else "rejected"
+    status = "approved" if random.random() >= 0.15 else "rejected"
     payment = Payment(session_id=req.session_id, total=req.total, method=req.method, status=status)
     await db.payments.insert_one(payment.model_dump())
     return payment
