@@ -205,7 +205,7 @@ function StartScanTab({ kiosk }) {
   const nav = useNavigate();
   const tr = strings[kiosk.lang];
   const [menuOpen, setMenuOpen] = useState(false);
-  const menuIcon = "https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/vniu0ccc_image.png";
+  const menuIcon = "https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/xklegk9w_image.png";
 
   useEffect(() => {
     const check = async () => {
