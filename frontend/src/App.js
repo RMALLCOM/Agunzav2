@@ -94,7 +94,7 @@ function useKiosk() {
     init();
   }, []);
 
-  const startSession = async () =&gt; {
+  const startSession = async () => {
     if (!airline) return;
     const { data } = await axios.post(`${API}/sessions`, { airline_code: airline.code, language: lang });
     setSession(data);
