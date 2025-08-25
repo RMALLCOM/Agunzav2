@@ -28,6 +28,7 @@ const strings = {
     retryMeasure: "Volver a medir",
     goToPayment: "Continuar al pago",
     payTitle: "Tarifas y Pago",
+    start: "INICIAR",
   },
   en: {
     startScan: "START SCAN",
