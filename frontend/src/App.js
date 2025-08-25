@@ -513,7 +513,7 @@ function Train() {
 function Goodbye() {
   const nav = useNavigate();
   useEffect(() => {
-    const t = setTimeout(() => nav("/"), 2000);
+    const t = setTimeout(() => nav("/start"), 2000);
     return () => clearTimeout(t);
   }, []);
   return (
