@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
-import { Camera, CheckCircle2, CircleAlert, CreditCard, Home, Languages, ScanLine, Weight, Wrench } from "lucide-react";
+import { CheckCircle2, CircleAlert, CreditCard, Languages, ScanLine, Weight, Wrench } from "lucide-react";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -12,62 +12,40 @@ const API = `${BACKEND_URL}/api`;
 // i18n minimal
 const strings = {
   es: {
-    welcome: "Bienvenido",
-    start: "INICIAR",
-    menu: "Menú Principal",
-    scan: "Iniciar escaneo",
-    freeWeigh: "Pesaje libre",
-    aiTrain: "Entrenamiento IA",
-    opLogin: "Login Operador",
-    adminLogin: "Login Administrador",
+    startScan: "COMENZAR ESCANEO",
+    setupTitle: "Configuración previa",
+    operator: "Operador",
+    gate: "Puerta de embarque",
+    flight: "N° de vuelo",
+    dest: "Destino",
+    intl: "Internacional",
+    save: "GUARDAR",
     back: "Volver",
-    continue: "Continuar",
     readWeight: "Leer peso",
-    validationOk: "Cumple",
+    validationOk: "AUTORIZADO",
     validationOkSub: "Autorizado para embarque. ¡Buen viaje!",
-    validationFail: "No cumple",
+    validationFail: "NO CUMPLE",
     retryMeasure: "Volver a medir",
-    goToPayment: "Ir a tarifario/pago",
+    goToPayment: "Continuar al pago",
     payTitle: "Tarifas y Pago",
-    method: "Método de pago",
-    card: "Tarjeta débito/crédito (POS)",
-    qr: "QR",
-    pay: "Pagar",
-    print: "Imprimir recibo",
-    finish: "Finalizar",
-    trainingTitle: "Entrenamiento de IA",
-    upload: "Subir imágenes etiquetadas",
-    train: "Entrenar YOLO (simulado)",
-    freeWeightTitle: "Pesaje Libre",
   },
   en: {
-    welcome: "Welcome",
-    start: "START",
-    menu: "Main Menu",
-    scan: "Start scan",
-    freeWeigh: "Free weigh",
-    aiTrain: "AI Training",
-    opLogin: "Operator Login",
-    adminLogin: "Admin Login",
+    startScan: "START SCAN",
+    setupTitle: "Pre-flight setup",
+    operator: "Operator",
+    gate: "Gate",
+    flight: "Flight #",
+    dest: "Destination",
+    intl: "International",
+    save: "SAVE",
     back: "Back",
-    continue: "Continue",
     readWeight: "Read weight",
-    validationOk: "Compliant",
+    validationOk: "AUTHORIZED",
     validationOkSub: "Authorized for boarding. Have a great trip!",
-    validationFail: "Not compliant",
+    validationFail: "NOT COMPLIANT",
     retryMeasure: "Measure again",
-    goToPayment: "Go to pricing/payment",
+    goToPayment: "Continue to payment",
     payTitle: "Pricing & Payment",
-    method: "Payment method",
-    card: "Debit/Credit (POS)",
-    qr: "QR",
-    pay: "Pay",
-    print: "Print receipt",
-    finish: "Finish",
-    trainingTitle: "AI Training",
-    upload: "Upload labeled images",
-    train: "Train YOLO (simulated)",
-    freeWeightTitle: "Free Weigh",
   },
 };
 
@@ -76,6 +54,7 @@ function useKiosk() {
   const [rules, setRules] = useState(null);
   const [lang, setLang] = useState("es");
   const [session, setSession] = useState(null);
+  const [setup, setSetup] = useState(null);
 
   useEffect(() => {
     const init = async () => {
@@ -90,6 +69,12 @@ function useKiosk() {
       } catch (e) {
         console.error("Failed to load airline/rules", e?.message);
       }
+      try {
+        const { data } = await axios.get(`${API}/setup`);
+        setSetup(data);
+      } catch (_) {
+        setSetup(null);
+      }
     };
     init();
   }, []);
@@ -101,84 +86,123 @@ function useKiosk() {
     return data;
   };
 
-  return { airline, rules, lang, setLang, session, setSession, startSession };
+  return { airline, rules, lang, setLang, session, setSession, startSession, setup, setSetup };
 }
 
-// Welcome Screen
-function Welcome({ kiosk }) {
+// Hidden hotspot (triple tap) always present
+function HiddenSetupHotspot() {
   const nav = useNavigate();
-  const bgUrl = "https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/uqbelias_image%2012.png";
-  const tr = strings[kiosk.lang];
-
-  return (
-    <div className="relative h-screen w-full kiosk-bg" style={{ backgroundImage: `url(${bgUrl})` }}>
-      <div className="absolute top-0 right-0 p-4 flex items-center gap-2">
-        <Languages className="text-gray-700" />
-        <Button variant="ghost" onClick={() => kiosk.setLang(kiosk.lang === "es" ? "en" : "es")}>{kiosk.lang.toUpperCase()}</Button>
-      </div>
-      <div className="hero-overlay absolute inset-0 flex items-center justify-center">
-        <div className="text-center max-w-3xl p-8">
-          <h1 className="text-5xl font-extrabold text-gray-900 mb-4">{kiosk.airline?.name || "Kiosk"}</h1>
-          <p className="text-gray-700 mb-8">{tr.welcome}</p>
-          <Button className="text-2xl px-10 py-6" variant="accent" onClick={() => nav("/menu")}>{tr.start}</Button>
-        </div>
-      </div>
-    </div>
-  );
+  const [count, setCount] = useState(0);
+  const timerRef = useRef(null);
+  const onClick = () => {
+    setCount(c => {
+      const next = c + 1;
+      if (next === 1) {
+        timerRef.current = setTimeout(() => setCount(0), 1200);
+      }
+      if (next >= 3) {
+        clearTimeout(timerRef.current);
+        setCount(0);
+        nav("/setup");
+      }
+      return next;
+    });
+  };
+  return <div onClick={onClick} className="fixed top-0 left-0 w-14 h-14 z-50" style={{ opacity: 0 }} />;
 }
 
-// Menu Screen
-function Menu({ kiosk }) {
+// Setup Screen
+function SetupPage({ kiosk }) {
   const nav = useNavigate();
   const tr = strings[kiosk.lang];
+  const [form, setForm] = useState({ operator_name: "", gate: "", flight_number: "", destination: "", is_international: false });
+
+  const save = async () => {
+    try {
+      const payload = { ...form };
+      const { data } = await axios.post(`${API}/setup`, payload);
+      kiosk.setSetup(data);
+      await axios.post(`${API}/interactions`, { event: "setup_saved_client", payload, setup_id: data.id });
+      nav("/");
+    } catch (e) {
+      console.error("setup save failed", e?.message);
+    }
+  };
+
   return (
-    <div className="min-h-screen" style={{ backgroundColor: kiosk.airline?.palette?.bg || "#F7FAFF" }}>
-      <div className="max-w-6xl mx-auto px-6 py-10">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl font-bold">{tr.menu}</h2>
+    <div className="min-h-screen" style={{ background: "#F7FAFF" }}>
+      <div className="max-w-3xl mx-auto px-6 py-10">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-3xl font-extrabold">{tr.setupTitle}</h2>
           <div className="flex items-center gap-2">
             <Languages />
             <Button variant="ghost" onClick={() => kiosk.setLang(kiosk.lang === "es" ? "en" : "es")}>{kiosk.lang.toUpperCase()}</Button>
           </div>
         </div>
+        <Card>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold mb-1">{tr.operator}</label>
+                <input className="w-full border rounded px-3 py-3 text-lg" value={form.operator_name} onChange={e => setForm({ ...form, operator_name: e.target.value })} />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold mb-1">{tr.gate}</label>
+                <input className="w-full border rounded px-3 py-3 text-lg" value={form.gate} onChange={e => setForm({ ...form, gate: e.target.value })} />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold mb-1">{tr.flight}</label>
+                <input className="w-full border rounded px-3 py-3 text-lg" value={form.flight_number} onChange={e => setForm({ ...form, flight_number: e.target.value })} />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold mb-1">{tr.dest}</label>
+                <input className="w-full border rounded px-3 py-3 text-lg" value={form.destination} onChange={e => setForm({ ...form, destination: e.target.value })} />
+              </div>
+              <div className="flex items-center gap-3 mt-2">
+                <input id="intl" type="checkbox" className="w-5 h-5" checked={form.is_international} onChange={e => setForm({ ...form, is_international: e.target.checked })} />
+                <label htmlFor="intl" className="text-lg font-semibold">{tr.intl}</label>
+              </div>
+            </div>
+            <div className="mt-6 flex gap-3">
+              <Button variant="accent" onClick={save}>{tr.save}</Button>
+              <Button variant="ghost" onClick={() => nav("/")}>{tr.back}</Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="p-6 hover:shadow-2xl transition-shadow duration-200">
-            <Button className="w-full h-28" variant="primary" onClick={() => nav("/scan")}>
-              <ScanLine className="mr-3" /> {tr.scan}
-            </Button>
-          </Card>
+// Start tab screen (default)
+function StartScanTab({ kiosk }) {
+  const nav = useNavigate();
+  const tr = strings[kiosk.lang];
 
-          <Card className="p-6 hover:shadow-2xl transition-shadow duration-200">
-            <Button className="w-full h-28" variant="primary" onClick={() => nav("/weigh")}>
-              <Weight className="mr-3" /> {tr.freeWeigh}
-            </Button>
-          </Card>
+  useEffect(() => {
+    const check = async () => {
+      try {
+        await axios.get(`${API}/setup`);
+      } catch (_) {
+        nav("/setup");
+      }
+    };
+    check();
+  }, []);
 
-          <Card className="p-6 hover:shadow-2xl transition-shadow duration-200">
-            <Button className="w-full h-28" variant="primary" onClick={() => nav("/train")}>
-              <Wrench className="mr-3" /> {tr.aiTrain}
-            </Button>
-          </Card>
-
-          <Card className="p-6 hover:shadow-2xl transition-shadow duration-200">
-            <Button className="w-full h-28" variant="outline" onClick={() => nav("/login/operator")}><Home className="mr-3" /> {tr.opLogin}</Button>
-          </Card>
-
-          <Card className="p-6 hover:shadow-2xl transition-shadow duration-200">
-            <Button className="w-full h-28" variant="outline" onClick={() => nav("/login/admin")}><Home className="mr-3" /> {tr.adminLogin}</Button>
-          </Card>
-        </div>
-
-        <div className="mt-10">
-          <Button variant="ghost" onClick={() => nav("/")}>{tr.back}</Button>
+  return (
+    <div className="relative min-h-screen kiosk-bg" style={{ backgroundImage: `url(https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/uqbelias_image%2012.png)` }}>
+      <div className="hero-overlay absolute inset-0 flex items-center justify-center">
+        <div className="text-center max-w-3xl p-8">
+          <h1 className="text-5xl font-extrabold text-gray-900 mb-6">JetSMART</h1>
+          <Button className="text-2xl px-10 py-6" variant="accent" onClick={() => nav("/scan")}>{tr.startScan}</Button>
         </div>
       </div>
     </div>
   );
 }
 
-// Scan Screen
+// Scan (unchanged core, with redirect after finish)
 function Scan({ kiosk }) {
   const nav = useNavigate();
   const tr = strings[kiosk.lang];
@@ -234,7 +258,6 @@ function Scan({ kiosk }) {
   }, []);
 
   const readWeight = () => {
-    // simulate scale reading
     const val = Math.round((Math.random() * 8 + 6) * 10) / 10; // 6-14kg
     setWeight(val);
   };
@@ -259,8 +282,8 @@ function Scan({ kiosk }) {
             <canvas ref={canvasRef} className="camera-overlay" />
           </div>
           <div className="flex gap-4 mt-4">
-            <Button variant="ghost" onClick={() => nav("/menu")}>{tr.back}</Button>
-            <Button variant="accent" onClick={runValidation}>{tr.continue}</Button>
+            <Button variant="ghost" onClick={() => nav("/")}>VOLVER</Button>
+            <Button variant="accent" onClick={runValidation}>CONTINUAR</Button>
             <Button variant="primary" onClick={readWeight}>{tr.readWeight}</Button>
           </div>
         </div>
@@ -279,9 +302,9 @@ function Scan({ kiosk }) {
               {result && (
                 <div className="mt-6">
                   {result.compliant ? (
-                    <div className="badge success"><CheckCircle2 /> {strings[kiosk.lang].validationOk}</div>
+                    <div className="badge success">{strings[kiosk.lang].validationOk}</div>
                   ) : (
-                    <div className="badge error"><CircleAlert /> {strings[kiosk.lang].validationFail}</div>
+                    <div className="badge error">{strings[kiosk.lang].validationFail}</div>
                   )}
                   {!result.compliant && (
                     <ul className="list-disc pl-5 mt-3 text-red-700 space-y-1">
@@ -291,11 +314,11 @@ function Scan({ kiosk }) {
                   <div className="flex gap-3 mt-6">
                     {result.compliant ? (
                       <>
-                        <Button variant="accent" onClick={() => nav("/goodbye")}>{strings[kiosk.lang].continue}</Button>
+                        <Button variant="accent" onClick={() => nav("/goodbye")}>CONTINUAR</Button>
                       </>
                     ) : (
                       <>
-                        <Button variant="ghost" onClick={() => { setResult(null); setDims(null); }}>{strings[kiosk.lang].retryMeasure}</Button>
+                        <Button variant="ghost" onClick={() => { setResult(null); setDims(null); }}>VOLVER A MEDIR</Button>
                         <Button variant="primary" onClick={() => nav("/payment", { state: { result } })}>{strings[kiosk.lang].goToPayment}</Button>
                       </>
                     )}
@@ -320,7 +343,6 @@ function Payment() {
   const [kiosk, setKiosk] = useState(null);
 
   useEffect(() => {
-    // quick pull of rules and session to compute pricing
     const load = async () => {
       try {
         const airlines = (await axios.get(`${API}/config/airlines`)).data;
@@ -360,7 +382,7 @@ function Payment() {
             <CardContent>
               <div className="breakdown-row"><span>Exceso por peso</span><span>{result.weight_kg} kg</span></div>
               <div className="breakdown-row"><span>Exceso por dimensiones</span><span>{result.dims_cm.length + result.dims_cm.width + result.dims_cm.height} cm</span></div>
-              <div className="breakdown-row font-bold"><span>Total</span><span>${'{'}total.toFixed(2){'}'} {kiosk?.rules?.currency || "USD"}</span></div>
+              <div className="breakdown-row font-bold"><span>Total</span><span>{`$${total.toFixed(2)} ${kiosk?.rules?.currency || "USD"}`}</span></div>
             </CardContent>
           </Card>
         )}
@@ -368,26 +390,26 @@ function Payment() {
         <div className="mb-4">
           <label className="block font-semibold mb-2">Método de pago</label>
           <div className="flex gap-3">
-            <Button variant={method === "card" ? "primary" : "outline"} onClick={() => setMethod("card")} ><CreditCard className="mr-2" /> Tarjeta</Button>
+            <Button variant={method === "card" ? "primary" : "outline"} onClick={() => setMethod("card")} >Tarjeta</Button>
             <Button variant={method === "qr" ? "primary" : "outline"} onClick={() => setMethod("qr")} >QR</Button>
           </div>
         </div>
 
         <div className="flex gap-4">
-          <Button variant="accent" onClick={pay}>Pagar</Button>
-          <Button variant="ghost" onClick={() => nav("/scan")} >Volver</Button>
+          <Button variant="accent" onClick={pay}>PROCESAR PAGO</Button>
+          <Button variant="ghost" onClick={() => nav("/scan")} >VOLVER</Button>
         </div>
 
         {status && (
           <div className="mt-6">
             {status === "approved" ? (
-              <div className="badge success"><CheckCircle2 /> Pago aprobado</div>
+              <div className="badge success">Pago aprobado</div>
             ) : (
-              <div className="badge error"><CircleAlert /> Pago rechazado</div>
+              <div className="badge error">Pago rechazado</div>
             )}
             {status === "approved" && (
               <div className="mt-4 flex gap-3">
-                <Button variant="primary" onClick={() => nav("/goodbye")}>Finalizar</Button>
+                <Button variant="primary" onClick={() => nav("/goodbye")}>FINALIZAR</Button>
               </div>
             )}
           </div>
@@ -409,7 +431,7 @@ function FreeWeigh() {
       <Card className="w-full max-w-xl text-center">
         <CardContent>
           <div className="text-6xl font-extrabold mb-6">{w} kg</div>
-          <Button variant="ghost" onClick={() => nav("/menu")} >Volver</Button>
+          <Button variant="ghost" onClick={() => nav("/")} >VOLVER</Button>
         </CardContent>
       </Card>
     </div>
@@ -468,7 +490,7 @@ function Train() {
 function Goodbye() {
   const nav = useNavigate();
   useEffect(() => {
-    const t = setTimeout(() => nav("/"), 2500);
+    const t = setTimeout(() => nav("/"), 2000);
     return () => clearTimeout(t);
   }, []);
   return (
@@ -476,7 +498,7 @@ function Goodbye() {
       <div className="text-center">
         <CheckCircle2 className="mx-auto text-green-600" size={64} />
         <div className="mt-3 text-2xl font-bold">¡Gracias!</div>
-        <div className="text-gray-600">Volviendo a inicio...</div>
+        <div className="text-gray-600">Volviendo…</div>
       </div>
     </div>
   );
@@ -485,21 +507,23 @@ function Goodbye() {
 function Shell() {
   const kiosk = useKiosk();
   return (
-    <Routes>
-      <Route path="/" element={<Welcome kiosk={kiosk} />} />
-      <Route path="/menu" element={<Menu kiosk={kiosk} />} />
-      <Route path="/scan" element={<Scan kiosk={kiosk} />} />
-      <Route path="/payment" element={<Payment />} />
-      <Route path="/weigh" element={<FreeWeigh />} />
-      <Route path="/train" element={<Train />} />
-      <Route path="/goodbye" element={<Goodbye />} />
-    </Routes>
+    <>
+      <HiddenSetupHotspot />
+      <Routes>
+        <Route path="/" element={<StartScanTab kiosk={kiosk} />} />
+        <Route path="/setup" element={<SetupPage kiosk={kiosk} />} />
+        <Route path="/scan" element={<Scan kiosk={kiosk} />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/weigh" element={<FreeWeigh />} />
+        <Route path="/train" element={<Train />} />
+        <Route path="/goodbye" element={<Goodbye />} />
+      </Routes>
+    </>
   );
 }
 
 function App() {
   useEffect(() => {
-    // warm up API
     axios.get(`${API}/`).catch(() => {});
   }, []);
   return (

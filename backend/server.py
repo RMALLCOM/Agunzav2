@@ -6,7 +6,7 @@ import os
 import logging
 from pathlib import Path
 from pydantic import BaseModel, Field
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Any
 import uuid
 from datetime import datetime, timezone
 
@@ -78,6 +78,17 @@ class Session(BaseModel):
     created_at: str = Field(default_factory=now_iso)
 
 
+class Setup(BaseModel):
+    id: str = Field(default_factory=uuid_str)
+    operator_name: str
+    gate: str
+    flight_number: str
+    destination: str
+    is_international: bool = False
+    active: bool = True
+    created_at: str = Field(default_factory=now_iso)
+
+
 class ScanRequest(BaseModel):
     session_id: str
     weight_kg: Optional[float] = None
@@ -90,6 +101,7 @@ class ScanResult(BaseModel):
     weight_kg: float
     compliant: bool
     errors: List[str] = Field(default_factory=list)
+    setup_id: Optional[str] = None
     created_at: str = Field(default_factory=now_iso)
 
 
@@ -129,6 +141,15 @@ class TrainStatus(BaseModel):
     id: str = Field(default_factory=uuid_str)
     airline_code: str
     status: str = "scheduled"  # scheduled | running | success | failed
+    created_at: str = Field(default_factory=now_iso)
+
+
+class Interaction(BaseModel):
+    id: str = Field(default_factory=uuid_str)
+    event: str
+    setup_id: Optional[str] = None
+    session_id: Optional[str] = None
+    payload: Dict[str, Any] = Field(default_factory=dict)
     created_at: str = Field(default_factory=now_iso)
 
 
@@ -178,6 +199,26 @@ async def set_rules(rules: Rules):
     return rules
 
 
+# Setup
+@api_router.get("/setup", response_model=Setup)
+async def get_active_setup():
+    doc = await db.kiosk_setup.find_one({"active": True}, sort=[("created_at", -1)])
+    if not doc:
+        raise HTTPException(status_code=404, detail="No active setup")
+    return Setup(**doc)
+
+
+@api_router.post("/setup", response_model=Setup)
+async def save_setup(setup: Setup):
+    # Deactivate previous
+    await db.kiosk_setup.update_many({"active": True}, {"$set": {"active": False}})
+    setup.active = True
+    await db.kiosk_setup.insert_one(setup.model_dump())
+    # Log interaction
+    await db.interactions.insert_one(Interaction(event="setup_saved", setup_id=setup.id, payload=setup.model_dump()).model_dump())
+    return setup
+
+
 # Sessions
 @api_router.post("/sessions", response_model=Session)
 async def create_session(payload: SessionCreate):
@@ -197,6 +238,10 @@ async def scan(payload: ScanRequest):
     if not rules_doc:
         raise HTTPException(status_code=404, detail="Rules not found")
     rules = Rules(**rules_doc)
+
+    # Active setup
+    setup_doc = await db.kiosk_setup.find_one({"active": True}, sort=[("created_at", -1)])
+    setup_id = setup_doc.get("id") if setup_doc else None
 
     # Simulate dimensions (cm)
     import random
@@ -237,8 +282,11 @@ async def scan(payload: ScanRequest):
         weight_kg=weight,
         compliant=compliant,
         errors=errors,
+        setup_id=setup_id,
     )
     await db.scans.insert_one(result.model_dump())
+    # Log interaction
+    await db.interactions.insert_one(Interaction(event="scan_completed", setup_id=setup_id, session_id=payload.session_id, payload=result.model_dump()).model_dump())
     return result
 
 
@@ -249,6 +297,10 @@ async def simulate_payment(req: PaymentRequest):
     status = "approved" if random.random() >= 0.15 else "rejected"
     payment = Payment(session_id=req.session_id, total=req.total, method=req.method, status=status)
     await db.payments.insert_one(payment.model_dump())
+    # Log
+    setup_doc = await db.kiosk_setup.find_one({"active": True}, sort=[("created_at", -1)])
+    setup_id = setup_doc.get("id") if setup_doc else None
+    await db.interactions.insert_one(Interaction(event="payment_result", setup_id=setup_id, session_id=req.session_id, payload=payment.model_dump()).model_dump())
     return payment
 
 
@@ -285,6 +337,13 @@ async def train_start(req: TrainStartRequest):
 async def train_status(airline_code: str):
     items = await db.trains.find({"airline_code": airline_code}).to_list(length=20)
     return [TrainStatus(**it) for it in items]
+
+
+# Interactions (generic logger)
+@api_router.post("/interactions", response_model=Interaction)
+async def post_interaction(inter: Interaction):
+    await db.interactions.insert_one(inter.model_dump())
+    return inter
 
 
 # Include router
