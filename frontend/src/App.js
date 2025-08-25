@@ -355,7 +355,7 @@ function Payment() {
     <div className="min-h-screen bg-white">
       <div className="max-w-3xl mx-auto px-6 py-10">
         <h2 className="text-3xl font-bold mb-6">Tarifas y Pago</h2>
-        {result &amp;&amp; (
+        {result && (
           <Card className="mb-6">
             <CardContent>
               <div className="breakdown-row"><span>Exceso por peso</span><span>{result.weight_kg} kg</span></div>
