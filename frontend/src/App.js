@@ -184,9 +184,17 @@ function Welcome({ kiosk }) {
   const bgUrl = "https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/uqbelias_image%2012.png";
   return (
     <div className="relative min-h-screen kiosk-bg" style={{ backgroundImage: `url(${bgUrl})` }}>
-      <div className="absolute top-0 right-0 p-4 flex items-center gap-2">
-        <Languages />
-        <Button variant="ghost" onClick={() => kiosk.setLang(kiosk.lang === "es" ? "en" : "es")}>{kiosk.lang.toUpperCase()}</Button>
+      <div className="absolute top-0 right-0 p-4">
+        <button onClick={() => setMenuOpen(!menuOpen)} className="bg-white/90 rounded-full shadow px-2 py-2">
+          <img src={menuIcon} alt="menu" className="w-10 h-10" />
+        </button>
+        {menuOpen && (
+          <div className="mt-3 bg-white rounded-2xl shadow-xl p-4 w-64 text-center">
+            <div className="text-[#12356F] font-extrabold uppercase text-lg border-b pb-3 cursor-pointer" onClick={() => { setMenuOpen(false); nav('/scan', { state: { noPermitted: true } }); }}>MALETA NO PERMITIDA</div>
+            <div className="text-[#12356F] font-extrabold uppercase text-lg border-b py-3 cursor-pointer" onClick={() => { setMenuOpen(false); nav('/weigh'); }}>PESAJE LIBRE</div>
+            <div className="text-[#12356F] font-extrabold uppercase text-lg pt-3 cursor-pointer" onClick={() => { setMenuOpen(false); nav('/train'); }}>ENTRENAMIENTO IA</div>
+          </div>
+        )}
       </div>
 
       <div className="hero-overlay absolute inset-0 flex items-center justify-center">
