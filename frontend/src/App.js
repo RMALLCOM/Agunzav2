@@ -276,7 +276,7 @@ function Scan({ kiosk }) {
                 <div><b>Largo:</b> {dims?.length ?? "-"} cm</div>
                 <div className="text-2xl mt-3"><b>Peso:</b> {weight ?? "-"} kg</div>
               </div>
-              {result &amp;&amp; (
+              {result && (
                 <div className="mt-6">
                   {result.compliant ? (
                     <div className="badge success"><CheckCircle2 /> {strings[kiosk.lang].validationOk}</div>
