@@ -190,7 +190,7 @@ function Welcome({ kiosk }) {
         <div className="text-center max-w-3xl p-8">
           <h1 className="text-5xl font-extrabold text-gray-900 mb-4">JetSMART</h1>
           <p className="text-gray-700 mb-8">Bienvenido</p>
-          <Button className="text-2xl px-10 py-6" variant="accent" onClick={() => nav("/start")}>{tr.start}</Button>
+          <Button className="text-2xl px-10 py-6" variant="accent" onClick={() => nav("/setup")}>{tr.start}</Button>
         </div>
       </div>
     </div>
