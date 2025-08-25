@@ -385,7 +385,7 @@ function Payment() {
             ) : (
               <div className="badge error"><CircleAlert /> Pago rechazado</div>
             )}
-            {status === "approved" &amp;&amp; (
+            {status === "approved" && (
               <div className="mt-4 flex gap-3">
                 <Button variant="primary" onClick={() => nav("/goodbye")}>Finalizar</Button>
               </div>
