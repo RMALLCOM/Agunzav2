@@ -184,10 +184,7 @@ function Welcome({ kiosk }) {
   const bgUrl = "https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/uqbelias_image%2012.png";
   return (
     <div className="relative min-h-screen kiosk-bg" style={{ backgroundImage: `url(${bgUrl})` }}>
-      <div className="absolute top-0 right-0 p-4 flex items-center gap-2">
-        <Languages />
-        <Button variant="ghost" onClick={() => kiosk.setLang(kiosk.lang === "es" ? "en" : "es")}>{kiosk.lang.toUpperCase()}</Button>
-      </div>
+
 
       <div className="hero-overlay absolute inset-0 flex items-center justify-center">
         <div className="text-center max-w-3xl p-8">
