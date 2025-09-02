@@ -380,7 +380,7 @@ function Scan({ kiosk }) {
                       </ul>
                     </>
                   )}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-6 w-full">
+                  <div className="actions-grid mt-6 w-full">
                     {result.compliant ? (
                       <>
                         <Button variant="accent" className="px-6 py-4" onClick={() => nav("/goodbye")}>CONTINUAR</Button>
