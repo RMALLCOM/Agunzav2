@@ -148,6 +148,18 @@ frontend:
           agent: "main"
           comment: "Updated button texts: '¿POR QUÉ?' to '¿Por qué no cumple?' and 'CONTINUAR AL PAGO' to 'Ir a tarifas/pago' in both ES/EN"
 
+  - task: "Fix navigation flow according to specification"
+    implemented: true
+    working: "unknown"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "unknown"
+          agent: "main"
+          comment: "Implemented complete navigation flow per user specification: DESPEDIDA now returns to COMENZAR_ESCANEO, not SCAN. Added all required button IDs. Fixed TARIFAS back button to go to VALIDATE. Added proper i18n keys for ui.continue_ok, ui.continue_to_payment, ui.pay, ui.back, ui.finish"
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
