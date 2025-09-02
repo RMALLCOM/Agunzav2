@@ -256,12 +256,13 @@ function WhyPage() {
               </ul>
               <div className="mt-6 grid grid-cols-1 place-items-center">
                 <img src={allowedImg} alt="permitido" className="max-h-72 object-contain rounded-xl shadow" />
+                <div className="text-sm text-gray-600 mt-2">Dimensiones permitidas (según reglas): L {rules?.dims_cm?.length ?? "-"} / W {rules?.dims_cm?.width ?? "-"} / H {rules?.dims_cm?.height ?? "-"} cm, Peso {rules?.max_weight_kg ?? "-"} kg</div>
               </div>
             </div>
-            <div className="mt-6 flex gap-3">
-              <Button variant="primary" className="px-6 py-4" onClick={() => nav("/payment", { state: { result } })}>CONTINUAR AL PAGO</Button>
-              <Button variant="outline" className="px-6 py-4" onClick={() => nav(0)}>¿POR QUÉ?</Button>
+            <div className="mt-6 flex gap-3 justify-end">
               <Button variant="ghost" className="px-6 py-4" onClick={() => nav(-1)}>VOLVER</Button>
+              <Button variant="outline" className="px-6 py-4" onClick={() => nav(0)}>¿POR QUÉ?</Button>
+              <Button variant="primary" className="px-6 py-4" onClick={() => nav("/payment", { state: { result } })}>CONTINUAR AL PAGO</Button>
             </div>
           </CardContent>
         </Card>
