@@ -541,7 +541,7 @@ function Payment({ kiosk }) {
             )}
             {status === "approved" && (
               <div className="mt-4 flex gap-3">
-                <Button variant="primary" onClick={() => nav("/goodbye")}>{strings[kiosk?.lang || 'es'].finishCta}</Button>
+                <Button variant="primary" onClick={() => nav("/goodbye")}>{strings[kioskData?.lang || 'es'].finishCta}</Button>
               </div>
             )}
           </div>
