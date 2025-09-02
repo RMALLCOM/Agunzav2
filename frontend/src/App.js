@@ -494,7 +494,7 @@ function Payment({ kiosk }) {
 
   const pay = async () => {
     try {
-      const ss = await axios.post(`${API}/sessions`, { airline_code: kiosk.airline.code, language: "es" });
+      const ss = await axios.post(`${API}/sessions`, { airline_code: kioskData.airline.code, language: "es" });
       const { data } = await axios.post(`${API}/payments/simulate`, { session_id: ss.data.id, total, method });
       setStatus(data.status);
     } catch (e) {
