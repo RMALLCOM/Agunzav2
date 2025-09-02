@@ -680,7 +680,7 @@ function RulesPage() {
 function Goodbye({ kiosk }) {
   const nav = useNavigate();
   useEffect(() => {
-    const t = setTimeout(() => nav("/scan"), 3000);
+    const t = setTimeout(() => nav("/start"), 3000);
     return () => clearTimeout(t);
   }, []);
   return (
@@ -689,7 +689,7 @@ function Goodbye({ kiosk }) {
       <div className="text-center">
         <CheckCircle2 className="mx-auto text-green-600" size={64} />
         <div className="mt-3 text-2xl font-bold">{strings[kiosk.lang].msg?.goodbye || 'Gracias por usar el validador. Buen viaje'}</div>
-        <div className="text-gray-600">{kiosk.lang === 'en' ? 'Returning to Scan…' : 'Regresando a Escanear…'}</div>
+        <div className="text-gray-600">{kiosk.lang === 'en' ? 'Returning to Start…' : 'Regresando a Comenzar…'}</div>
       </div>
     </div>
   );
