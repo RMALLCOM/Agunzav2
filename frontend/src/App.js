@@ -87,6 +87,12 @@ const strings = {
     approved: "Payment approved",
     rejected: "Payment declined",
     finishCta: "FINISH",
+    whyTitle: "Non-compliance details",
+    measurement: "Measurement",
+    activeRules: "Active rules",
+    reasons: "Reasons",
+    continueScan: "CONTINUE",
+    continueToPayment: "Continue to payment",
     why: "Why?",
     scanNow: "SCAN",
     ui: {
