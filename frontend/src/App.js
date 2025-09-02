@@ -512,7 +512,7 @@ function Payment({ kiosk }) {
             <CardContent>
               <div className="breakdown-row"><span>Exceso por peso</span><span>{result.weight_kg} kg</span></div>
               <div className="breakdown-row"><span>Exceso por dimensiones</span><span>{result.dims_cm.length + result.dims_cm.width + result.dims_cm.height} cm</span></div>
-              <div className="breakdown-row font-bold"><span>Total</span><span>{`$${total.toFixed(2)} ${kiosk?.rules?.currency || "USD"}`}</span></div>
+              <div className="breakdown-row font-bold"><span>Total</span><span>{`$${total.toFixed(2)} ${kioskData?.rules?.currency || "USD"}`}</span></div>
             </CardContent>
           </Card>
         )}
