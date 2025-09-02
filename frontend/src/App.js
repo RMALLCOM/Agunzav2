@@ -351,7 +351,7 @@ function Scan({ kiosk }) {
           </div>
           <div className="flex gap-4 mt-4">
             <Button variant="ghost" onClick={() => nav("/start")}>{tr.back}</Button>
-            <Button variant="accent" onClick={runValidation}>CONTINUAR</Button>
+            <Button variant="accent" onClick={runValidation}>{tr.scanNow}</Button>
           </div>
         </div>
         <div>
