@@ -263,7 +263,6 @@ function WhyPage() {
             </div>
             <div className="mt-6 flex gap-3 justify-end">
               <Button variant="ghost" className="px-6 py-4" onClick={() => nav(-1)}>VOLVER</Button>
-              <Button variant="outline" className="px-6 py-4" onClick={() => nav(0)}>¿POR QUÉ?</Button>
               <Button variant="primary" className="px-6 py-4" onClick={() => nav("/payment", { state: { result } })}>CONTINUAR AL PAGO</Button>
             </div>
           </CardContent>
