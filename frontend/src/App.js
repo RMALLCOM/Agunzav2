@@ -35,7 +35,7 @@ const strings = {
   en: {
     start: "START",
     startScan: "START SCAN",
-    setupTitle: "Pre-flight setup",
+    setupTitle: "Flight configurator",
     operator: "Operator",
     gate: "Gate",
     flight: "Flight #",
