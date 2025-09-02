@@ -527,8 +527,8 @@ function Payment({ kiosk }) {
 
         {method && (
           <div className="flex gap-4">
-            <Button variant="accent" onClick={pay}>{strings[kiosk?.lang || 'es'].processPayment}</Button>
-            <Button variant="ghost" onClick={() => nav("/scan")} >{strings[kiosk?.lang || 'es'].back}</Button>
+            <Button variant="accent" onClick={pay}>{strings[kioskData?.lang || 'es'].processPayment}</Button>
+            <Button variant="ghost" onClick={() => nav("/scan")} >{strings[kioskData?.lang || 'es'].back}</Button>
           </div>
         )}
 
