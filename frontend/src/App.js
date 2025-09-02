@@ -102,7 +102,7 @@ const strings = {
     reasons: "Reasons",
     continueScan: "CONTINUE",
     continueToPayment: "Continue to payment",
-    why: "Why?",
+    why: "Why not allowed?",
     scanNow: "SCAN",
     ui: {
       bagdata_title: "Bag data",
