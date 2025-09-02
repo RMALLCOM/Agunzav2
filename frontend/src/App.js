@@ -324,7 +324,7 @@ function WhyPage({ kiosk }) {
                 <div>Peso: {result.weight_kg ?? "-"} kg</div>
                 <div className="font-semibold mt-4">{strings[kiosk.lang].activeRules}</div>
                 <div>Máx: L {rules?.dims_cm?.length ?? "-"} / W {rules?.dims_cm?.width ?? "-"} / H {rules?.dims_cm?.height ?? "-"} cm, Peso {rules?.max_weight_kg ?? "-"} kg</div>
-                <div className="font-semibold mt-4">Motivos</div>
+                <div className="font-semibold mt-4">{strings[kiosk.lang].reasons}</div>
                 <ul className="list-disc pl-5 text-red-700">
                   {(result.errors || []).map((e, i) => (<li key={i}>{e}</li>))}
                 </ul>
