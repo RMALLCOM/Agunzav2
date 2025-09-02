@@ -21,7 +21,13 @@ html, body, #root {
 }
 
 /* Keep actions tidy on very wide screens */
-/* removed actions-wrap scrolling; using CSS grid in App.js for stable horizontal layout */
+/* Actions grid that adapts to container width without scrollbars */
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
 
 
 .badge {
