@@ -377,8 +377,8 @@ function WhyPage({ kiosk }) {
               </div>
             </div>
             <div className="mt-6 flex gap-3 justify-end">
-              <Button variant="ghost" className="px-6 py-4" onClick={() => nav(-1)}>VOLVER</Button>
-              <Button variant="primary" className="px-6 py-4" onClick={() => nav("/tariffs", { state: { result } })}>CONTINUAR AL PAGO</Button>
+              <Button variant="ghost" className="px-6 py-4" onClick={() => nav(-1)}>{strings[kiosk.lang].ui.back}</Button>
+              <Button variant="primary" className="px-6 py-4" onClick={() => nav("/tariffs", { state: { result } })}>{strings[kiosk.lang].continueToPayment}</Button>
             </div>
           </CardContent>
         </Card>
