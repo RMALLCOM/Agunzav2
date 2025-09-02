@@ -159,6 +159,9 @@ frontend:
         - working: "unknown"
           agent: "main"
           comment: "Implemented complete navigation flow per user specification: DESPEDIDA now returns to COMENZAR_ESCANEO, not SCAN. Added all required button IDs. Fixed TARIFAS back button to go to VALIDATE. Added proper i18n keys for ui.continue_ok, ui.continue_to_payment, ui.pay, ui.back, ui.finish"
+        - working: "unknown"
+          agent: "main"
+          comment: "Fixed WhyPage i18n issues reported by user. Added missing Spanish translations: whyTitle, measurement, activeRules, reasons. Added new i18n keys for hardcoded texts: class_label, dimensions_label, weight_label, max_label, allowed_dimensions. Updated WhyPage component to use all i18n keys instead of hardcoded Spanish text. Buttons 'VOLVER' and 'CONTINUAR AL PAGO' now properly use i18n."
 
 metadata:
   created_by: "main_agent"
