@@ -30,6 +30,7 @@ const strings = {
     goToPayment: "Continuar al pago",
     payTitle: "Tarifas y Pago",
     why: "¿Por Qué?",
+    scanNow: "ESCANEAR",
   },
   en: {
     start: "START",
