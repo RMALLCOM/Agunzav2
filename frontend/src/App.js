@@ -27,7 +27,7 @@ const strings = {
     validationOkSub: "Autorizado para embarque. ¡Buen viaje!",
     validationFail: "NO CUMPLE",
     retryMeasure: "Measure again",
-    goToPayment: "Continuar al pago",
+    goToPayment: "Ir a tarifas/pago",
     payTitle: "Tarifas y Pago",
     method: "Método de pago",
     card: "Tarjeta",
