@@ -373,9 +373,6 @@ function Scan({ kiosk }) {
                       <ul className="list-disc pl-5 mt-3 text-red-700 space-y-1">
                         {result.errors.map((e, i) => (<li key={i}>{e}</li>))}
                       </ul>
-                      <div className="flex gap-3 mt-4">
-                        <Button variant="outline" onClick={() => nav("/why", { state: { result, rules: kiosk.rules } })}>{strings[kiosk.lang].why}</Button>
-                      </div>
                     </>
                   )}
                   <div className="flex gap-3 mt-6">
