@@ -236,6 +236,7 @@ function WhyPage() {
   const result = state.result || {};
   const rules = state.rules || {};
   const dims = result.dims_cm || {};
+  const allowedImg = "https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/rjw8k78q_image.png";
   return (
     <div className="min-h-screen" style={{ background: "#F7FAFF" }}>
       <div className="max-w-3xl mx-auto px-6 py-10">
@@ -253,9 +254,13 @@ function WhyPage() {
               <ul className="list-disc pl-5 text-red-700">
                 {(result.errors || []).map((e, i) => (<li key={i}>{e}</li>))}
               </ul>
+              <div className="mt-6 grid grid-cols-1 place-items-center">
+                <img src={allowedImg} alt="permitido" className="max-h-72 object-contain rounded-xl shadow" />
+              </div>
             </div>
-            <div className="mt-6">
-              <Button variant="primary" onClick={() => nav(-1)}>Volver</Button>
+            <div className="mt-6 flex gap-3">
+              <Button variant="primary" onClick={() => nav("/payment", { state: { result } })}>Continuar al pago</Button>
+              <Button variant="ghost" onClick={() => nav(-1)}>Volver</Button>
             </div>
           </CardContent>
         </Card>
