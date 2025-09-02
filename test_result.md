@@ -116,6 +116,9 @@ backend:
         - working: true
           agent: "main"
           comment: "Backend endpoints appear stable based on previous sessions"
+        - working: true
+          agent: "testing"
+          comment: "Comprehensive backend testing completed successfully. All 8 core API endpoints working: /api/ (root), /api/config/airlines, /api/rules/JSM, /api/sessions, /api/setup (GET/POST), /api/scan, /api/payments/simulate. MongoDB connectivity verified. Complete end-to-end payment flow tested successfully including session creation, luggage scanning, fee calculation, and payment processing. Payment simulation working with 85% approval rate. All endpoints return proper HTTP 200 status codes and valid JSON responses. The backend is fully functional and ready to support the Finalizar button flow."
 
 frontend:
   - task: "Fix Finalizar button error"
