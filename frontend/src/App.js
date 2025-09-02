@@ -255,10 +255,10 @@ function WhyPage() {
                 <ul className="list-disc pl-5 text-red-700">
                   {(result.errors || []).map((e, i) => (<li key={i}>{e}</li>))}
                 </ul>
-                <div className="text-sm text-gray-600 mt-3">Dimensiones permitidas (según reglas): L {rules?.dims_cm?.length ?? "-"} / W {rules?.dims_cm?.width ?? "-"} / H {rules?.dims_cm?.height ?? "-"} cm, Peso {rules?.max_weight_kg ?? "-"} kg</div>
               </div>
-              <div className="w-full flex justify-center md:justify-end">
+              <div className="w-full flex flex-col items-center md:items-end">
                 <img src={allowedImg} alt="permitido" className="max-h-72 object-contain rounded-xl shadow" />
+                <div className="text-sm text-gray-600 mt-2">Dimensiones permitidas (según reglas): L {rules?.dims_cm?.length ?? "-"} / W {rules?.dims_cm?.width ?? "-"} / H {rules?.dims_cm?.height ?? "-"} cm, Peso {rules?.max_weight_kg ?? "-"} kg</div>
               </div>
             </div>
             <div className="mt-6 flex gap-3 justify-end">
