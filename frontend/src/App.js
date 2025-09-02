@@ -178,7 +178,7 @@ function SetupPage({ kiosk }) {
       const { data } = await axios.post(`${API}/setup`, payload);
       kiosk.setSetup(data);
       await axios.post(`${API}/interactions`, { event: "setup_saved_client", payload, setup_id: data.id });
-      nav("/start"); // after setup, go to Start (same layout as welcome)
+      nav("/scan"); // after setup, go directly to Scan (last time Start shows its CTA)
     } catch (e) {
       console.error("setup save failed", e?.message);
     }
