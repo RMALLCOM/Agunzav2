@@ -224,7 +224,7 @@ function StartScan({ kiosk }) {
       <div className="hero-overlay absolute inset-0 flex items-center justify-center">
         <div className="text-center max-w-3xl p-8">
           <h1 className="text-5xl font-extrabold text-gray-900 mb-4">JetSMART</h1>
-          <Button className="text-2xl px-10 py-6" variant="accent" onClick={() => nav("/scan")}>{tr.scanNow}</Button>
+          <Button className="text-2xl px-10 py-6" variant="accent" onClick={() => nav("/scan")}>{tr.startScan}</Button>
         </div>
       </div>
     </div>
