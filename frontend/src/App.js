@@ -322,7 +322,7 @@ function WhyPage({ kiosk }) {
                 <div>Clase: maleta</div>
                 <div>Dimensiones: L {dims.length ?? "-"} cm, W {dims.width ?? "-"} cm, H {dims.height ?? "-"} cm</div>
                 <div>Peso: {result.weight_kg ?? "-"} kg</div>
-                <div className="font-semibold mt-4">Reglas activas</div>
+                <div className="font-semibold mt-4">{strings[kiosk.lang].activeRules}</div>
                 <div>Máx: L {rules?.dims_cm?.length ?? "-"} / W {rules?.dims_cm?.width ?? "-"} / H {rules?.dims_cm?.height ?? "-"} cm, Peso {rules?.max_weight_kg ?? "-"} kg</div>
                 <div className="font-semibold mt-4">Motivos</div>
                 <ul className="list-disc pl-5 text-red-700">
