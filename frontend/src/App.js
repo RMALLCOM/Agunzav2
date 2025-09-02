@@ -463,30 +463,23 @@ function Scan({ kiosk }) {
               {result && (
                 <div className="mt-6">
                   {result.compliant ? (
-                    <div className="badge success">{strings[kiosk.lang].validationOk}</div>
-                  ) : (
-                    <div className="badge error">{strings[kiosk.lang].validationFail}</div>
-                  )}
-                  {!result.compliant && (
                     <>
+                      <div className="badge success">{strings[kiosk.lang].msg?.authorized || strings[kiosk.lang].validationOkSub}</div>
+                      <div className="flex gap-3 mt-6">
+                        <Button id="btn_continue_validate" variant="accent" onClick={() => nav('/goodbye')}>{strings[kiosk.lang].ui?.continue || 'Continuar'}</Button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="badge error">{strings[kiosk.lang].msg?.not_allowed || strings[kiosk.lang].validationFail}</div>
                       <ul className="list-disc pl-5 mt-3 text-red-700 space-y-1">
                         {result.errors.map((e, i) => (<li key={i}>{e}</li>))}
                       </ul>
+                      <div className="flex gap-3 mt-6">
+                        <Button id="btn_continue_validate" variant="accent" onClick={() => nav('/tariffs', { state: { result } })}>{strings[kiosk.lang].ui?.continue || 'Continuar'}</Button>
+                      </div>
                     </>
                   )}
-                  <div className="actions-grid mt-6 w-full">
-                    {result.compliant ? (
-                      <>
-                        <Button variant="accent" className="px-6 py-4" onClick={() => nav("/goodbye")}>CONTINUAR</Button>
-                      </>
-                    ) : (
-                      <>
-                        <Button variant="ghost" className="px-6 py-4 w-full" onClick={() => { setResult(null); setDims(null); }}>{strings[kiosk.lang].continueScan}</Button>
-                        <Button variant="outline" className="px-6 py-4 w-full" onClick={() => nav("/why", { state: { result, rules: kiosk.rules } })}>{strings[kiosk.lang].why}</Button>
-                        <Button variant="primary" className="px-6 py-4 w-full" onClick={() => nav("/payment", { state: { result } })}>{strings[kiosk.lang].continueToPayment}</Button>
-                      </>
-                    )}
-                  </div>
                 </div>
               )}
             </CardContent>
