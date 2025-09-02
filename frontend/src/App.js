@@ -378,12 +378,13 @@ function Scan({ kiosk }) {
                   <div className="flex gap-3 mt-6">
                     {result.compliant ? (
                       <>
-                        <Button variant="accent" onClick={() => nav("/goodbye")}>CONTINUAR</Button>
+                        <Button variant="accent" className="px-6 py-4" onClick={() => nav("/goodbye")}>CONTINUAR</Button>
                       </>
                     ) : (
                       <>
-                        <Button variant="ghost" onClick={() => { setResult(null); setDims(null); }}>VOLVER A MEDIR</Button>
-                        <Button variant="primary" onClick={() => nav("/payment", { state: { result } })}>{strings[kiosk.lang].goToPayment}</Button>
+                        <Button variant="ghost" className="px-6 py-4" onClick={() => { setResult(null); setDims(null); }}>VOLVER A MEDIR</Button>
+                        <Button variant="primary" className="px-6 py-4" onClick={() => nav("/payment", { state: { result } })}>{strings[kiosk.lang].goToPayment}</Button>
+                        <Button variant="outline" className="px-6 py-4" onClick={() => nav("/why", { state: { result, rules: kiosk.rules } })}>{strings[kiosk.lang].why}</Button>
                       </>
                     )}
                   </div>
