@@ -675,19 +675,19 @@ function RulesPage() {
   );
 }
 
-function Goodbye() {
+function Goodbye({ kiosk }) {
   const nav = useNavigate();
   useEffect(() => {
-    const t = setTimeout(() => nav("/start"), 10000);
+    const t = setTimeout(() => nav("/scan"), 3000);
     return () => clearTimeout(t);
   }, []);
   return (
     <div className="min-h-screen flex items-center justify-center" style={{ background: "#F7FAFF" }}>
-      <LangSwitch kiosk={{ lang: "es", setLang: () => {} }} />
+      <LangSwitch kiosk={kiosk} id="lang_toggle" />
       <div className="text-center">
         <CheckCircle2 className="mx-auto text-green-600" size={64} />
-        <div className="mt-3 text-2xl font-bold">¡Gracias, vuelva pronto!</div>
-        <div className="text-gray-600">Regresando a Comenzar escaneo…</div>
+        <div className="mt-3 text-2xl font-bold">{strings[kiosk.lang].msg?.goodbye || 'Gracias por usar el validador. Buen viaje'}</div>
+        <div className="text-gray-600">{kiosk.lang === 'en' ? 'Returning to Scan…' : 'Regresando a Escanear…'}</div>
       </div>
     </div>
   );
