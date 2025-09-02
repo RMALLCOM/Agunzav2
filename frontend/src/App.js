@@ -236,7 +236,7 @@ function WhyPage() {
   const result = state.result || {};
   const rules = state.rules || {};
   const dims = result.dims_cm || {};
-  const allowedImg = "https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/rjw8k78q_image.png";
+  const allowedImg = "https://images.unsplash.com/photo-1670888664952-efff442ec0d2?crop=entropy&cs=srgb&fm=jpg&q=85";
   return (
     <div className="min-h-screen" style={{ background: "#F7FAFF" }}>
       <div className="max-w-3xl mx-auto px-6 py-10">
