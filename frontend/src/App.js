@@ -166,15 +166,27 @@ function SetupPage({ kiosk }) {
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">{tr.gate}</label>
-                <input className="w-full border rounded px-3 py-3 text-lg" value={form.gate} onChange={e => setForm({ ...form, gate: e.target.value })} />
+                <select className="w-full border rounded px-3 py-3 text-lg" value={form.gate} onChange={e => setForm({ ...form, gate: e.target.value })}>
+                  {['A1','A2','A3','A4','A5'].map(opt => (<option key={opt} value={opt}>{opt}</option>))}
+                </select>
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">{tr.flight}</label>
-                <input className="w-full border rounded px-3 py-3 text-lg" value={form.flight_number} onChange={e => setForm({ ...form, flight_number: e.target.value })} />
+                <select className="w-full border rounded px-3 py-3 text-lg" value={form.flight_number} onChange={e => setForm({ ...form, flight_number: e.target.value })}>
+                  {['JAT36','JAT40','JAT50','JAT811','JAT56'].map(opt => (<option key={opt} value={opt}>{opt}</option>))}
+                </select>
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">{tr.dest}</label>
-                <input className="w-full border rounded px-3 py-3 text-lg" value={form.destination} onChange={e => setForm({ ...form, destination: e.target.value })} />
+                <select className="w-full border rounded px-3 py-3 text-lg" value={form.destination} onChange={e => setForm({ ...form, destination: e.target.value })}>
+                  {[
+                    { name: 'Antofagasta', code: 'ANF' },
+                    { name: 'Arica', code: 'ACM' },
+                    { name: 'Temuco', code: 'ZCO' },
+                    { name: 'Valdivia', code: 'ZAL' },
+                    { name: 'Puerto Montt', code: 'PMC' },
+                  ].map(opt => (<option key={opt.code} value={`${opt.name} — ${opt.code}`}>{`${opt.name} — ${opt.code}`}</option>))}
+                </select>
               </div>
               <div className="flex items-center gap-3 mt-2">
                 <input id="intl" type="checkbox" className="w-5 h-5" checked={form.is_international} onChange={e => setForm({ ...form, is_international: e.target.checked })} />
