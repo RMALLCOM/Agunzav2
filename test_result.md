@@ -101,3 +101,64 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: Fix error with "Finalizar" button in the airport luggage validation kiosk and update button text labels
+
+backend:
+  - task: "API endpoints for luggage validation flow"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Backend endpoints appear stable based on previous sessions"
+
+frontend:
+  - task: "Fix Finalizar button error"
+    implemented: true
+    working: "unknown"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: false
+          agent: "user"
+          comment: "User reported 'y el finalizar me dio error' - error when clicking Finalizar button"
+        - working: "unknown"
+          agent: "main"
+          comment: "Fixed missing kiosk prop in Goodbye component route definition - was causing undefined kiosk.lang error"
+
+  - task: "Update button text labels"
+    implemented: true
+    working: "unknown"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "unknown"
+          agent: "main"
+          comment: "Updated button texts: '¿POR QUÉ?' to '¿Por qué no cumple?' and 'CONTINUAR AL PAGO' to 'Ir a tarifas/pago' in both ES/EN"
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Fix Finalizar button error"
+    - "Update button text labels"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+    - agent: "main"
+      message: "Fixed critical Finalizar button error by adding missing kiosk prop to Goodbye component. Updated button labels as requested by user. Need to test the complete payment flow including the Finalizar button functionality and verify new button texts display correctly in both languages."
