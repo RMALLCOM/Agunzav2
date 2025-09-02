@@ -354,6 +354,7 @@ function WhyPage({ kiosk }) {
   const allowedImg = "https://images.unsplash.com/photo-1670888664952-efff442ec0d2?crop=entropy&cs=srgb&fm=jpg&q=85";
   return (
     <div className="min-h-screen" style={{ background: "#F7FAFF" }}>
+      <LangSwitch kiosk={kiosk} id="lang_toggle" />
       <div className="max-w-3xl mx-auto px-6 py-10">
         <h2 className="text-3xl font-bold mb-4">{strings[kiosk.lang].whyTitle}</h2>
         <Card>
