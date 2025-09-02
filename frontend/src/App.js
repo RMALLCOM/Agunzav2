@@ -380,7 +380,7 @@ function Scan({ kiosk }) {
                       </ul>
                     </>
                   )}
-                  <div className="flex gap-3 mt-6">
+                  <div className="flex flex-wrap gap-3 mt-6 w-full">
                     {result.compliant ? (
                       <>
                         <Button variant="accent" className="px-6 py-4" onClick={() => nav("/goodbye")}>CONTINUAR</Button>
