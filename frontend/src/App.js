@@ -387,9 +387,9 @@ function Scan({ kiosk }) {
                       </>
                     ) : (
                       <>
-                        <Button variant="ghost" className="px-6 py-4 min-w-[180px]" onClick={() => { setResult(null); setDims(null); }}>VOLVER A MEDIR</Button>
-                        <Button variant="outline" className="px-6 py-4 min-w-[180px]" onClick={() => nav("/why", { state: { result, rules: kiosk.rules } })}>{strings[kiosk.lang].why}</Button>
-                        <Button variant="primary" className="px-6 py-4 min-w-[180px]" onClick={() => nav("/payment", { state: { result } })}>{strings[kiosk.lang].goToPayment}</Button>
+                        <Button variant="ghost" className="px-6 py-4 min-w-[200px]" onClick={() => { setResult(null); setDims(null); }}>VOLVER A MEDIR</Button>
+                        <Button variant="outline" className="px-6 py-4 min-w-[200px]" onClick={() => nav("/why", { state: { result, rules: kiosk.rules } })}>{strings[kiosk.lang].why}</Button>
+                        <Button variant="primary" className="px-6 py-4 min-w-[220px]" onClick={() => nav("/payment", { state: { result } })}>{strings[kiosk.lang].goToPayment}</Button>
                       </>
                     )}
                   </div>
