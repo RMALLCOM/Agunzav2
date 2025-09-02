@@ -36,7 +36,7 @@ const strings = {
     approved: "Pago aprobado",
     rejected: "Pago rechazado",
     finishCta: "FINALIZAR",
-    why: "¿Por Qué?",
+    why: "¿Por qué no cumple?",
     scanNow: "ESCANEAR",
     ui: {
       bagdata_title: "Datos de la maleta",
