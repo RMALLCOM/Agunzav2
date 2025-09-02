@@ -535,13 +535,13 @@ function Payment() {
         {status && (
           <div className="mt-6">
             {status === "approved" ? (
-              <div className="badge success">Pago aprobado</div>
+              <div className="badge success">{strings[kiosk?.lang || 'es'].approved}</div>
             ) : (
-              <div className="badge error">Pago rechazado</div>
+              <div className="badge error">{strings[kiosk?.lang || 'es'].rejected}</div>
             )}
             {status === "approved" && (
               <div className="mt-4 flex gap-3">
-                <Button variant="primary" onClick={() => nav("/goodbye")}>FINALIZAR</Button>
+                <Button variant="primary" onClick={() => nav("/goodbye")}>{strings[kiosk?.lang || 'es'].finishCta}</Button>
               </div>
             )}
           </div>
