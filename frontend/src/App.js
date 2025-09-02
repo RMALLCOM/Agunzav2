@@ -462,7 +462,7 @@ function Scan({ kiosk }) {
   );
 }
 
-function Payment() {
+function Payment({ kiosk }) {
   const nav = useNavigate();
   const state = window.history.state?.usr || {};
   const result = state.result || null;
