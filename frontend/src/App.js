@@ -29,6 +29,13 @@ const strings = {
     retryMeasure: "Volver a medir",
     goToPayment: "Continuar al pago",
     payTitle: "Tarifas y Pago",
+    method: "Método de pago",
+    card: "Tarjeta",
+    qr: "QR",
+    processPayment: "PROCESAR PAGO",
+    approved: "Pago aprobado",
+    rejected: "Pago rechazado",
+    finishCta: "FINALIZAR",
     why: "¿Por Qué?",
     scanNow: "ESCANEAR",
     ui: {
