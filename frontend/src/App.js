@@ -278,8 +278,8 @@ function SetupPage({ kiosk }) {
               </div>
             </div>
             <div className="mt-6 flex gap-3">
-              <Button variant="accent" onClick={save}>{tr.save}</Button>
-              <Button variant="ghost" onClick={() => nav("/")}>{tr.back}</Button>
+              <Button id="btn_save_setup" variant="accent" onClick={save}>{tr.save}</Button>
+              <Button id="btn_back_setup" variant="ghost" onClick={() => nav("/")}>{tr.back}</Button>
             </div>
           </CardContent>
         </Card>
