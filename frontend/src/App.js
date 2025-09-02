@@ -361,11 +361,11 @@ function WhyPage({ kiosk }) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
               <div className="space-y-2">
                 <div className="font-semibold">{strings[kiosk.lang].measurement}</div>
-                <div>Clase: maleta</div>
-                <div>Dimensiones: L {dims.length ?? "-"} cm, W {dims.width ?? "-"} cm, H {dims.height ?? "-"} cm</div>
-                <div>Peso: {result.weight_kg ?? "-"} kg</div>
+                <div>{strings[kiosk.lang].ui.class_label}: maleta</div>
+                <div>{strings[kiosk.lang].ui.dimensions_label}: L {dims.length ?? "-"} cm, W {dims.width ?? "-"} cm, H {dims.height ?? "-"} cm</div>
+                <div>{strings[kiosk.lang].ui.weight_label}: {result.weight_kg ?? "-"} kg</div>
                 <div className="font-semibold mt-4">{strings[kiosk.lang].activeRules}</div>
-                <div>Máx: L {rules?.dims_cm?.length ?? "-"} / W {rules?.dims_cm?.width ?? "-"} / H {rules?.dims_cm?.height ?? "-"} cm, Peso {rules?.max_weight_kg ?? "-"} kg</div>
+                <div>{strings[kiosk.lang].ui.max_label}: L {rules?.dims_cm?.length ?? "-"} / W {rules?.dims_cm?.width ?? "-"} / H {rules?.dims_cm?.height ?? "-"} cm, {strings[kiosk.lang].ui.weight_label} {rules?.max_weight_kg ?? "-"} kg</div>
                 <div className="font-semibold mt-4">{strings[kiosk.lang].reasons}</div>
                 <ul className="list-disc pl-5 text-red-700">
                   {(result.errors || []).map((e, i) => (<li key={i}>{e}</li>))}
