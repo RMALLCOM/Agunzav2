@@ -5,8 +5,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from i18n import STRINGS
 from services import config_service
 
-# Screens will be imported after sys.path adjustment
-
 BASE = Path(__file__).resolve().parent
 ASSETS = BASE / "assets" / "ui"
 
@@ -55,6 +53,7 @@ class MainWindow(QtWidgets.QMainWindow):
         from screens.opciones_no_autorizado import PantallaOpcionesNoAutorizado
         from screens.despedida import PantallaDespedida
         from screens.pesaje_libre import PantallaPesajeLibre
+        from screens.detalle_no_cumple import PantallaDetalleNoCumple
 
         self.routes = {
             "inicio": PantallaInicio,
@@ -68,6 +67,7 @@ class MainWindow(QtWidgets.QMainWindow):
             "op_no_aut": PantallaOpcionesNoAutorizado,
             "despedida": PantallaDespedida,
             "pesaje": PantallaPesajeLibre,
+            "detalle_nocumple": PantallaDetalleNoCumple,
         }
 
         self.instances = {}
@@ -91,9 +91,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def set_language(self, lang: str):
         self.lang = lang
-        theme = config_service.get_theme()
-        theme["lang"] = lang
-        config_service.save_theme(theme)
+        theme = config_service.get_theme(); theme["lang"] = lang; config_service.save_theme(theme)
         self.languageChanged.emit(lang)
 
     def navigate(self, route: str, payload: dict = None, push_history: bool = True):
@@ -104,7 +102,6 @@ class MainWindow(QtWidgets.QMainWindow):
         if route not in self.instances:
             widget = self.routes[route](self)
             self.instances[route] = widget
-            # subscribe language
             self.languageChanged.connect(widget.set_strings)
             self.stack.addWidget(widget)
         else:
@@ -118,40 +115,28 @@ class MainWindow(QtWidgets.QMainWindow):
             w = self.history.pop()
             self.stack.setCurrentWidget(w)
         else:
-            # from inicio, close app (or ignore). We'll ignore
+            # desde inicio ignoramos
             pass
 
 
 def bootstrap_configs():
-    # create default configs if missing
+    from services import config_service
     if not config_service.get_theme():
-        config_service.save_theme({
-            "primary": "#1E3F8A",
-            "accent": "#E51937",
-            "background": "assets/ui/hero_jetsmart.jpg",
-            "lang": "es",
-        })
+        config_service.save_theme({"primary":"#1E3F8A","accent":"#E51937","background":"assets/ui/hero_jetsmart.jpg","lang":"es"})
     if not config_service.get_devices():
-        config_service.save_devices({
-            "camera_index": 0,
-            "scale_port": "COM3",
-            "px_per_cm": 10.0,
-            "simulate": True
-        })
+        config_service.save_devices({"camera_index":0,"scale_port":"COM3","px_per_cm":10.0,"simulate":True})
     if not config_service.get_rules():
         config_service.save_rules({
-            "profile": "cabin",
-            "tolerance_cm": 1.0,
-            "handbag": {"width": 45, "height": 35, "length": 25, "weight": 10.0},
-            "cabin":   {"width": 55, "height": 35, "length": 25, "weight": 10.0}
+            "profile":"cabin","tolerance_cm":1.0,
+            "handbag":{"width":45,"height":35,"length":25,"weight":10.0},
+            "cabin":  {"width":55,"height":35,"length":25,"weight":10.0}
         })
 
 
 def main():
     bootstrap_configs()
     app = QtWidgets.QApplication(sys.argv)
-    win = MainWindow()
-    win.show()
+    win = MainWindow(); win.show()
     sys.exit(app.exec_())
 
 
