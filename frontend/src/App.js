@@ -437,7 +437,7 @@ function Scan({ kiosk }) {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: kiosk.airline?.palette?.bg || "#F7FAFF" }}>
-      <HiddenSetupHotspot />
+      <HiddenSetupHotspot id="hidden_area_setup" />
       <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <div className="camera-wrap shadow-xl">
