@@ -478,7 +478,7 @@ function Scan({ kiosk }) {
                       </ul>
                       <div className="actions-grid mt-6 w-full">
                         <Button variant="outline" onClick={() => nav('/why', { state: { result, rules: kiosk.rules } })}>{strings[kiosk.lang].why}</Button>
-                        <Button variant="primary" onClick={() => nav('/tariffs', { state: { result } })}>{strings[kiosk.lang].continueToPayment || strings[kiosk.lang].goToPayment}</Button>
+                        <Button id="btn_continue_to_payment" variant="primary" onClick={() => nav('/tariffs', { state: { result } })}>{strings[kiosk.lang].continueToPayment || strings[kiosk.lang].goToPayment}</Button>
                       </div>
                     </>
                   )}
