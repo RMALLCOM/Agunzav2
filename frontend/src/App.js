@@ -421,9 +421,9 @@ function Scan({ kiosk }) {
             <CardContent>
               <div className="space-y-2 text-lg" id="card_measures">
                 <div><b id="lbl_width">{strings[kiosk.lang].ui.width_cm}:</b> <span id="out_width_cm">{dims?.width ?? "-"}</span> cm</div>
-                <div><b id="lbl_length">{strings[kiosk.lang].ui.length_cm}:</b> <span id="out_length_cm">{dims?.height ?? "-"}</span> cm</div>
-                <div><b id="lbl_weight">{strings[kiosk.lang].ui.weight_cm || "Altura (cm)"}:</b> <span id="out_weight_cm">{dims?.length ?? "-"}</span> cm</div>
-                <div className="text-2xl mt-3"><b>{strings[kiosk.lang].ui.weight_kg}:</b> {weight ?? "-"} kg</div>
+                <div><b id="lbl_length">{strings[kiosk.lang].ui.length_cm}:</b> <span id="out_length_cm">{dims?.length ?? "-"}</span> cm</div>
+                <div><b id="lbl_weight">{strings[kiosk.lang].ui.weight_kg}:</b> <span id="out_weight_kg">{(weight ?? result?.weight_kg) ?? "-"}</span> kg</div>
+                <div><b id="lbl_calibration">{strings[kiosk.lang].ui.calibration}:</b> {strings[kiosk.lang].ui.ok}</div>
               </div>
               {result && (
                 <div className="mt-6">
