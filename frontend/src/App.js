@@ -615,7 +615,7 @@ function Shell() {
         <Route path="/start" element={<StartScan kiosk={kiosk} />} />
         <Route path="/setup" element={<SetupPage kiosk={kiosk} />} />
         <Route path="/scan" element={<Scan kiosk={kiosk} />} />
-        <Route path="/why" element={<WhyPage />} />
+        <Route path="/why" element={<WhyPage kiosk={kiosk} />} />
         <Route path="/rules" element={<RulesPage />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/weigh" element={<FreeWeigh />} />
