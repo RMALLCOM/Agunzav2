@@ -469,7 +469,7 @@ function Payment({ kiosk }) {
   const [method, setMethod] = useState(null);
   const [status, setStatus] = useState(null);
   const [total, setTotal] = useState(0);
-  const [kiosk, setKiosk] = useState(null);
+  const [kioskData, setKioskData] = useState(null);
 
   useEffect(() => {
     const load = async () => {
