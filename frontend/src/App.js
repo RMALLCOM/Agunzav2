@@ -87,7 +87,7 @@ const strings = {
     validationOkSub: "Authorized for boarding. Have a nice trip!",
     validationFail: "NOT ALLOWED",
     retryMeasure: "Measure again",
-    goToPayment: "Continue to payment",
+    goToPayment: "Go to rates/payment",
     payTitle: "Pricing & Payment",
     method: "Payment method",
     card: "Card",
