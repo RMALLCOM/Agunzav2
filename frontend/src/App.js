@@ -318,7 +318,7 @@ function WhyPage({ kiosk }) {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
               <div className="space-y-2">
-                <div className="font-semibold">Medición</div>
+                <div className="font-semibold">{strings[kiosk.lang].measurement}</div>
                 <div>Clase: maleta</div>
                 <div>Dimensiones: L {dims.length ?? "-"} cm, W {dims.width ?? "-"} cm, H {dims.height ?? "-"} cm</div>
                 <div>Peso: {result.weight_kg ?? "-"} kg</div>
