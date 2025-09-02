@@ -28,6 +28,7 @@ const strings = {
     validationFail: "NO CUMPLE",
     retryMeasure: "Measure again",
     goToPayment: "Ir a tarifas/pago",
+    continueToPayment: "Ir a tarifas/pago",
     payTitle: "Tarifas y Pago",
     method: "Método de pago",
     card: "Tarjeta",
