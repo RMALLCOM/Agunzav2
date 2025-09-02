@@ -20,11 +20,14 @@ html, body, #root {
   background: radial-gradient(ellipse at center, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.75) 45%, rgba(255,255,255,0.40) 100%);
 }
 
-.btn-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+/* Keep actions tidy on very wide screens */
+.actions-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
+.actions-wrap > * { flex: 0 0 auto; }
+
 
 .badge {
   display: inline-flex;
