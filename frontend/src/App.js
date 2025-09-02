@@ -51,6 +51,7 @@ const strings = {
     goToPayment: "Continue to payment",
     payTitle: "Pricing & Payment",
     why: "Why?",
+    scanNow: "SCAN",
   },
 };
 
