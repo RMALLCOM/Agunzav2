@@ -136,7 +136,7 @@ function HiddenSetupHotspot() {
 function SetupPage({ kiosk }) {
   const nav = useNavigate();
   const tr = strings[kiosk.lang];
-  const [form, setForm] = useState({ operator_name: "", gate: "", flight_number: "", destination: "", is_international: false });
+  const [form, setForm] = useState({ operator_name: "", gate: "A1", flight_number: "JAT36", destination: "Antofagasta — ANF", is_international: false });
 
   const save = async () => {
     try {
