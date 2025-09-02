@@ -471,7 +471,7 @@ function Scan({ kiosk }) {
                     <>
                       <div className="badge success">{strings[kiosk.lang].msg?.authorized || strings[kiosk.lang].validationOkSub}</div>
                       <div className="flex gap-3 mt-6">
-                        <Button id="btn_continue_validate_ok" variant="accent" onClick={() => nav('/goodbye')}>{strings[kiosk.lang].ui?.continue || 'Continuar'}</Button>
+                        <Button id="btn_continue_validate_ok" variant="accent" onClick={() => nav('/goodbye')}>{strings[kiosk.lang].ui?.continue_ok || strings[kiosk.lang].ui?.continue || 'Continuar'}</Button>
                       </div>
                     </>
                   ) : (
