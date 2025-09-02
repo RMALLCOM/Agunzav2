@@ -23,8 +23,10 @@ html, body, #root {
 /* Keep actions tidy on very wide screens */
 .actions-wrap {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* keep buttons in a single row */
+  align-items: center;
   gap: 12px;
+  overflow-x: auto; /* avoid wrapping; scroll if needed on small screens */
 }
 .actions-wrap > * { flex: 0 0 auto; }
 
