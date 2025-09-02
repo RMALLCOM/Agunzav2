@@ -401,7 +401,7 @@ function Scan({ kiosk }) {
         <div>
           <Card>
             <CardHeader>
-              <CardTitle>Datos de pieza</CardTitle>
+              <CardTitle id="lbl_bagdata_title">{strings[kiosk.lang].ui.bagdata_title}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2 text-lg">
