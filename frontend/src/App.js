@@ -394,8 +394,8 @@ function Scan({ kiosk }) {
             <canvas ref={canvasRef} className="camera-overlay" />
           </div>
           <div className="flex gap-4 mt-4">
-            <Button variant="ghost" onClick={() => nav("/start")}>{tr.back}</Button>
-            <Button variant="accent" onClick={runValidation}>{tr.scanNow}</Button>
+            <Button id="btn_back_scan" variant="ghost" onClick={() => nav("/start")}>{tr.back}</Button>
+            <Button id="btn_continue_scan" variant="accent" onClick={runValidation}>{tr.scanNow}</Button>
           </div>
         </div>
         <div>
