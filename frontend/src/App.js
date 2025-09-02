@@ -69,6 +69,23 @@ const strings = {
     payTitle: "Pricing & Payment",
     why: "Why?",
     scanNow: "SCAN",
+    ui: {
+      bagdata_title: "Bag data",
+      width_cm: "Width (cm)",
+      length_cm: "Length (cm)",
+      weight_kg: "Weight (kg)",
+      calibration: "Calibration",
+      ok: "OK",
+      recalibrate: "Recalibrate",
+      flight_configurator: "Flight configurator",
+      gate: "Gate",
+      flight: "Flight",
+      destination: "Destination",
+      operator: "Operator",
+      international: "International",
+      save: "SAVE",
+      back: "Back",
+    },
   },
 };
 
