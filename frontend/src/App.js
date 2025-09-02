@@ -265,6 +265,7 @@ function StartScan({ kiosk }) {
   const bgUrl = "https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/uqbelias_image%2012.png";
   return (
     <div className="relative min-h-screen kiosk-bg" style={{ backgroundImage: `url(${bgUrl})` }}>
+      <LangSwitch kiosk={kiosk} id="lang_toggle" />
       <div className="hero-overlay absolute inset-0 flex items-center justify-center">
         <div className="text-center max-w-3xl p-8">
           <h1 className="text-5xl font-extrabold text-gray-900 mb-4">JetSMART</h1>
