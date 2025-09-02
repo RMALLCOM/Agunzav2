@@ -632,9 +632,9 @@ function App() {
   }, []);
   return (
     <div className="App">
-      <BrowserRouter>
+      <HashRouter>
         <Shell />
-      </BrowserRouter>
+      </HashRouter>
     </div>
   );
 }
