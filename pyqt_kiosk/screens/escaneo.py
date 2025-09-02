@@ -1,9 +1,9 @@
 from PyQt5 import QtCore, QtWidgets
-from ..widgets.common import Card, VideoWidget, DataCard, SecondaryButton, PrimaryButton
-from ..services.camera_thread import CameraThread
-from ..services.yolo_service import YOLOService
-from ..services.scale_service import ScaleService
-from ..services.config_service import get_devices
+from widgets.common import Card, VideoWidget, DataCard, SecondaryButton, PrimaryButton
+from services.camera_thread import CameraThread
+from services.yolo_service import YOLOService
+from services.scale_service import ScaleService
+from services.config_service import get_devices
 
 
 class PantallaEscaneo(QtWidgets.QWidget):
@@ -24,7 +24,7 @@ class PantallaEscaneo(QtWidgets.QWidget):
 
         # bottom actions
         self.btnBack = PrimaryButton("VOLVER")
-        self.btnBack.clicked.connect(lambda: self.app.navigate("menu"))
+        self.btnBack.clicked.connect(lambda: self.app.navigate("inicio", {"start_mode": True}))
         self.btnAgain = SecondaryButton("MEDIR DE NUEVO")
         self.btnContinue = SecondaryButton("CONTINUAR")
         self.btnAgain.clicked.connect(self.reset_measure)

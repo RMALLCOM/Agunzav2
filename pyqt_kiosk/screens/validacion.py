@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtWidgets
-from ..widgets.common import Card, PrimaryButton, SecondaryButton
-from ..services.config_service import get_rules
-from ..services.validation import validate
+from widgets.common import Card, PrimaryButton, SecondaryButton
+from services.config_service import get_rules
+from services.validation import validate
 
 
 class PantallaValidacion(QtWidgets.QWidget):
@@ -53,7 +53,7 @@ class PantallaValidacion(QtWidgets.QWidget):
         self.details.setText(f"Medición: {self.measure}\nReglas: {rules}\nMotivos: {'; '.join(self.result['reasons'])}")
 
     def open_why(self):
-        from ..services.config_service import get_rules
+        from services.config_service import get_rules
         self.app.navigate("detalle_nocumple", {
             "measure": self.measure,
             "rules": get_rules(),

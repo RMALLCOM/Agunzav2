@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtWidgets
-from ..i18n import STRINGS
+from i18n import STRINGS
 
 
 class TopBar(QtWidgets.QWidget):

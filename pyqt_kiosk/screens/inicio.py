@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtWidgets
-from ..i18n import STRINGS
-from ..widgets.common import Card, PrimaryButton
+from i18n import STRINGS
+from widgets.common import Card, PrimaryButton
 
 
 class PantallaInicio(QtWidgets.QWidget):
