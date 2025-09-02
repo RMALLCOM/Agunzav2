@@ -708,7 +708,7 @@ function Shell() {
         <Route path="/tariffs" element={<Payment kiosk={kiosk} />} />
         <Route path="/weigh" element={<FreeWeigh />} />
         <Route path="/train" element={<Train />} />
-        <Route path="/goodbye" element={<Goodbye />} />
+        <Route path="/goodbye" element={<Goodbye kiosk={kiosk} />} />
       </Routes>
     </>
   );
