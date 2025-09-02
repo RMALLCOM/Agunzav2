@@ -232,7 +232,7 @@ function StartScan({ kiosk }) {
 }
 
 // Baggage rules (Why) page
-function WhyPage() {
+function WhyPage({ kiosk }) {
   const nav = useNavigate();
   const state = window.history.state?.usr || {};
   const result = state.result || {};
