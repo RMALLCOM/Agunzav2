@@ -537,7 +537,7 @@ function Payment({ kiosk }) {
             {status === "approved" ? (
               <div className="badge success">{strings[kioskData?.lang || 'es'].approved}</div>
             ) : (
-              <div className="badge error">{strings[kiosk?.lang || 'es'].rejected}</div>
+              <div className="badge error">{strings[kioskData?.lang || 'es'].rejected}</div>
             )}
             {status === "approved" && (
               <div className="mt-4 flex gap-3">
