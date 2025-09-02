@@ -101,7 +101,7 @@ const strings = {
     activeRules: "Active rules",
     reasons: "Reasons",
     continueScan: "CONTINUE",
-    continueToPayment: "Continue to payment",
+    continueToPayment: "Go to rates/payment",
     why: "Why doesn't it comply?",
     scanNow: "SCAN",
     ui: {
