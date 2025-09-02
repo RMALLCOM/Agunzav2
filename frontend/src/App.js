@@ -259,8 +259,9 @@ function WhyPage() {
               </div>
             </div>
             <div className="mt-6 flex gap-3">
-              <Button variant="primary" onClick={() => nav("/payment", { state: { result } })}>Continuar al pago</Button>
-              <Button variant="ghost" onClick={() => nav(-1)}>Volver</Button>
+              <Button variant="primary" className="px-6 py-4" onClick={() => nav("/payment", { state: { result } })}>CONTINUAR AL PAGO</Button>
+              <Button variant="outline" className="px-6 py-4" onClick={() => nav(0)}>¿POR QUÉ?</Button>
+              <Button variant="ghost" className="px-6 py-4" onClick={() => nav(-1)}>VOLVER</Button>
             </div>
           </CardContent>
         </Card>
