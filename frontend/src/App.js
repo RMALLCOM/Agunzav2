@@ -475,8 +475,9 @@ function Scan({ kiosk }) {
                       <ul className="list-disc pl-5 mt-3 text-red-700 space-y-1">
                         {result.errors.map((e, i) => (<li key={i}>{e}</li>))}
                       </ul>
-                      <div className="flex gap-3 mt-6">
-                        <Button id="btn_continue_validate" variant="accent" onClick={() => nav('/tariffs', { state: { result } })}>{strings[kiosk.lang].ui?.continue || 'Continuar'}</Button>
+                      <div className="actions-grid mt-6 w-full">
+                        <Button variant="outline" onClick={() => nav('/why', { state: { result, rules: kiosk.rules } })}>{strings[kiosk.lang].why}</Button>
+                        <Button variant="primary" onClick={() => nav('/tariffs', { state: { result } })}>{strings[kiosk.lang].continueToPayment || strings[kiosk.lang].goToPayment}</Button>
                       </div>
                     </>
                   )}
