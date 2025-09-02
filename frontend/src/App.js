@@ -243,20 +243,22 @@ function WhyPage() {
         <h2 className="text-3xl font-bold mb-4">Detalle de no cumplimiento</h2>
         <Card>
           <CardContent>
-            <div className="space-y-2">
-              <div className="font-semibold">Medición</div>
-              <div>Clase: maleta</div>
-              <div>Dimensiones: L {dims.length ?? "-"} cm, W {dims.width ?? "-"} cm, H {dims.height ?? "-"} cm</div>
-              <div>Peso: {result.weight_kg ?? "-"} kg</div>
-              <div className="font-semibold mt-4">Reglas activas</div>
-              <div>Máx: L {rules?.dims_cm?.length ?? "-"} / W {rules?.dims_cm?.width ?? "-"} / H {rules?.dims_cm?.height ?? "-"} cm, Peso {rules?.max_weight_kg ?? "-"} kg</div>
-              <div className="font-semibold mt-4">Motivos</div>
-              <ul className="list-disc pl-5 text-red-700">
-                {(result.errors || []).map((e, i) => (<li key={i}>{e}</li>))}
-              </ul>
-              <div className="mt-6 grid grid-cols-1 place-items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+              <div className="space-y-2">
+                <div className="font-semibold">Medición</div>
+                <div>Clase: maleta</div>
+                <div>Dimensiones: L {dims.length ?? "-"} cm, W {dims.width ?? "-"} cm, H {dims.height ?? "-"} cm</div>
+                <div>Peso: {result.weight_kg ?? "-"} kg</div>
+                <div className="font-semibold mt-4">Reglas activas</div>
+                <div>Máx: L {rules?.dims_cm?.length ?? "-"} / W {rules?.dims_cm?.width ?? "-"} / H {rules?.dims_cm?.height ?? "-"} cm, Peso {rules?.max_weight_kg ?? "-"} kg</div>
+                <div className="font-semibold mt-4">Motivos</div>
+                <ul className="list-disc pl-5 text-red-700">
+                  {(result.errors || []).map((e, i) => (<li key={i}>{e}</li>))}
+                </ul>
+                <div className="text-sm text-gray-600 mt-3">Dimensiones permitidas (según reglas): L {rules?.dims_cm?.length ?? "-"} / W {rules?.dims_cm?.width ?? "-"} / H {rules?.dims_cm?.height ?? "-"} cm, Peso {rules?.max_weight_kg ?? "-"} kg</div>
+              </div>
+              <div className="w-full flex justify-center md:justify-end">
                 <img src={allowedImg} alt="permitido" className="max-h-72 object-contain rounded-xl shadow" />
-                <div className="text-sm text-gray-600 mt-2">Dimensiones permitidas (según reglas): L {rules?.dims_cm?.length ?? "-"} / W {rules?.dims_cm?.width ?? "-"} / H {rules?.dims_cm?.height ?? "-"} cm, Peso {rules?.max_weight_kg ?? "-"} kg</div>
               </div>
             </div>
             <div className="mt-6 flex gap-3 justify-end">
