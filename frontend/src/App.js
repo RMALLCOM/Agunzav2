@@ -486,7 +486,7 @@ function Payment({ kiosk }) {
           }
         }
         setTotal(Math.max(0, Math.round((overweight + oversize) * 100) / 100));
-        setKiosk({ rules, airline: current });
+        setKioskData({ rules, airline: current });
       } catch (e) {}
     };
     load();
