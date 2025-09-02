@@ -14,7 +14,7 @@ const strings = {
   es: {
     start: "INICIAR",
     startScan: "COMENZAR ESCANEO",
-    setupTitle: "Configuración previa",
+    setupTitle: "Configurador de vuelos",
     operator: "Operador",
     gate: "Puerta de embarque",
     flight: "N° de vuelo",
