@@ -390,7 +390,7 @@ function Scan({ kiosk }) {
       <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <div className="camera-wrap shadow-xl">
-            <video ref={videoRef} className="w-full h-[520px] object-cover rounded-2xl" />
+            <video id="cam_view" ref={videoRef} className="w-full h-[520px] object-cover rounded-2xl" />
             <canvas ref={canvasRef} className="camera-overlay" />
           </div>
           <div className="flex gap-4 mt-4">
