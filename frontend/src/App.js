@@ -74,6 +74,13 @@ const strings = {
     retryMeasure: "Measure again",
     goToPayment: "Continue to payment",
     payTitle: "Pricing & Payment",
+    method: "Payment method",
+    card: "Card",
+    qr: "QR",
+    processPayment: "PROCESS PAYMENT",
+    approved: "Payment approved",
+    rejected: "Payment declined",
+    finishCta: "FINISH",
     why: "Why?",
     scanNow: "SCAN",
     ui: {
