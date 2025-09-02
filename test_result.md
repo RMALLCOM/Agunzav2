@@ -165,3 +165,5 @@ test_plan:
 agent_communication:
     - agent: "main"
       message: "Fixed critical Finalizar button error by adding missing kiosk prop to Goodbye component. Updated button labels as requested by user. Need to test the complete payment flow including the Finalizar button functionality and verify new button texts display correctly in both languages."
+    - agent: "testing"
+      message: "Backend testing completed successfully. All API endpoints are working perfectly including the critical payment simulation endpoint used by the Finalizar button. Tested complete end-to-end flow: session creation → luggage scanning → fee calculation → payment processing. MongoDB connectivity verified. The backend is fully functional and not the source of the Finalizar button error. The issue was likely in the frontend component routing which the main agent has already fixed."
