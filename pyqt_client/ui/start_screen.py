@@ -4,16 +4,23 @@ Start screen - Entry to scanning process
 
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton, 
                              QLabel, QFrame)
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtCore import Qt, pyqtSignal, QTimer
 from .base_screen import BaseScreen
 
 
 class StartScreen(BaseScreen):
     go_scan_clicked = pyqtSignal()
+    setup_clicked = pyqtSignal()
     language_changed = pyqtSignal(str)
     
     def __init__(self, main_window):
         super().__init__(main_window)
+        
+        # Triple-tap detection for hidden setup access
+        self.tap_count = 0
+        self.tap_timer = QTimer()
+        self.tap_timer.timeout.connect(self.reset_tap_count)
+        
         self.setup_ui()
         self.update_texts()
     
@@ -43,6 +50,13 @@ class StartScreen(BaseScreen):
         
         main_layout = QVBoxLayout(main_frame)
         main_layout.setAlignment(Qt.AlignCenter)
+        
+        # Hidden setup hotspot (top-left corner)
+        self.hidden_setup = QLabel()
+        self.hidden_setup.setObjectName("hidden_area_setup")
+        self.hidden_setup.setFixedSize(60, 60)
+        self.hidden_setup.setStyleSheet("background-color: transparent;")
+        self.hidden_setup.mousePressEvent = self.hidden_setup_clicked
         
         # Title
         self.title_label = QLabel()
@@ -78,14 +92,37 @@ class StartScreen(BaseScreen):
         """)
         self.go_scan_button.clicked.connect(self.go_scan_clicked.emit)
         
+        # Position hidden setup area at top-left
+        hidden_layout = QHBoxLayout()
+        hidden_layout.addWidget(self.hidden_setup, alignment=Qt.AlignLeft | Qt.AlignTop)
+        hidden_layout.addStretch()
+        
+        main_layout.addLayout(hidden_layout)
         main_layout.addWidget(self.title_label)
         main_layout.addWidget(self.go_scan_button, alignment=Qt.AlignCenter)
+        main_layout.addStretch()
         
         # Add to main layout
         layout.addLayout(lang_layout)
         layout.addWidget(main_frame)
         
         self.setLayout(layout)
+    
+    def hidden_setup_clicked(self, event):
+        """Handle triple-tap on hidden setup area"""
+        self.tap_count += 1
+        
+        if self.tap_count == 1:
+            self.tap_timer.start(1000)  # Reset after 1 second
+        elif self.tap_count >= 3:
+            self.tap_timer.stop()
+            self.tap_count = 0
+            self.setup_clicked.emit()
+    
+    def reset_tap_count(self):
+        """Reset tap count"""
+        self.tap_count = 0
+        self.tap_timer.stop()
     
     def update_texts(self):
         """Update text content based on current language"""
