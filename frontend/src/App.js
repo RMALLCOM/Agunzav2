@@ -378,6 +378,7 @@ function HiddenSetupHotspot() {
 }
 
 // Setup Screen
+// Setup (configurador de vuelos). Stores operator, gate, flight, destination, international flag.
 function SetupPage({ kiosk }) {
   const nav = useNavigate();
   const tr = strings[kiosk.lang];
