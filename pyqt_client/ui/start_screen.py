@@ -124,7 +124,7 @@ class StartScreen(BaseScreen):
         self.setLayout(layout)
     
     def hidden_setup_clicked(self, event):
-        """Handle triple-tap on hidden setup area"""
+        """Handle triple-tap on hidden setup area (left)"""
         self.tap_count += 1
         
         if self.tap_count == 1:
@@ -134,10 +134,26 @@ class StartScreen(BaseScreen):
             self.tap_count = 0
             self.setup_clicked.emit()
     
+    def hidden_setup_right_clicked(self, event):
+        """Handle triple-tap on hidden setup area (right)"""
+        self.tap_count_right += 1
+        
+        if self.tap_count_right == 1:
+            self.tap_timer_right.start(1000)  # Reset after 1 second
+        elif self.tap_count_right >= 3:
+            self.tap_timer_right.stop()
+            self.tap_count_right = 0
+            self.setup_clicked.emit()
+    
     def reset_tap_count(self):
-        """Reset tap count"""
+        """Reset tap count (left)"""
         self.tap_count = 0
         self.tap_timer.stop()
+    
+    def reset_tap_count_right(self):
+        """Reset tap count (right)"""
+        self.tap_count_right = 0
+        self.tap_timer_right.stop()
     
     def update_texts(self):
         """Update text content based on current language"""
