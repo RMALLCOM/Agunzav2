@@ -27,7 +27,13 @@
     "weight": "Peso (kg)",
     "calibration": "Calibración",
     "calibration_ok": "OK",
-    "free_weigh": "PESAJE LIBRE"
+    "free_weigh": "PESAJE LIBRE",
+    "weigh_demo": "Pesar (demo)",
+    "read_weight": "Leer peso",
+    "set_weight": "Fijar peso",
+    "cancel": "Cancelar",
+    "demo_weight_title": "Peso de maleta (demo)",
+    "last_weight": "Último peso leído"
   },
   "validate": {
     "ok": "AUTORIZADO",
@@ -57,5 +63,9 @@
   "free_weigh": {
     "title": "Pesaje Libre",
     "back": "VOLVER"
+  },
+  "demo": {
+    "mode_enabled": "Modo demo activado",
+    "activate_hint": "Área técnica (tocar 5 veces)"
   }
 }
