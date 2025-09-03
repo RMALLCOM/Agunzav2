@@ -269,8 +269,14 @@ class ScanScreen(BaseScreen):
         measurements_grid.addWidget(self.calibration_label, 3, 0)
         measurements_grid.addWidget(self.calibration_status, 3, 1)
         
+        # Last demo weight display (only visible when demo weight has been set)
+        self.last_weight_label = QLabel()
+        self.last_weight_label.setStyleSheet("color: #ffc107; font-weight: bold; margin-top: 15px;")
+        self.last_weight_label.hide()
+        
         data_layout.addWidget(self.bagdata_title)
         data_layout.addLayout(measurements_grid)
+        data_layout.addWidget(self.last_weight_label)
         data_layout.addStretch()
         
         # Add to main layout
