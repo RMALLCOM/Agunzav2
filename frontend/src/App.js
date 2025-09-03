@@ -185,6 +185,12 @@ function useKiosk() {
   const [lang, setLang] = useState("es");
   const [session, setSession] = useState(null);
   const [setup, setSetup] = useState(null);
+  
+  // Demo mode state
+  const [demoMode, setDemoMode] = useState(() => {
+    return localStorage.getItem("demoMode") === "1";
+  });
+  const [lastDemoWeight, setLastDemoWeight] = useState(null);
 
   useEffect(() => {
     const init = async () => {
