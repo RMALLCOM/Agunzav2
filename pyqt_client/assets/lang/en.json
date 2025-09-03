@@ -26,7 +26,8 @@
     "length": "Length (cm)",
     "weight": "Weight (kg)",
     "calibration": "Calibration",
-    "calibration_ok": "OK"
+    "calibration_ok": "OK",
+    "free_weigh": "FREE WEIGHING"
   },
   "validate": {
     "ok": "AUTHORIZED",
@@ -52,5 +53,9 @@
   },
   "goodbye": {
     "title": "Thank you for using the validator. Have a nice trip"
+  },
+  "free_weigh": {
+    "title": "Free Weighing",
+    "back": "BACK"
   }
 }
