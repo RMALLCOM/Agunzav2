@@ -567,10 +567,10 @@ function Payment({ kiosk }) {
         )}
 
         <div className="mb-4">
-          <label className="block font-semibold mb-2">{strings[kioskData?.lang || 'es'].method}</label>
+          <label className="block font-semibold mb-2">{strings[kiosk.lang].method}</label>
           <div className="flex gap-3">
-            <Button variant={method === "card" ? "primary" : "outline"} onClick={() => setMethod("card")} >{strings[kioskData?.lang || 'es'].card}</Button>
-            <Button variant={method === "qr" ? "primary" : "outline"} onClick={() => setMethod("qr")} >{strings[kioskData?.lang || 'es'].qr}</Button>
+            <Button variant={method === "card" ? "primary" : "outline"} onClick={() => setMethod("card")} >{strings[kiosk.lang].card}</Button>
+            <Button variant={method === "qr" ? "primary" : "outline"} onClick={() => setMethod("qr")} >{strings[kiosk.lang].qr}</Button>
           </div>
         </div>
 
