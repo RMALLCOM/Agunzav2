@@ -150,11 +150,11 @@ frontend:
 
   - task: "Fix navigation flow according to specification"
     implemented: true
-    working: "unknown"
+    working: true
     file: "/app/frontend/src/App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "unknown"
           agent: "main"
@@ -162,6 +162,9 @@ frontend:
         - working: "unknown"
           agent: "main"
           comment: "Fixed WhyPage i18n issues reported by user. Added missing Spanish translations: whyTitle, measurement, activeRules, reasons. Added new i18n keys for hardcoded texts: class_label, dimensions_label, weight_label, max_label, allowed_dimensions. Updated WhyPage component to use all i18n keys instead of hardcoded Spanish text. Buttons 'VOLVER' and 'CONTINUAR AL PAGO' now properly use i18n."
+        - working: true
+          agent: "testing"
+          comment: "WhyPage i18n functionality tested comprehensively and working perfectly. Fixed missing LangSwitch component on WhyPage. All Spanish i18n elements working: title 'Detalle de no cumplimiento', sections 'Medición', 'Reglas activas', 'Razones', labels 'Clase', 'Dimensiones', 'Peso', 'Máx', 'Dimensiones permitidas', buttons 'Volver' and 'Ir a tarifas/pago'. Language toggle functionality working correctly - switches to English showing 'Non-compliance details', 'Measurement', 'Active rules', 'Reasons', 'Class', 'Dimensions', 'Weight', 'Max', 'Allowed dimensions', 'Back', 'Go to rates/payment'. Toggle back to Spanish works perfectly. All user-reported i18n issues resolved."
 
 metadata:
   created_by: "main_agent"
