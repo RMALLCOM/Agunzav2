@@ -27,7 +27,13 @@
     "weight": "Weight (kg)",
     "calibration": "Calibration",
     "calibration_ok": "OK",
-    "free_weigh": "FREE WEIGHING"
+    "free_weigh": "FREE WEIGHING",
+    "weigh_demo": "Weigh (demo)",
+    "read_weight": "Read weight",
+    "set_weight": "Set weight",
+    "cancel": "Cancel",
+    "demo_weight_title": "Bag weight (demo)",
+    "last_weight": "Last weight read"
   },
   "validate": {
     "ok": "AUTHORIZED",
@@ -57,5 +63,9 @@
   "free_weigh": {
     "title": "Free Weighing",
     "back": "BACK"
+  },
+  "demo": {
+    "mode_enabled": "Demo mode activated",
+    "activate_hint": "Technical area (tap 5 times)"
   }
 }
