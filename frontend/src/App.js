@@ -513,8 +513,8 @@ function Scan({ kiosk }) {
 
 function Payment({ kiosk }) {
   const nav = useNavigate();
-  const state = window.history.state?.usr || {};
-  const result = state.result || null;
+  const { state } = useLocation();
+  const result = state?.result || null;
   const [method, setMethod] = useState(null);
   const [status, setStatus] = useState(null);
   const [total, setTotal] = useState(0);
