@@ -21,6 +21,11 @@ class StartScreen(BaseScreen):
         self.tap_timer = QTimer()
         self.tap_timer.timeout.connect(self.reset_tap_count)
         
+        # Triple-tap detection for right hidden setup access
+        self.tap_count_right = 0
+        self.tap_timer_right = QTimer()
+        self.tap_timer_right.timeout.connect(self.reset_tap_count_right)
+        
         self.setup_ui()
         self.update_texts()
     
