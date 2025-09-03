@@ -69,6 +69,7 @@ class ScanScreen(BaseScreen):
     continue_clicked = pyqtSignal(dict)
     back_clicked = pyqtSignal()
     setup_clicked = pyqtSignal()
+    free_weigh_clicked = pyqtSignal()
     
     def __init__(self, main_window):
         super().__init__(main_window)
