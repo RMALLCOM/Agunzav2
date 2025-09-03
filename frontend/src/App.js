@@ -576,17 +576,17 @@ function Payment({ kiosk }) {
 
         {method && (
           <div className="flex gap-4">
-            <Button id="btn_pay" variant="accent" onClick={pay}>{strings[kioskData?.lang || 'es'].ui?.pay || strings[kioskData?.lang || 'es'].processPayment}</Button>
-            <Button id="btn_back_tariff" variant="ghost" onClick={() => nav(-1)} >{strings[kioskData?.lang || 'es'].ui?.back || strings[kioskData?.lang || 'es'].back}</Button>
+            <Button id="btn_pay" variant="accent" onClick={pay}>{strings[kiosk.lang].ui?.pay || strings[kiosk.lang].processPayment}</Button>
+            <Button id="btn_back_tariff" variant="ghost" onClick={() => nav(-1)} >{strings[kiosk.lang].ui?.back || strings[kiosk.lang].back}</Button>
           </div>
         )}
 
         {status && (
           <div className="mt-6">
             {status === "approved" ? (
-              <div className="badge success">{strings[kioskData?.lang || 'es'].approved}</div>
+              <div className="badge success">{strings[kiosk.lang].approved}</div>
             ) : (
-              <div className="badge error">{strings[kioskData?.lang || 'es'].rejected}</div>
+              <div className="badge error">{strings[kiosk.lang].rejected}</div>
             )}
             {status === "approved" && (
               <div className="mt-4 flex gap-3">
