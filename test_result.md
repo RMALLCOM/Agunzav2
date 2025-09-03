@@ -184,6 +184,7 @@ test_plan:
   current_focus:
     - "Fix Finalizar button error"
     - "Update button text labels"
+    - "Fix Payment component i18n and navigation"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
