@@ -86,6 +86,10 @@ class KioskMainWindow(QMainWindow):
         self.screens['scan'].continue_clicked.connect(self.handle_scan_result)
         self.screens['scan'].back_clicked.connect(lambda: self.goto_screen('welcome'))
         self.screens['scan'].setup_clicked.connect(lambda: self.goto_screen('setup'))
+        self.screens['scan'].free_weigh_clicked.connect(lambda: self.goto_screen('free_weigh'))
+        
+        # Free weigh screen
+        self.screens['free_weigh'].back_clicked.connect(lambda: self.goto_screen('scan'))
         
         # Validate screen
         self.screens['validate'].continue_ok_clicked.connect(lambda: self.goto_screen('goodbye'))
