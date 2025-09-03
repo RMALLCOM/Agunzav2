@@ -23,6 +23,7 @@ from ui.validate_screen import ValidateScreen
 from ui.tariffs_screen import TariffsScreen
 from ui.payment_screen import PaymentScreen
 from ui.goodbye_screen import GoodbyeScreen
+from ui.free_weigh_screen import FreeWeighScreen
 
 
 class KioskMainWindow(QMainWindow):
