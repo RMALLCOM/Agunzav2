@@ -164,10 +164,11 @@ const strings = {
 };
 
 // Global language toggle (for web UI). For PyQt5, TopBar manages this.
-function LangSwitch({ kiosk }) {
+function LangSwitch({ kiosk, id }) {
   return (
     <div className="absolute top-0 right-0 p-4 z-20">
       <Button
+        id={id}
         variant="ghost"
         className="flex items-center gap-2 bg-[#F2F5FF] text-[#1E3F8A] font-extrabold px-4 py-2 rounded-2xl shadow"
         onClick={() => kiosk.setLang(kiosk.lang === "es" ? "en" : "es")}
