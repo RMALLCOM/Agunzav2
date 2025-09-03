@@ -246,6 +246,38 @@ function useKiosk() {
   };
 }
 
+// Demo Hotspot - 5 taps in 3 seconds to activate demo mode
+function DemoHotspot({ onActivate }) {
+  const [count, setCount] = useState(0);
+  const timerRef = useRef(null);
+  
+  const onClick = () => {
+    setCount(c => {
+      const next = c + 1;
+      if (next === 1) {
+        timerRef.current = setTimeout(() => setCount(0), 3000); // 3 seconds
+      }
+      if (next >= 5) { // 5 taps
+        clearTimeout(timerRef.current);
+        setCount(0);
+        onActivate();
+        return 0;
+      }
+      return next;
+    });
+  };
+
+  useEffect(() => () => clearTimeout(timerRef.current), []);
+
+  return (
+    <div
+      className="absolute top-2 right-2 w-9 h-9 opacity-0 cursor-pointer z-50"
+      onClick={onClick}
+      title="Área técnica (tocar 5 veces)"
+    />
+  );
+}
+
 // Hidden hotspot (triple tap) - Web UI. In PyQt5 we also implement a similar hidden trigger.
 function HiddenSetupHotspot() {
   const nav = useNavigate();
