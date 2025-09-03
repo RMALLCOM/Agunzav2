@@ -194,10 +194,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Fix Finalizar button error"
-    - "Update button text labels"
     - "Fix Payment component i18n and navigation"
-  stuck_tasks: []
+  stuck_tasks:
+    - "Fix Payment component i18n and navigation"
   test_all: false
   test_priority: "high_first"
 
