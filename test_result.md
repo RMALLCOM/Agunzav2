@@ -164,15 +164,18 @@ frontend:
           comment: "Fixed WhyPage i18n issues reported by user. Added missing Spanish translations: whyTitle, measurement, activeRules, reasons. Added new i18n keys for hardcoded texts: class_label, dimensions_label, weight_label, max_label, allowed_dimensions. Updated WhyPage component to use all i18n keys instead of hardcoded Spanish text. Buttons 'VOLVER' and 'CONTINUAR AL PAGO' now properly use i18n."
   - task: "Fix Payment component i18n and navigation"
     implemented: true
-    working: "unknown"
+    working: false
     file: "/app/frontend/src/App.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "unknown"
           agent: "main"
           comment: "Fixed Payment component per user specification: Replaced window.history.state?.usr with useLocation() hook. Changed all hardcoded 'es' references to use kiosk.lang. Added LangSwitch component. Added i18n keys for excess_weight, excess_dimensions, total. btn_finish_payment navigates to /goodbye then auto-redirects to /start. btn_back_tariff uses nav(-1). All strings now use strings[kiosk.lang] instead of hardcoded language."
+        - working: false
+          agent: "testing"
+          comment: "Critical issues found in Payment component: 1) LangSwitch component is NOT rendering on Payment screen - no #lang_toggle element found, only generic language button without proper ID. 2) Missing btn_back_tariff and btn_finish_payment button IDs - buttons exist but lack required IDs for proper functionality. 3) Language toggle works partially - title changes to English but 'Excess weight' and 'Excess dimensions' remain untranslated. 4) Payment flow works: Spanish i18n displays correctly by default, payment processing successful, Finalizar button navigates to goodbye page with proper auto-redirect to start. The main issues are missing LangSwitch component rendering and missing button IDs."
 
 metadata:
   created_by: "main_agent"
