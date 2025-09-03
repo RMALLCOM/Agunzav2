@@ -74,6 +74,9 @@ const strings = {
       international: "Internacional",
       save: "GUARDAR",
       backLabel: "Volver",
+      excess_weight: "Exceso por peso",
+      excess_dimensions: "Exceso por dimensiones",
+      total: "Total",
     },
     msg: {
       authorized: "Autorizado para embarque. ¡Buen viaje!",
