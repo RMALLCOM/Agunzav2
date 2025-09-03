@@ -349,3 +349,4 @@ class ScanScreen(BaseScreen):
         self.calibration_status.setText(self.i18n.t('scan.calibration_ok'))
         self.continue_button.setText(self.i18n.t('scan.continue'))
         self.back_button.setText(self.i18n.t('scan.back'))
+        self.free_weigh_button.setText(self.i18n.t('scan.free_weigh'))
