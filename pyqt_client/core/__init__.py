@@ -1,0 +1,1 @@
+# Core module for PyQt5 kiosk application
