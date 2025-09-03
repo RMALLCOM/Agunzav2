@@ -32,7 +32,17 @@ class StartScreen(BaseScreen):
         
         # Language toggle button (top right)
         lang_layout = QHBoxLayout()
+        
+        # Hidden setup hotspot (top-right corner, next to language toggle)
+        self.hidden_setup_right = QLabel()
+        self.hidden_setup_right.setObjectName("hidden_area_setup_right")
+        self.hidden_setup_right.setFixedSize(60, 60)
+        self.hidden_setup_right.setStyleSheet("background-color: transparent;")
+        self.hidden_setup_right.mousePressEvent = self.hidden_setup_right_clicked
+        
         lang_layout.addStretch()
+        lang_layout.addWidget(self.hidden_setup_right)
+        
         self.lang_toggle = QPushButton()
         self.lang_toggle.setObjectName("lang_toggle")
         self.lang_toggle.setFixedSize(120, 40)
