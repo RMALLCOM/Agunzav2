@@ -168,6 +168,9 @@ frontend:
         - working: "unknown"
           agent: "main"
           comment: "Fixed WhyPage i18n issues reported by user. Added missing Spanish translations: whyTitle, measurement, activeRules, reasons. Added new i18n keys for hardcoded texts: class_label, dimensions_label, weight_label, max_label, allowed_dimensions. Updated WhyPage component to use all i18n keys instead of hardcoded Spanish text. Buttons 'VOLVER' and 'CONTINUAR AL PAGO' now properly use i18n."
+        - working: true
+          agent: "testing"
+          comment: "Navigation flows are working correctly per specification. Comprehensive testing confirmed: 1) FAIL Flow: /scan → /validate(FAIL) → 'Continuar al pago' → /tariffs → payment → 'Finalizar' → /goodbye → auto-redirect to /start (3s) - WORKING. 2) OK Flow: /goodbye → auto-redirect to /start (3s) - WORKING (tested via direct navigation). 3) All navigation transitions work smoothly with proper timing. 4) Auto-redirect functionality from goodbye page to start page works correctly with 3-second delay. The navigation flow specification has been successfully implemented."
   - task: "Fix Payment component i18n and navigation"
     implemented: true
     working: false
