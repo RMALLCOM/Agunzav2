@@ -145,6 +145,21 @@ class ScanScreen(BaseScreen):
         self.back_button.setObjectName("btn_back_scan")
         self.back_button.clicked.connect(self.back_clicked.emit)
         
+        self.free_weigh_button = QPushButton()
+        self.free_weigh_button.setObjectName("btn_free_weigh")
+        self.free_weigh_button.setStyleSheet("""
+            QPushButton {
+                background-color: #17a2b8;
+                color: white;
+                font-size: 16px;
+                padding: 12px 24px;
+            }
+            QPushButton:hover {
+                background-color: #138496;
+            }
+        """)
+        self.free_weigh_button.clicked.connect(self.go_free_weigh)
+        
         self.continue_button = QPushButton()
         self.continue_button.setObjectName("btn_continue_scan")
         self.continue_button.setStyleSheet("""
@@ -161,6 +176,7 @@ class ScanScreen(BaseScreen):
         self.continue_button.clicked.connect(self.process_scan)
         
         button_layout.addWidget(self.back_button)
+        button_layout.addWidget(self.free_weigh_button)
         button_layout.addStretch()
         button_layout.addWidget(self.continue_button)
         
