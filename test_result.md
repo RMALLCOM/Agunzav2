@@ -173,7 +173,7 @@ frontend:
           comment: "Navigation flows are working correctly per specification. Comprehensive testing confirmed: 1) FAIL Flow: /scan → /validate(FAIL) → 'Continuar al pago' → /tariffs → payment → 'Finalizar' → /goodbye → auto-redirect to /start (3s) - WORKING. 2) OK Flow: /goodbye → auto-redirect to /start (3s) - WORKING (tested via direct navigation). 3) All navigation transitions work smoothly with proper timing. 4) Auto-redirect functionality from goodbye page to start page works correctly with 3-second delay. The navigation flow specification has been successfully implemented."
   - task: "Fix Payment component i18n and navigation"
     implemented: true
-    working: false
+    working: true
     file: "/app/frontend/src/App.js"
     stuck_count: 1
     priority: "high"
@@ -185,6 +185,9 @@ frontend:
         - working: false
           agent: "testing"
           comment: "Critical issues found in Payment component: 1) LangSwitch component is NOT rendering on Payment screen - no #lang_toggle element found, only generic language button without proper ID. 2) Missing btn_back_tariff and btn_finish_payment button IDs - buttons exist but lack required IDs for proper functionality. 3) Language toggle works partially - title changes to English but 'Excess weight' and 'Excess dimensions' remain untranslated. 4) Payment flow works: Spanish i18n displays correctly by default, payment processing successful, Finalizar button navigates to goodbye page with proper auto-redirect to start. The main issues are missing LangSwitch component rendering and missing button IDs."
+        - working: true
+          agent: "testing"
+          comment: "✅ ALL CRITICAL ISSUES FIXED! Comprehensive re-testing confirms: 1) LangSwitch component NOW RENDERS correctly with proper #lang_toggle ID on Payment screen. 2) Language toggle works COMPLETELY - all text translates perfectly including 'Tarifas y Pago' ↔ 'Pricing & Payment', 'Exceso por peso' ↔ 'Excess weight', 'Exceso por dimensiones' ↔ 'Excess dimensions', 'Total' ↔ 'Total'. 3) ALL required button IDs are present and functional: #btn_pay (appears after payment method selection), #btn_back_tariff (appears after payment method selection), #btn_finish_payment (appears after successful payment). 4) Complete payment flow works: FAIL validation → payment screen → language toggle → payment method selection → payment processing → finish button → goodbye page → auto-redirect to start. All previously reported issues have been successfully resolved."
 
 metadata:
   created_by: "main_agent"
