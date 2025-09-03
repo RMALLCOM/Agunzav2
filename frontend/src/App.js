@@ -475,9 +475,21 @@ function StartScan({ kiosk }) {
   const nav = useNavigate();
   const tr = strings[kiosk.lang];
   const bgUrl = "https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/uqbelias_image%2012.png";
+  
+  const handleDemoActivation = () => {
+    kiosk.activateDemoMode();
+    // Show toast notification
+    const toast = document.createElement('div');
+    toast.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+    toast.textContent = kiosk.lang === 'es' ? 'Modo demo activado' : 'Demo mode activated';
+    document.body.appendChild(toast);
+    setTimeout(() => document.body.removeChild(toast), 3000);
+  };
+  
   return (
     <div className="relative min-h-screen kiosk-bg" style={{ backgroundImage: `url(${bgUrl})` }}>
       <LangSwitch kiosk={kiosk} id="lang_toggle" />
+      <DemoHotspot onActivate={handleDemoActivation} />
       <div className="hero-overlay absolute inset-0 flex items-center justify-center">
         <div className="text-center max-w-3xl p-8">
           <h1 className="text-5xl font-extrabold text-gray-900 mb-4">JetSMART</h1>
