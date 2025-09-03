@@ -150,6 +150,9 @@ const strings = {
       international: "International",
       save: "SAVE",
       backLabel: "Back",
+      excess_weight: "Excess weight",
+      excess_dimensions: "Excess dimensions", 
+      total: "Total",
     },
     msg: {
       authorized: "Authorized for boarding. Have a nice trip!",
