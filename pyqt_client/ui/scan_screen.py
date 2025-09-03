@@ -290,6 +290,14 @@ class ScanScreen(BaseScreen):
         self.camera_thread.start_camera()
         self.weight_timer.start(1000)  # Update weight every second
         self.update_texts()
+        self.update_demo_mode_ui()
+    
+    def update_demo_mode_ui(self):
+        """Update UI elements based on demo mode status"""
+        from ..core.demo_manager import demo_manager
+        
+        is_demo_mode = demo_manager.get_demo_mode()
+        self.demo_weight_button.setVisible(is_demo_mode)
     
     def on_exit(self):
         """Called when leaving scan screen"""
