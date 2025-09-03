@@ -340,6 +340,25 @@ class ScanScreen(BaseScreen):
         self.current_measurements['weight_kg'] = weight
         self.weight_value.setText(f"{weight}")
     
+    def show_demo_weight_dialog(self):
+        """Show demo weight dialog"""
+        from .weight_demo_dialog import WeightDemoDialog
+        
+        dialog = WeightDemoDialog(self.i18n, self)
+        dialog.weight_set.connect(self.set_demo_weight)
+        dialog.exec_()
+    
+    def set_demo_weight(self, weight: float):
+        """Set demo weight and display it"""
+        self.last_demo_weight = weight
+        weight_text = f"{self.i18n.t('scan.last_weight')}: {weight:.1f} kg"
+        self.last_weight_label.setText(weight_text)
+        self.last_weight_label.show()
+        
+        # Also update the current measurements with demo weight
+        self.current_measurements['weight_kg'] = weight
+        self.weight_value.setText(f"{weight:.1f}")
+    
     def go_free_weigh(self):
         """Handle free weigh button click"""
         self.on_exit()
