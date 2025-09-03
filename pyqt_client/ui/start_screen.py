@@ -129,6 +129,11 @@ class StartScreen(BaseScreen):
         
         self.setLayout(layout)
     
+    def handle_demo_activated(self):
+        """Handle demo mode activation"""
+        # Update any UI elements that depend on demo mode
+        pass
+    
     def hidden_setup_clicked(self, event):
         """Handle triple-tap on hidden setup area (left)"""
         self.tap_count += 1
