@@ -182,9 +182,10 @@ The application will start in fullscreen mode. Press `Alt+F4` or use the applica
 3. Verify all texts are translated (no language toggle visible in Scan)
 
 **Hidden Setup Access:**
-1. Go to Scan screen
+1. Go to Start screen (Comenzar Escaneo)
 2. Triple-tap top-left corner (60x60px area)
 3. Should navigate to Setup screen
+4. Alternative: Go to Scan screen and triple-tap top-left corner
 
 ### Fullscreen Testing
 - Test on 1920×1080 resolution
