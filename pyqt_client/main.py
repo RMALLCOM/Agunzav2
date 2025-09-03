@@ -78,6 +78,7 @@ class KioskMainWindow(QMainWindow):
         
         # Start screen
         self.screens['start'].go_scan_clicked.connect(lambda: self.goto_screen('scan'))
+        self.screens['start'].setup_clicked.connect(lambda: self.goto_screen('setup'))
         
         # Scan screen
         self.screens['scan'].continue_clicked.connect(self.handle_scan_result)
