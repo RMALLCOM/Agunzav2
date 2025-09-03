@@ -304,6 +304,11 @@ class ScanScreen(BaseScreen):
         self.current_measurements['weight_kg'] = weight
         self.weight_value.setText(f"{weight}")
     
+    def go_free_weigh(self):
+        """Handle free weigh button click"""
+        self.on_exit()
+        self.free_weigh_clicked.emit()
+    
     def process_scan(self):
         """Process scan and emit result"""
         # Create scan result
