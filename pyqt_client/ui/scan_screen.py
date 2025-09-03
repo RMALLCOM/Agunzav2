@@ -97,6 +97,9 @@ class ScanScreen(BaseScreen):
             'detections': []
         }
         
+        # Demo mode last weight
+        self.last_demo_weight = None
+        
         # Setup UI
         self.setup_ui()
         self.update_texts()
