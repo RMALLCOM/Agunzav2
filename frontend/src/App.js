@@ -553,7 +553,7 @@ function Payment({ kiosk }) {
 
   return (
     <div className="min-h-screen bg-white">
-
+      <LangSwitch kiosk={kiosk} id="lang_toggle" />
       <div className="max-w-3xl mx-auto px-6 py-10">
         <h2 className="text-3xl font-bold mb-6">{strings[kiosk.lang].payTitle}</h2>
         {result && (
