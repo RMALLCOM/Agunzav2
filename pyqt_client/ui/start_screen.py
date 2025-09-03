@@ -38,6 +38,11 @@ class StartScreen(BaseScreen):
         # Language toggle button (top right)
         lang_layout = QHBoxLayout()
         
+        # Demo hotspot (top-right corner, positioned absolutely)
+        from .demo_hotspot import DemoHotspot
+        self.demo_hotspot = DemoHotspot(self)
+        self.demo_hotspot.demo_activated.connect(self.handle_demo_activated)
+        
         # Hidden setup hotspot (top-right corner, next to language toggle)
         self.hidden_setup_right = QLabel()
         self.hidden_setup_right.setObjectName("hidden_area_setup_right")
@@ -46,6 +51,7 @@ class StartScreen(BaseScreen):
         self.hidden_setup_right.mousePressEvent = self.hidden_setup_right_clicked
         
         lang_layout.addStretch()
+        lang_layout.addWidget(self.demo_hotspot)
         lang_layout.addWidget(self.hidden_setup_right)
         
         self.lang_toggle = QPushButton()
