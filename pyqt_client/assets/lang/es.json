@@ -26,7 +26,8 @@
     "length": "Largo (cm)",
     "weight": "Peso (kg)",
     "calibration": "Calibración",
-    "calibration_ok": "OK"
+    "calibration_ok": "OK",
+    "free_weigh": "PESAJE LIBRE"
   },
   "validate": {
     "ok": "AUTORIZADO",
@@ -52,5 +53,9 @@
   },
   "goodbye": {
     "title": "Gracias por usar el validador. Buen viaje"
+  },
+  "free_weigh": {
+    "title": "Pesaje Libre",
+    "back": "VOLVER"
   }
 }
