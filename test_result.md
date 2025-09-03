@@ -162,9 +162,17 @@ frontend:
         - working: "unknown"
           agent: "main"
           comment: "Fixed WhyPage i18n issues reported by user. Added missing Spanish translations: whyTitle, measurement, activeRules, reasons. Added new i18n keys for hardcoded texts: class_label, dimensions_label, weight_label, max_label, allowed_dimensions. Updated WhyPage component to use all i18n keys instead of hardcoded Spanish text. Buttons 'VOLVER' and 'CONTINUAR AL PAGO' now properly use i18n."
-        - working: true
-          agent: "testing"
-          comment: "WhyPage i18n functionality tested comprehensively and working perfectly. Fixed missing LangSwitch component on WhyPage. All Spanish i18n elements working: title 'Detalle de no cumplimiento', sections 'Medición', 'Reglas activas', 'Razones', labels 'Clase', 'Dimensiones', 'Peso', 'Máx', 'Dimensiones permitidas', buttons 'Volver' and 'Ir a tarifas/pago'. Language toggle functionality working correctly - switches to English showing 'Non-compliance details', 'Measurement', 'Active rules', 'Reasons', 'Class', 'Dimensions', 'Weight', 'Max', 'Allowed dimensions', 'Back', 'Go to rates/payment'. Toggle back to Spanish works perfectly. All user-reported i18n issues resolved."
+  - task: "Fix Payment component i18n and navigation"
+    implemented: true
+    working: "unknown"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "unknown"
+          agent: "main"
+          comment: "Fixed Payment component per user specification: Replaced window.history.state?.usr with useLocation() hook. Changed all hardcoded 'es' references to use kiosk.lang. Added LangSwitch component. Added i18n keys for excess_weight, excess_dimensions, total. btn_finish_payment navigates to /goodbye then auto-redirects to /start. btn_back_tariff uses nav(-1). All strings now use strings[kiosk.lang] instead of hardcoded language."
 
 metadata:
   created_by: "main_agent"
