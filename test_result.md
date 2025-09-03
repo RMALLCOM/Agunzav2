@@ -123,11 +123,11 @@ backend:
 frontend:
   - task: "Fix Finalizar button error"
     implemented: true
-    working: "unknown"
+    working: true
     file: "/app/frontend/src/App.js"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: false
           agent: "user"
@@ -135,6 +135,9 @@ frontend:
         - working: "unknown"
           agent: "main"
           comment: "Fixed missing kiosk prop in Goodbye component route definition - was causing undefined kiosk.lang error"
+        - working: true
+          agent: "testing"
+          comment: "Finalizar button error is FIXED. Comprehensive testing confirmed: 1) Complete FAIL flow works: scan → validate(FAIL) → 'Continuar al pago' → payment page → select payment method → pay → payment approved → 'FINALIZAR' button → goodbye page → auto-redirect to start page. 2) Finalizar button successfully navigates to /goodbye page. 3) Goodbye page auto-redirects to /start after 3 seconds as expected. 4) No errors encountered during the entire payment and finalization process. The original Finalizar button error has been resolved."
 
   - task: "Update button text labels"
     implemented: true
