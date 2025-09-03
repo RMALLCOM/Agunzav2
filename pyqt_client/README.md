@@ -183,7 +183,7 @@ The application will start in fullscreen mode. Press `Alt+F4` or use the applica
 
 **Hidden Setup Access:**
 1. Go to Start screen (Comenzar Escaneo)
-2. Triple-tap top-left corner (60x60px area)
+2. Triple-tap top-left corner (60x60px area) OR top-right corner (60x60px area)
 3. Should navigate to Setup screen
 4. Alternative: Go to Scan screen and triple-tap top-left corner
 
