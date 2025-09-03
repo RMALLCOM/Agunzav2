@@ -1,0 +1,1 @@
+# UI module for PyQt5 kiosk screens
