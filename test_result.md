@@ -176,7 +176,6 @@ test_plan:
   current_focus:
     - "Fix Finalizar button error"
     - "Update button text labels"
-    - "Fix navigation flow according to specification"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
