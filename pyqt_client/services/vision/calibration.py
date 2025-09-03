@@ -2,6 +2,7 @@
 Camera calibration service for pixel to centimeter conversion
 """
 
+import cv2
 import numpy as np
 from typing import Tuple, Optional
 
