@@ -63,6 +63,7 @@ class KioskMainWindow(QMainWindow):
         self.screens['tariffs'] = TariffsScreen(self)
         self.screens['payment'] = PaymentScreen(self)
         self.screens['goodbye'] = GoodbyeScreen(self)
+        self.screens['free_weigh'] = FreeWeighScreen(self)
         
         # Add screens to stacked widget
         for screen_name, screen in self.screens.items():
