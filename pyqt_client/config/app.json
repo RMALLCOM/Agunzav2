@@ -1,0 +1,10 @@
+{
+  "language": "es",
+  "model_path": null,
+  "px_per_cm": 10.0,
+  "homography_matrix": null,
+  "scale_port": "COM3",
+  "scale_baudrate": 9600,
+  "backend_url": "http://localhost:8001/api",
+  "offline_mode": true
+}
