@@ -163,6 +163,24 @@ class ScanScreen(BaseScreen):
         """)
         self.free_weigh_button.clicked.connect(self.go_free_weigh)
         
+        # Demo weight button (only visible in demo mode)
+        self.demo_weight_button = QPushButton()
+        self.demo_weight_button.setObjectName("btn_demo_weight")
+        self.demo_weight_button.setStyleSheet("""
+            QPushButton {
+                background-color: #ffc107;
+                color: black;
+                font-size: 16px;
+                padding: 12px 24px;
+                margin-left: 8px;
+            }
+            QPushButton:hover {
+                background-color: #e0a800;
+            }
+        """)
+        self.demo_weight_button.clicked.connect(self.show_demo_weight_dialog)
+        self.demo_weight_button.hide()  # Hidden by default
+        
         self.continue_button = QPushButton()
         self.continue_button.setObjectName("btn_continue_scan")
         self.continue_button.setStyleSheet("""
@@ -180,6 +198,7 @@ class ScanScreen(BaseScreen):
         
         button_layout.addWidget(self.back_button)
         button_layout.addWidget(self.free_weigh_button)
+        button_layout.addWidget(self.demo_weight_button)
         button_layout.addStretch()
         button_layout.addWidget(self.continue_button)
         
