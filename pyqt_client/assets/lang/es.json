@@ -1,0 +1,56 @@
+{
+  "welcome": {
+    "title": "Bienvenido",
+    "start": "INICIAR"
+  },
+  "setup": {
+    "title": "Configurador de vuelos",
+    "operator": "Operador",
+    "gate": "Puerta de embarque",
+    "flight": "N° de vuelo",
+    "destination": "Destino",
+    "international": "Internacional",
+    "save": "GUARDAR",
+    "back": "VOLVER"
+  },
+  "start": {
+    "title": "JetSMART",
+    "go_scan": "COMENZAR ESCANEO"
+  },
+  "scan": {
+    "title": "Escaneo",
+    "continue": "CONTINUAR",
+    "back": "VOLVER",
+    "bagdata": "Datos de la maleta",
+    "width": "Ancho (cm)",
+    "length": "Largo (cm)",
+    "weight": "Peso (kg)",
+    "calibration": "Calibración",
+    "calibration_ok": "OK"
+  },
+  "validate": {
+    "ok": "AUTORIZADO",
+    "ok_message": "Autorizado para embarque. ¡Buen viaje!",
+    "fail": "NO CUMPLE",
+    "continue_ok": "CONTINUAR",
+    "continue_to_payment": "CONTINUAR AL PAGO"
+  },
+  "tariffs": {
+    "title": "Tarifas y Pago",
+    "oversize": "Exceso de medidas",
+    "overweight": "Exceso de peso",
+    "total": "Total a pagar",
+    "pay": "PAGAR",
+    "back": "VOLVER"
+  },
+  "payment": {
+    "title": "Pago",
+    "approved": "Pago aprobado",
+    "declined": "Pago rechazado",
+    "print_receipt": "IMPRIMIR RECIBO",
+    "finish": "FINALIZAR"
+  },
+  "goodbye": {
+    "title": "Gracias por usar el validador. Buen viaje"
+  }
+}

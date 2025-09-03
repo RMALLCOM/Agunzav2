@@ -1,0 +1,56 @@
+{
+  "welcome": {
+    "title": "Welcome",
+    "start": "START"
+  },
+  "setup": {
+    "title": "Flight configurator",
+    "operator": "Operator",
+    "gate": "Gate",
+    "flight": "Flight #",
+    "destination": "Destination",
+    "international": "International",
+    "save": "SAVE",
+    "back": "BACK"
+  },
+  "start": {
+    "title": "JetSMART",
+    "go_scan": "START SCAN"
+  },
+  "scan": {
+    "title": "Scan",
+    "continue": "CONTINUE",
+    "back": "BACK",
+    "bagdata": "Bag data",
+    "width": "Width (cm)",
+    "length": "Length (cm)",
+    "weight": "Weight (kg)",
+    "calibration": "Calibration",
+    "calibration_ok": "OK"
+  },
+  "validate": {
+    "ok": "AUTHORIZED",
+    "ok_message": "Authorized for boarding. Have a nice trip!",
+    "fail": "NOT ALLOWED",
+    "continue_ok": "CONTINUE",
+    "continue_to_payment": "PROCEED TO PAYMENT"
+  },
+  "tariffs": {
+    "title": "Pricing & Payment",
+    "oversize": "Oversize fee",
+    "overweight": "Overweight fee",
+    "total": "Total amount",
+    "pay": "PAY",
+    "back": "BACK"
+  },
+  "payment": {
+    "title": "Payment",
+    "approved": "Payment approved",
+    "declined": "Payment declined",
+    "print_receipt": "PRINT RECEIPT",
+    "finish": "FINISH"
+  },
+  "goodbye": {
+    "title": "Thank you for using the validator. Have a nice trip"
+  }
+}
