@@ -405,3 +405,9 @@ class ScanScreen(BaseScreen):
         self.continue_button.setText(self.i18n.t('scan.continue'))
         self.back_button.setText(self.i18n.t('scan.back'))
         self.free_weigh_button.setText(self.i18n.t('scan.free_weigh'))
+        self.demo_weight_button.setText(self.i18n.t('scan.weigh_demo'))
+        
+        # Update last weight label if it exists
+        if self.last_demo_weight is not None:
+            weight_text = f"{self.i18n.t('scan.last_weight')}: {self.last_demo_weight:.1f} kg"
+            self.last_weight_label.setText(weight_text)
