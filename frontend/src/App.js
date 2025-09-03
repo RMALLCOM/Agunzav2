@@ -222,7 +222,28 @@ function useKiosk() {
     return data;
   };
 
-  return { airline, rules, lang, setLang, session, setSession, startSession, setup, setSetup };
+  const activateDemoMode = () => {
+    setDemoMode(true);
+    setLastDemoWeight(null);
+    localStorage.setItem("demoMode", "1");
+  };
+
+  return { 
+    airline, 
+    rules, 
+    lang, 
+    setLang, 
+    session, 
+    setSession, 
+    startSession, 
+    setup, 
+    setSetup,
+    demoMode,
+    setDemoMode,
+    activateDemoMode,
+    lastDemoWeight,
+    setLastDemoWeight 
+  };
 }
 
 // Hidden hotspot (triple tap) - Web UI. In PyQt5 we also implement a similar hidden trigger.
