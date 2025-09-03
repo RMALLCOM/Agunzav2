@@ -555,7 +555,7 @@ function Payment({ kiosk }) {
     <div className="min-h-screen bg-white">
 
       <div className="max-w-3xl mx-auto px-6 py-10">
-        <h2 className="text-3xl font-bold mb-6">{strings['es'].payTitle}</h2>
+        <h2 className="text-3xl font-bold mb-6">{strings[kiosk.lang].payTitle}</h2>
         {result && (
           <Card className="mb-6">
             <CardContent>
