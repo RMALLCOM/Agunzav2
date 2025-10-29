@@ -65,7 +65,7 @@ export function KioskLayout({ title, children, showHeaderActions = true }) {
       <main className="flex-1">{children}</main>
 
       <footer className="w-full border-t border-gray-200 bg-white">
-        <div className="max-w-4xl mx-auto px-4 py-2 text-center text-sm text-foreground/90">{t.madeBy}</div>
+        <div className="max-w-4xl mx-auto px-4 py-2" />
       </footer>
     </div>
   );
