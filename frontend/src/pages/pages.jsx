@@ -332,6 +332,7 @@ export function ScanPage() {
               {t.scanStart}
             </Button>
           </div>
+          </div>
         ) : (
           <>
             <div className={`${TRANS_BOX} p-3 w-full`}>
