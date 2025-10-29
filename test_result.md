@@ -164,9 +164,9 @@
   run_ui: false
 ## test_plan:
   current_focus:
-    - "Probar endpoints backend: /api/health, /api/rules"
-    - "Probar /api/config (404→POST→GET)"
-    - "Probar flujo de subida en chunks y /api/scan/finish devuelve resultados"
+    - "✅ COMPLETED: Probar endpoints backend: /api/health, /api/rules"
+    - "✅ COMPLETED: Probar /api/config (404→POST→GET)"
+    - "✅ COMPLETED: Probar flujo de subida en chunks y /api/scan/finish devuelve resultados"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
