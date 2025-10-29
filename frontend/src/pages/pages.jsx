@@ -17,7 +17,7 @@ import { uploadImageInChunks, api } from "../lib/api";
 const REMOTE_BG = "https://customer-assets.emergentagent.com/job_jetsmart-check/artifacts/du2ocyp9_LNDSUCT4PFD5RBV47C53VUVYHE.jpg";
 const LOCAL_BG = "/assets/jetsmart_bg.jpg"; // Si existe, se usa primero
 // Más transparentes y compactas; y fondo más visible
-const TRANS_BOX = "bg-white/15 backdrop-blur-sm border border-white/30 shadow-sm rounded-3xl";
+const TRANS_BOX = "bg-white/40 backdrop-blur-md border border-white/60 shadow-md rounded-3xl";
 
 // Botón rojo con efecto translúcido estilo glass (inspirado en Apple)
 const BTN_RED_GLASS = {
