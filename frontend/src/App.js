@@ -118,18 +118,26 @@ function useKiosk() {
   };
 }
 
-// Global language toggle (for web UI). For PyQt5, TopBar manages this.
-function LangSwitch({ kiosk, id }) {
+// Componente selector de idioma
+function LangSwitch({ kiosk }) {
   return (
-    <div className="absolute top-0 right-0 p-4 z-20">
+    <div className="absolute top-4 right-4 z-20">
       <Button
-        id={id}
         variant="ghost"
-        className="flex items-center gap-2 bg-[#F2F5FF] text-[#1E3F8A] font-extrabold px-4 py-2 rounded-2xl shadow"
+        className="flex items-center gap-2 bg-white/90 text-[#1E3F8A] font-bold px-4 py-2 rounded-lg shadow hover:bg-white"
         onClick={() => kiosk.setLang(kiosk.lang === "es" ? "en" : "es")}
       >
         <Languages className="w-5 h-5" /> {kiosk.lang.toUpperCase()}
       </Button>
+    </div>
+  );
+}
+
+// Pie de página
+function Footer({ kiosk }) {
+  return (
+    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-gray-500 text-sm">
+      {stringsDict[kiosk.lang].madeWithEmergent}
     </div>
   );
 }
