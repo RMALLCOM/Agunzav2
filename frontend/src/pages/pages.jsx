@@ -355,7 +355,7 @@ export function ScanPage() {
               )}
             </div>
 
-            <div className="max-w-md mx-auto md:mx-0">
+            <div className="w-full">
               <Card className={`${TRANS_BOX}`}>
                 <CardHeader>
                   <CardTitle>Resultados</CardTitle>
