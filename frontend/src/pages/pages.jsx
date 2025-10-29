@@ -15,8 +15,8 @@ import { Camera, TriangleAlert, CheckCircle2, CreditCard, QrCode, ArrowLeft, Pla
 import { uploadImageInChunks, api } from "../lib/api";
 
 const BG_URL = "https://customer-assets.emergentagent.com/job_jetsmart-check/artifacts/du2ocyp9_LNDSUCT4PFD5RBV47C53VUVYHE.jpg";
-// Más redondeadas y compactas
-const TRANS_BOX = "bg-white/70 backdrop-blur-md border border-white/40 shadow-sm rounded-3xl";
+// Más transparentes y más pequeñas
+const TRANS_BOX = "bg-white/40 backdrop-blur-sm border border-white/40 shadow-sm rounded-3xl";
 
 export function KioskLayout({ title, children, showHeaderActions = true }) {
   const { t } = useApp();
@@ -70,13 +70,13 @@ export function HomePage() {
 
   return (
     <KioskLayout title={t.welcome} showHeaderActions={false}>
-      <div className="max-w-3xl mx-auto px-4 py-14">
-        <div className={`${TRANS_BOX} mx-auto max-w-xl p-8 text-center`}> 
+      <div className="max-w-3xl mx-auto px-4 py-12">
+        <div className={`${TRANS_BOX} mx-auto max-w-lg p-6 text-center`}> 
           <div className="text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
           <div className="text-lg text-foreground/80 mt-2">{t.welcome}</div>
-          <div className="pt-6">
+          <div className="pt-5">
             <Button
-              className="h-16 text-lg px-10"
+              className="h-14 text-lg px-8"
               style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }}
               onClick={() => navigate("/config")}
             >
@@ -108,19 +108,19 @@ export function ConfigPage() {
 
   return (
     <KioskLayout title={t.configTitle}>
-      <div className="max-w-3xl mx-auto px-4 py-10">
-        <div className={`${TRANS_BOX} mx-auto max-w-2xl p-6`}>
-          <div className="grid gap-5">
+      <div className="max-w-3xl mx-auto px-4 py-8">
+        <div className={`${TRANS_BOX} mx-auto max-w-xl p-5`}>
+          <div className="grid gap-4">
             <div className="grid gap-2">
               <Label>{t.operator}</Label>
-              <Input value={form.operator} onChange={(e) => setForm({ ...form, operator: e.target.value })} className="h-14 text-lg" />
+              <Input value={form.operator} onChange={(e) => setForm({ ...form, operator: e.target.value })} className="h-12 text-lg" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label>{t.gate}</Label>
                 <Select value={form.gate} onValueChange={(v) => setForm({ ...form, gate: v })}>
-                  <SelectTrigger className="h-14 text-lg"><SelectValue placeholder="A1" /></SelectTrigger>
+                  <SelectTrigger className="h-12 text-lg"><SelectValue placeholder="A1" /></SelectTrigger>
                   <SelectContent>
                     {GATES.map((g) => (
                       <SelectItem key={g} value={g}>{g}</SelectItem>
@@ -130,14 +130,14 @@ export function ConfigPage() {
               </div>
               <div className="grid gap-2">
                 <Label>{t.flight}</Label>
-                <Input value={form.flight} onChange={(e) => setForm({ ...form, flight: e.target.value })} className="h-14 text-lg" placeholder="WJ1234" />
+                <Input value={form.flight} onChange={(e) => setForm({ ...form, flight: e.target.value })} className="h-12 text-lg" placeholder="WJ1234" />
               </div>
             </div>
 
             <div className="grid gap-2">
               <Label>{t.destination}</Label>
               <Select value={form.destination} onValueChange={(v) => setForm({ ...form, destination: v })}>
-                <SelectTrigger className="h-14 text-lg"><SelectValue placeholder="SCL" /></SelectTrigger>
+                <SelectTrigger className="h-12 text-lg"><SelectValue placeholder="SCL" /></SelectTrigger>
                 <SelectContent>
                   {DESTINATIONS.map((d) => (
                     <SelectItem key={d.code} value={d.code}>{d.code} — {d.name}</SelectItem>
@@ -153,7 +153,7 @@ export function ConfigPage() {
 
             <div className="flex gap-3 pt-1">
               <Button
-                className="h-14 text-lg px-10"
+                className="h-12 text-lg px-8"
                 disabled={disabled || loading}
                 style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }}
                 onClick={async () => {
@@ -169,7 +169,7 @@ export function ConfigPage() {
               >
                 {t.save}
               </Button>
-              <Button variant="outline" className="h-14 text-lg px-8" onClick={() => navigate("/")}>{t.back}</Button>
+              <Button variant="outline" className="h-12 text-lg px-8" onClick={() => navigate("/")}>{t.back}</Button>
             </div>
           </div>
         </div>
@@ -257,7 +257,7 @@ export function ScanPage() {
     const r = scan.results;
     const ok = r.complies;
     return (
-      <Card className={`${TRANS_BOX} mt-4`}>
+      <Card className={`${TRANS_BOX} mt-3`}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             {ok ? (
@@ -287,13 +287,13 @@ export function ScanPage() {
             </div>
           )}
 
-          <div className="flex flex-col sm:flex-row gap-3 mt-4">
+          <div className="flex flex-col sm:flex-row gap-3 mt-3">
             {!ok && (
-              <Button variant="outline" className="h-14 text-lg w-full sm:w-auto" onClick={() => navigate("/detail")}>
+              <Button variant="outline" className="h-12 text-lg w-full sm:w-auto" onClick={() => navigate("/detail")}>
                 {t.whyNo}
               </Button>
             )}
-            <Button className="h-14 text-lg w-full sm:w-auto" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={() => navigate("/payment")}>
+            <Button className="h-12 text-lg w-full sm:w-auto" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={() => navigate("/payment")}>
               {t.goToPay}
             </Button>
           </div>
@@ -307,28 +307,28 @@ export function ScanPage() {
       <div className="relative">
         <div className="absolute top-0 left-0 w-12 h-12 z-20" onClick={onSecretClick} aria-label="hotspot" />
       </div>
-      <div className="max-w-5xl mx-auto px-4 py-10">
+      <div className="max-w-5xl mx-auto px-4 py-8">
         {!started ? (
-          <div className={`${TRANS_BOX} mx-auto max-w-xl p-8 text-center`}>
+          <div className={`${TRANS_BOX} mx-auto max-w-lg p-6 text-center`}>
             <div className="text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
             <div className="text-lg text-foreground/80">{t.welcome}</div>
-            <Button className="h-16 text-lg px-10 mt-6" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={() => setStarted(true)}>
+            <Button className="h-14 text-lg px-8 mt-5" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={() => setStarted(true)}>
               {t.scanStart}
             </Button>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 gap-6">
-            <div className={`${TRANS_BOX} p-4`}>
+            <div className={`${TRANS_BOX} p-4 max-w-xl`}>
               <div className="rounded-3xl overflow-hidden bg-black/80 aspect-video flex items-center justify-center">
                 <video ref={videoRef} className="w-full h-full object-contain" playsInline muted />
               </div>
               <canvas ref={canvasRef} className="hidden" />
 
-              <div className="flex gap-3 mt-4">
-                <Button className="h-14 text-lg flex-1" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={doCapture}>
+              <div className="flex gap-3 mt-3">
+                <Button className="h-12 text-lg flex-1" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={doCapture}>
                   <Camera className="mr-2" /> {t.scan}
                 </Button>
-                <Button variant="outline" className="h-14 text-lg flex-1" onClick={() => navigate("/")}> {t.back}</Button>
+                <Button variant="outline" className="h-12 text-lg flex-1" onClick={() => navigate("/")}> {t.back}</Button>
               </div>
               {progress > 0 && progress < 100 && (
                 <Alert className="mt-3">
@@ -350,7 +350,7 @@ export function ScanPage() {
               )}
             </div>
 
-            <div>
+            <div className="max-w-xl">
               <Card className={`${TRANS_BOX}`}>
                 <CardHeader>
                   <CardTitle>Resultados</CardTitle>
@@ -361,7 +361,7 @@ export function ScanPage() {
                   ) : (
                     <div className="text-sm text-foreground/70">Presiona ESCANEAR para obtener resultados.</div>
                   )}
-                  <Separator className="my-4" />
+                  <Separator className="my-3" />
                   <div className="text-xs text-foreground/60">{formatRules()}</div>
                 </CardContent>
               </Card>
@@ -397,7 +397,7 @@ export function DetailPage() {
   return (
     <KioskLayout title={t.detailTitle}>
       <div className="max-w-5xl mx-auto px-4 py-8 grid md:grid-cols-2 gap-6">
-        <div className={`${TRANS_BOX} p-4`}> 
+        <div className={`${TRANS_BOX} p-4 max-w-xl`}> 
           <div className="rounded-3xl overflow-hidden bg-black/80 aspect-video flex items-center justify-center">
             {scan?.dataUrl ? (
               <img src={scan.dataUrl} alt="equipaje" className="w-full h-full object-contain" />
@@ -407,7 +407,7 @@ export function DetailPage() {
           </div>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 max-w-xl">
           <Card className={`${TRANS_BOX}`}>
             <CardHeader>
               <CardTitle>{t.class}: {t.suitcase}</CardTitle>
@@ -454,9 +454,9 @@ export function DetailPage() {
             </Card>
           )}
 
-          <div className={`${TRANS_BOX} p-4 flex gap-3`}>
-            <Button variant="outline" className="h-12 px-8" onClick={() => navigate("/scan")}>{t.back}</Button>
-            <Button className="h-12 px-8" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={() => navigate("/payment")}>
+          <div className={`${TRANS_BOX} p-3 flex gap-3`}>
+            <Button variant="outline" className="h-11 px-8" onClick={() => navigate("/scan")}>{t.back}</Button>
+            <Button className="h-11 px-8" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={() => navigate("/payment")}>
               IR A TARIFAS/PAGO
             </Button>
           </div>
@@ -493,8 +493,8 @@ export function PaymentPage() {
 
   return (
     <KioskLayout title={t.payTitle}>
-      <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
-        <Card className={`${TRANS_BOX}`}>
+      <div className="max-w-4xl mx-auto px-4 py-8 space-y-4">
+        <Card className={`${TRANS_BOX} max-w-xl`}>
           <CardHeader>
             <CardTitle>Resumen</CardTitle>
           </CardHeader>
@@ -524,7 +524,7 @@ export function PaymentPage() {
           </CardContent>
         </Card>
 
-        <Card className={`${TRANS_BOX}`}>
+        <Card className={`${TRANS_BOX} max-w-xl`}>
           <CardHeader>
             <CardTitle>Método de pago</CardTitle>
           </CardHeader>
@@ -532,7 +532,7 @@ export function PaymentPage() {
             <div className="flex gap-3 flex-col sm:flex-row">
               <Button
                 variant={method === "CARD" ? "default" : "outline"}
-                className="h-14 text-lg flex-1"
+                className="h-12 text-lg flex-1"
                 style={method === "CARD" ? { backgroundColor: JETSMART_COLORS.blue, color: "white" } : {}}
                 onClick={() => setMethod("CARD")}
               >
@@ -540,35 +540,35 @@ export function PaymentPage() {
               </Button>
               <Button
                 variant={method === "QR" ? "default" : "outline"}
-                className="h-14 text-lg flex-1"
+                className="h-12 text-lg flex-1"
                 onClick={() => setMethod("QR")}
               >
                 <QrCode className="mr-2" /> {t.payQR}
               </Button>
             </div>
 
-            <div className="flex gap-3 mt-4">
+            <div className="flex gap-3 mt-3">
               <Button
-                className="h-14 text-lg flex-1"
+                className="h-12 text-lg flex-1"
                 style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }}
                 onClick={() => setPaid(true)}
               >
                 {t.pay}
               </Button>
-              <Button variant="outline" className="h-14 text-lg flex-1" onClick={() => navigate("/scan")}>{t.back}</Button>
+              <Button variant="outline" className="h-12 text-lg flex-1" onClick={() => navigate("/scan")}>{t.back}</Button>
             </div>
 
             {paid && (
-              <Alert className="mt-4" variant="default">
+              <Alert className="mt-3" variant="default">
                 <AlertTitle>✅ {t.approved}</AlertTitle>
                 <AlertDescription>Se registró el pago simulado correctamente.</AlertDescription>
               </Alert>
             )}
 
             {paid && (
-              <div className="pt-4">
+              <div className="pt-3">
                 <Button
-                  className="h-12 px-8"
+                  className="h-11 px-8"
                   onClick={() => {
                     setScan({ dataUrl: null, results: null });
                     navigate("/scan");
