@@ -323,7 +323,7 @@ export function ScanPage() {
           </div>
         ) : (
           <div className="grid md:grid-cols-[1fr,1fr] gap-3 items-start">
-            <div className={`${TRANS_BOX} p-3 max-w-md mx-auto md:mx-0`}>
+            <div className={`${TRANS_BOX} p-3 w-full`}>
               <div className="rounded-3xl overflow-hidden bg-black/80 aspect-video flex items-center justify-center">
                 <video ref={videoRef} className="w-full h-full object-contain" playsInline muted />
               </div>
@@ -402,7 +402,7 @@ export function DetailPage() {
   return (
     <KioskLayout title={t.detailTitle}>
       <div className="max-w-5xl mx-auto px-4 py-8 grid md:grid-cols-2 gap-3">
-        <div className={`${TRANS_BOX} p-3 max-w-md mx-auto md:mx-0`}> 
+        <div className={`${TRANS_BOX} p-3 w-full`}> 
           <div className="rounded-3xl overflow-hidden bg-black/80 aspect-video flex items-center justify-center">
             {scan?.dataUrl ? (
               <img src={scan.dataUrl} alt="equipaje" className="w-full h-full object-contain" />
