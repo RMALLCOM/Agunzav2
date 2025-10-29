@@ -324,7 +324,7 @@ export function ScanPage() {
       </div>
       <div className="max-w-6xl mx-auto px-4 py-8">
         {!started ? (
-          <div className="w-full flex justify-center">
+          <div className="w-full flex items-center justify-center min-h-[60vh]">
             <div className={`${TRANS_BOX} max-w-md w-full p-5 text-center`}>
             <div className="text-4xl md:text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
             <div className="text-base md:text-lg text-foreground/90">{t.welcome}</div>
