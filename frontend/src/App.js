@@ -334,32 +334,102 @@ function StartScan({ kiosk }) {
   );
 }
 
-// Start tab screen (same look as Welcome)
-function StartScan({ kiosk }) {
-  const nav = useNavigate();
-  const tr = strings[kiosk.lang];
-  const bgUrl = "https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/uqbelias_image%2012.png";
+// Componente de cámara con captura
+function CameraCapture({ onCapture, kiosk }) {
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const [stream, setStream] = useState(null);
+  const [isReady, setIsReady] = useState(false);
+  const strings = stringsDict[kiosk.lang];
   
-  const handleDemoActivation = () => {
-    kiosk.activateDemoMode();
-    // Show toast notification
-    const toast = document.createElement('div');
-    toast.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
-    toast.textContent = kiosk.lang === 'es' ? 'Modo demo activado' : 'Demo mode activated';
-    document.body.appendChild(toast);
-    setTimeout(() => document.body.removeChild(toast), 3000);
+  useEffect(() => {
+    startCamera();
+    return () => stopCamera();
+  }, []);
+  
+  const startCamera = async () => {
+    try {
+      const mediaStream = await navigator.mediaDevices.getUserMedia({ 
+        video: { width: 1280, height: 720 } 
+      });
+      setStream(mediaStream);
+      if (videoRef.current) {
+        videoRef.current.srcObject = mediaStream;
+        videoRef.current.onloadedmetadata = () => setIsReady(true);
+      }
+    } catch (error) {
+      console.error("Error accessing camera:", error);
+      alert("No se pudo acceder a la cámara");
+    }
+  };
+  
+  const stopCamera = () => {
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+    }
+  };
+  
+  const captureImage = () => {
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    
+    if (video && canvas) {
+      const context = canvas.getContext('2d');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      context.drawImage(video, 0, 0);
+      
+      canvas.toBlob((blob) => {
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const filename = `equipaje_${timestamp}.jpg`;
+        
+        // Crear enlace de descarga
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        // Guardar imagen capturada
+        kiosk.setCapturedImage(url);
+        
+        // Simular mediciones
+        const measurements = {
+          width: Math.round((Math.random() * 20 + 40) * 10) / 10, // 40-60 cm
+          length: Math.round((Math.random() * 20 + 50) * 10) / 10, // 50-70 cm  
+          weight: Math.round((Math.random() * 8 + 6) * 10) / 10, // 6-14 kg
+          calibration: "OK"
+        };
+        
+        kiosk.setScanResult(measurements);
+        onCapture(measurements);
+      }, 'image/jpeg', 0.8);
+    }
   };
   
   return (
-    <div className="relative min-h-screen kiosk-bg" style={{ backgroundImage: `url(${bgUrl})` }}>
-      <LangSwitch kiosk={kiosk} id="lang_toggle" />
-      <DemoHotspot onActivate={handleDemoActivation} />
-      <div className="hero-overlay absolute inset-0 flex items-center justify-center">
-        <div className="text-center max-w-3xl p-8">
-          <h1 className="text-5xl font-extrabold text-gray-900 mb-4">JetSMART</h1>
-          <Button id="btn_go_scan" className="text-2xl px-10 py-6" variant="accent" onClick={() => nav("/scan")}>{tr.startScan}</Button>
-        </div>
-      </div>
+    <div className="relative">
+      <video 
+        ref={videoRef}
+        autoPlay
+        playsInline
+        muted
+        className="w-full max-w-4xl h-96 bg-black rounded-lg border-4 border-[#1E3F8A]"
+      />
+      <canvas ref={canvasRef} className="hidden" />
+      
+      {isReady && (
+        <Button
+          onClick={captureImage}
+          className="absolute bottom-4 right-4 bg-[#E20C18] hover:bg-[#C70A15] text-white px-6 py-3 rounded-lg font-bold"
+        >
+          <Camera className="w-5 h-5 mr-2" />
+          {strings.scan}
+        </Button>
+      )}
     </div>
   );
 }
