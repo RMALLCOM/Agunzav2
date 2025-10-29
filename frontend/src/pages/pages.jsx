@@ -15,13 +15,14 @@ import { Camera, TriangleAlert, CheckCircle2, CreditCard, QrCode, ArrowLeft, Pla
 import { uploadImageInChunks, api } from "../lib/api";
 
 const BG_URL = "https://customer-assets.emergentagent.com/job_jetsmart-check/artifacts/du2ocyp9_LNDSUCT4PFD5RBV47C53VUVYHE.jpg";
-const TRANS_BOX = "bg-white/70 backdrop-blur-md border border-white/40 shadow-sm rounded-2xl";
+// Más redondeadas y compactas
+const TRANS_BOX = "bg-white/70 backdrop-blur-md border border-white/40 shadow-sm rounded-3xl";
 
 export function KioskLayout({ title, children, showHeaderActions = true }) {
   const { t } = useApp();
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden" style={{ background: "#F5F7FB" }}>
-      {/* Blurred background image across all pages */}
+      {/* Fondo difuminado */}
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 -z-10"
@@ -34,7 +35,6 @@ export function KioskLayout({ title, children, showHeaderActions = true }) {
           willChange: "transform",
         }}
       />
-      {/* Soft overlay to ensure readability */}
       <div aria-hidden className="fixed inset-0 -z-10 bg-white/30" />
 
       <header className="w-full border-b bg-white/80 sticky top-0 backdrop-blur z-10">
@@ -70,8 +70,8 @@ export function HomePage() {
 
   return (
     <KioskLayout title={t.welcome} showHeaderActions={false}>
-      <div className="max-w-3xl mx-auto px-4 py-16">
-        <div className={`${TRANS_BOX} p-10 text-center`}> 
+      <div className="max-w-3xl mx-auto px-4 py-14">
+        <div className={`${TRANS_BOX} mx-auto max-w-xl p-8 text-center`}> 
           <div className="text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
           <div className="text-lg text-foreground/80 mt-2">{t.welcome}</div>
           <div className="pt-6">
@@ -100,9 +100,7 @@ export function ConfigPage() {
       try {
         const res = await api.get("/config");
         if (res?.data) setForm(res.data);
-      } catch (e) {
-        // 404 si no existe, ignorar
-      }
+      } catch (e) {}
     })();
   }, []);
 
@@ -111,14 +109,14 @@ export function ConfigPage() {
   return (
     <KioskLayout title={t.configTitle}>
       <div className="max-w-3xl mx-auto px-4 py-10">
-        <div className={`${TRANS_BOX} p-8`}>
-          <div className="grid gap-6">
+        <div className={`${TRANS_BOX} mx-auto max-w-2xl p-6`}>
+          <div className="grid gap-5">
             <div className="grid gap-2">
               <Label>{t.operator}</Label>
               <Input value={form.operator} onChange={(e) => setForm({ ...form, operator: e.target.value })} className="h-14 text-lg" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="grid gap-2">
                 <Label>{t.gate}</Label>
                 <Select value={form.gate} onValueChange={(v) => setForm({ ...form, gate: v })}>
@@ -153,7 +151,7 @@ export function ConfigPage() {
               <Label htmlFor="intl">{t.intl}</Label>
             </div>
 
-            <div className="flex gap-3 pt-2">
+            <div className="flex gap-3 pt-1">
               <Button
                 className="h-14 text-lg px-10"
                 disabled={disabled || loading}
@@ -190,7 +188,6 @@ export function ScanPage() {
   const [captured, setCaptured] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  // Hidden hotspot triple click to /config
   const clickCount = useRef(0);
   const timerRef = useRef(null);
   const onSecretClick = () => {
@@ -237,15 +234,12 @@ export function ScanPage() {
 
       if (!dataUrl) throw new Error("No se pudo crear imagen");
 
-      // Convert dataURL to Blob
       const res = await fetch(dataUrl);
       const blob = await res.blob();
 
-      // Upload in chunks to backend and get results
       setProgress(1);
       const resp = await uploadImageInChunks(blob, (pct) => setProgress(pct));
 
-      // Optional: also trigger local download (mock)
       const now = new Date();
       const ts = now.toISOString().replace(/[:.]/g, "-");
       downloadDataUrl(dataUrl, `equipaje_${ts}.jpg`);
@@ -315,7 +309,7 @@ export function ScanPage() {
       </div>
       <div className="max-w-5xl mx-auto px-4 py-10">
         {!started ? (
-          <div className={`${TRANS_BOX} p-10 text-center`}>
+          <div className={`${TRANS_BOX} mx-auto max-w-xl p-8 text-center`}>
             <div className="text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
             <div className="text-lg text-foreground/80">{t.welcome}</div>
             <Button className="h-16 text-lg px-10 mt-6" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={() => setStarted(true)}>
@@ -325,7 +319,7 @@ export function ScanPage() {
         ) : (
           <div className="grid md:grid-cols-2 gap-6">
             <div className={`${TRANS_BOX} p-4`}>
-              <div className="rounded-xl overflow-hidden bg-black/80 aspect-video flex items-center justify-center">
+              <div className="rounded-3xl overflow-hidden bg-black/80 aspect-video flex items-center justify-center">
                 <video ref={videoRef} className="w-full h-full object-contain" playsInline muted />
               </div>
               <canvas ref={canvasRef} className="hidden" />
@@ -404,7 +398,7 @@ export function DetailPage() {
     <KioskLayout title={t.detailTitle}>
       <div className="max-w-5xl mx-auto px-4 py-8 grid md:grid-cols-2 gap-6">
         <div className={`${TRANS_BOX} p-4`}> 
-          <div className="rounded-xl overflow-hidden bg-black/80 aspect-video flex items-center justify-center">
+          <div className="rounded-3xl overflow-hidden bg-black/80 aspect-video flex items-center justify-center">
             {scan?.dataUrl ? (
               <img src={scan.dataUrl} alt="equipaje" className="w-full h-full object-contain" />
             ) : (
