@@ -170,6 +170,7 @@
     - "✅ COMPLETED: Probar endpoints backend: /api/health, /api/rules"
     - "✅ COMPLETED: Probar /api/config (404→POST→GET)"
     - "✅ COMPLETED: Probar flujo de subida en chunks y /api/scan/finish devuelve resultados"
+    - "✅ COMPLETED: Probar flujo completo frontend: Home→Config→Scan→Results→Detail→Payment"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
