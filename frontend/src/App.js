@@ -133,12 +133,35 @@ function LangSwitch({ kiosk }) {
   );
 }
 
-// Pie de página
-function Footer({ kiosk }) {
+// Botón oculto para acceso a configuración (triple-tap)
+function HiddenConfigButton({ onActivate }) {
+  const [count, setCount] = useState(0);
+  const timerRef = useRef(null);
+  
+  const onClick = () => {
+    setCount(c => {
+      const next = c + 1;
+      if (next === 1) {
+        timerRef.current = setTimeout(() => setCount(0), 3000); // 3 segundos
+      }
+      if (next >= 3) { // 3 taps
+        clearTimeout(timerRef.current);
+        setCount(0);
+        onActivate();
+        return 0;
+      }
+      return next;
+    });
+  };
+
+  useEffect(() => () => clearTimeout(timerRef.current), []);
+
   return (
-    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-gray-500 text-sm">
-      {stringsDict[kiosk.lang].madeWithEmergent}
-    </div>
+    <div
+      className="absolute top-4 left-4 w-12 h-12 opacity-0 cursor-pointer z-50"
+      onClick={onClick}
+      title="Configuración (tocar 3 veces)"
+    />
   );
 }
 
