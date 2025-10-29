@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useApp } from "../context/AppContext";
-import { RULES, mockEvaluateBaggage, mockPricing, formatRules, toDataUrl, downloadDataUrl, JETSMART_COLORS } from "../mock/mock";
+import { RULES, mockPricing, formatRules, toDataUrl, downloadDataUrl, JETSMART_COLORS } from "../mock/mock";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Checkbox } from "../components/ui/checkbox";
@@ -12,6 +12,7 @@ import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
 import { Separator } from "../components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 import { Camera, TriangleAlert, CheckCircle2, CreditCard, QrCode, ArrowLeft, Plane, Settings } from "lucide-react";
+import { uploadImageInChunks } from "../lib/api";
 
 export function KioskLayout({ title, children, showHeaderActions = true }) {
   const { t, lang, setLang, config } = useApp();
@@ -76,7 +77,7 @@ export function HomePage() {
   const navigate = useNavigate();
 
   return (
-    <KioskLayout title={t.welcome}>
+    <KioskLayout title={t.welcome} showHeaderActions={false}>
       <div className="max-w-4xl mx-auto px-4 py-16">
         <div className="flex flex-col items-center text-center gap-6 pt-8">
           <div className="text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
@@ -86,7 +87,7 @@ export function HomePage() {
             <Button
               className="h-16 text-lg px-10 w-full sm:w-auto"
               style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }}
-              onClick={() => navigate("/scan")}
+              onClick={() => navigate("/config")}
             >
               {t.start}
             </Button>
@@ -155,7 +156,7 @@ export function ConfigPage() {
               style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }}
               onClick={() => {
                 setConfig(form);
-                navigate("/");
+                navigate("/scan");
               }}
             >
               {t.save}
@@ -176,6 +177,20 @@ export function ScanPage() {
   const canvasRef = useRef(null);
   const [error, setError] = useState("");
   const [captured, setCaptured] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  // Hidden hotspot triple click to /config
+  const clickCount = useRef(0);
+  const timerRef = useRef(null);
+  const onSecretClick = () => {
+    clickCount.current += 1;
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => { clickCount.current = 0; }, 1200);
+    if (clickCount.current >= 3) {
+      clickCount.current = 0;
+      navigate("/config");
+    }
+  };
 
   useEffect(() => {
     if (!started) return;
@@ -208,18 +223,27 @@ export function ScanPage() {
       const ctx = canvas.getContext("2d");
       ctx.drawImage(video, 0, 0, w, h);
       const dataUrl = toDataUrl(canvas);
+
+      if (!dataUrl) throw new Error("No se pudo crear imagen");
+
+      // Convert dataURL to Blob
+      const res = await fetch(dataUrl);
+      const blob = await res.blob();
+
+      // Upload in chunks to backend and get results
+      setProgress(1);
+      const resp = await uploadImageInChunks(blob, (pct) => setProgress(pct));
+
+      // Optional: also trigger local download (mock) so user can see file
       const now = new Date();
       const ts = now.toISOString().replace(/[:.]/g, "-");
-      const fileName = `equipaje_${ts}.jpg`;
-      if (dataUrl) {
-        // Frontend-only mock: trigger browser download for local save
-        downloadDataUrl(dataUrl, fileName);
-      }
-      const results = mockEvaluateBaggage();
-      setScan({ dataUrl, results });
+      downloadDataUrl(dataUrl, `equipaje_${ts}.jpg`);
+
+      setScan({ dataUrl, results: resp.results });
       setCaptured(true);
+      setProgress(100);
     } catch (e) {
-      setError("Error al capturar imagen.");
+      setError("Error al capturar o enviar imagen.");
     }
   };
 
@@ -274,7 +298,10 @@ export function ScanPage() {
   };
 
   return (
-    <KioskLayout title={t.welcome}>
+    <KioskLayout title={t.welcome} showHeaderActions={false}>
+      <div className="relative">
+        <div className="absolute top-0 left-0 w-12 h-12 z-20" onClick={onSecretClick} aria-label="hotspot" />
+      </div>
       <div className="max-w-4xl mx-auto px-4 py-10">
         {!started ? (
           <div className="flex flex-col items-center text-center gap-6 pt-8">
@@ -298,10 +325,16 @@ export function ScanPage() {
                 </Button>
                 <Button variant="outline" className="h-14 text-lg flex-1" onClick={() => navigate("/")}> {t.back}</Button>
               </div>
+              {progress > 0 && progress < 100 && (
+                <Alert>
+                  <AlertTitle>Subiendo imagen</AlertTitle>
+                  <AlertDescription>Progreso: {progress}%</AlertDescription>
+                </Alert>
+              )}
               {captured && (
                 <Alert>
-                  <AlertTitle>{t.imageSavedMock}</AlertTitle>
-                  <AlertDescription>Esta es una descarga de imagen simulada. El guardado real en la carpeta del escritorio se hará en el backend.</AlertDescription>
+                  <AlertTitle>Imagen guardada</AlertTitle>
+                  <AlertDescription>Se guardó una copia en Escritorio/imagenes_ia desde el backend. (También descargada localmente como demo)</AlertDescription>
                 </Alert>
               )}
               {error && (
