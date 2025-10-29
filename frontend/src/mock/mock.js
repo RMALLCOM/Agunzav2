@@ -63,7 +63,7 @@ export const i18n = {
     length: "Largo",
     height: "Alto",
     weight: "Peso",
-    madeBy: "Made with Emergent",
+    madeBy: "@jetsmart2025",
     imageSavedMock: "Imagen capturada (mock, guardado local en descarga)",
   },
   EN: {
@@ -100,7 +100,7 @@ export const i18n = {
     length: "Length",
     height: "Height",
     weight: "Weight",
-    madeBy: "Made with Emergent",
+    madeBy: "@jetsmart2025",
     imageSavedMock: "Image captured (mock, downloaded locally)",
   },
 };

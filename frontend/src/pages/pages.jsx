@@ -72,42 +72,25 @@ export function KioskLayout({ title, children, showHeaderActions = true }) {
 }
 
 export function HomePage() {
-  const { t, config } = useApp();
+  const { t } = useApp();
   const navigate = useNavigate();
-  const primaryLabel = config?.flight ? t.scanStart : t.start;
 
   return (
     <KioskLayout title={t.welcome}>
-      <div className="max-w-4xl mx-auto px-4 py-10">
+      <div className="max-w-4xl mx-auto px-4 py-16">
         <div className="flex flex-col items-center text-center gap-6 pt-8">
           <div className="text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
           <div className="text-lg text-foreground/70">{t.welcome}</div>
 
-          <div className="flex gap-4 pt-4 flex-col sm:flex-row w-full sm:w-auto">
+          <div className="pt-4 w-full sm:w-auto">
             <Button
               className="h-16 text-lg px-10 w-full sm:w-auto"
               style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }}
-              onClick={() => navigate(config?.flight ? "/scan" : "/config")}
+              onClick={() => navigate("/scan")}
             >
-              {primaryLabel}
-            </Button>
-            <Button
-              variant="outline"
-              className="h-16 text-lg px-8 w-full sm:w-auto"
-              onClick={() => navigate("/config")}
-            >
-              <Settings className="mr-2" size={20} /> {t.configTitle}
+              {t.start}
             </Button>
           </div>
-
-          <Card className="w-full max-w-2xl mt-6">
-            <CardHeader>
-              <CardTitle className="text-base">Reglas activas</CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm text-foreground/70">
-              L {RULES.L} / W {RULES.W} / H {RULES.H} cm • Peso {RULES.KG} kg
-            </CardContent>
-          </Card>
         </div>
       </div>
     </KioskLayout>
@@ -291,68 +274,62 @@ export function ScanPage() {
   };
 
   return (
-    <KioskLayout title="JetSMART">
-      <div className="max-w-4xl mx-auto px-4 py-6">
-        <div className="flex flex-col gap-4">
-          {!started ? (
-            <div className="flex flex-col items-center gap-4">
-              <Button className="h-16 text-lg px-10" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={() => setStarted(true)}>
-                {" "}
-                {t.scanStart}
-              </Button>
-              <Button variant="outline" className="h-16 text-lg px-8" onClick={() => window.history.back()}>
-                <ArrowLeft className="mr-2" /> {t.back}
-              </Button>
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-3">
-                <div className="rounded-xl overflow-hidden bg-black/80 aspect-video flex items-center justify-center">
-                  <video ref={videoRef} className="w-full h-full object-contain" playsInline muted />
-                </div>
-                <canvas ref={canvasRef} className="hidden" />
-
-                <div className="flex gap-3">
-                  <Button className="h-14 text-lg flex-1" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={doCapture}>
-                    <Camera className="mr-2" /> {t.scan}
-                  </Button>
-                  <Button variant="outline" className="h-14 text-lg flex-1" onClick={() => window.history.back()}>
-                    <ArrowLeft className="mr-2" /> {t.back}
-                  </Button>
-                </div>
-                {captured && (
-                  <Alert>
-                    <AlertTitle>{t.imageSavedMock}</AlertTitle>
-                    <AlertDescription>Esta es una descarga de imagen simulada. El guardado real en la carpeta del escritorio se hará en el backend.</AlertDescription>
-                  </Alert>
-                )}
-                {error && (
-                  <Alert variant="destructive">
-                    <AlertTitle>Error</AlertTitle>
-                    <AlertDescription>{error}</AlertDescription>
-                  </Alert>
-                )}
+    <KioskLayout title={t.welcome}>
+      <div className="max-w-4xl mx-auto px-4 py-10">
+        {!started ? (
+          <div className="flex flex-col items-center text-center gap-6 pt-8">
+            <div className="text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
+            <div className="text-lg text-foreground/70">{t.welcome}</div>
+            <Button className="h-16 text-lg px-10" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={() => setStarted(true)}>
+              {t.scanStart}
+            </Button>
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <div className="rounded-xl overflow-hidden bg-black/80 aspect-video flex items-center justify-center">
+                <video ref={videoRef} className="w-full h-full object-contain" playsInline muted />
               </div>
+              <canvas ref={canvasRef} className="hidden" />
 
-              <div>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Resultados</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    {scan?.results ? (
-                      <ResultsPanel />
-                    ) : (
-                      <div className="text-sm text-foreground/70">Presiona ESCANEAR para obtener resultados.</div>
-                    )}
-                    <Separator className="my-4" />
-                    <div className="text-xs text-foreground/60">{formatRules()}</div>
-                  </CardContent>
-                </Card>
+              <div className="flex gap-3">
+                <Button className="h-14 text-lg flex-1" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={doCapture}>
+                  <Camera className="mr-2" /> {t.scan}
+                </Button>
+                <Button variant="outline" className="h-14 text-lg flex-1" onClick={() => navigate("/")}> {t.back}</Button>
               </div>
+              {captured && (
+                <Alert>
+                  <AlertTitle>{t.imageSavedMock}</AlertTitle>
+                  <AlertDescription>Esta es una descarga de imagen simulada. El guardado real en la carpeta del escritorio se hará en el backend.</AlertDescription>
+                </Alert>
+              )}
+              {error && (
+                <Alert variant="destructive">
+                  <AlertTitle>Error</AlertTitle>
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
             </div>
-          )}
-        </div>
+
+            <div>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Resultados</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {scan?.results ? (
+                    <ResultsPanel />
+                  ) : (
+                    <div className="text-sm text-foreground/70">Presiona ESCANEAR para obtener resultados.</div>
+                  )}
+                  <Separator className="my-4" />
+                  <div className="text-xs text-foreground/60">{formatRules()}</div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        )}
       </div>
     </KioskLayout>
   );
