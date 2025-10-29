@@ -46,7 +46,7 @@ export function KioskLayout({ title, children, showHeaderActions = true }) {
 
       {/* Sin overlay para apreciar al máximo la imagen */}
 
-      <header className="w-full border-b border-white/30 bg-white/10 sticky top-0 backdrop-blur-sm z-10">
+      <header className="w-full border-b border-gray-200 bg-white sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-2 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-full bg-[#002D72]/20 flex items-center justify-center">
