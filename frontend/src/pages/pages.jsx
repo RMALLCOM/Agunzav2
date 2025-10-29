@@ -14,31 +14,29 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Camera, TriangleAlert, CheckCircle2, CreditCard, QrCode, Plane } from "lucide-react";
 import { uploadImageInChunks, api } from "../lib/api";
 
-const BG_URL = "https://customer-assets.emergentagent.com/job_jetsmart-check/artifacts/du2ocyp9_LNDSUCT4PFD5RBV47C53VUVYHE.jpg";
-// Más transparentes y compactas; que el fondo se aprecie más
-const TRANS_BOX = "bg-white/25 backdrop-blur-sm border border-white/40 shadow-sm rounded-3xl";
+const REMOTE_BG = "https://customer-assets.emergentagent.com/job_jetsmart-check/artifacts/du2ocyp9_LNDSUCT4PFD5RBV47C53VUVYHE.jpg";
+const LOCAL_BG = "/assets/jetsmart_bg.jpg"; // Si existe, se usa primero
+// Más transparentes y compactas; y fondo más visible
+const TRANS_BOX = "bg-white/20 backdrop-blur-sm border border-white/40 shadow-sm rounded-3xl";
 
 export function KioskLayout({ title, children, showHeaderActions = true }) {
   const { t } = useApp();
+  const bgStyle = {
+    backgroundImage: `url(${LOCAL_BG}), url(${REMOTE_BG})`,
+    backgroundSize: "cover, cover",
+    backgroundPosition: "center, center",
+    filter: "blur(2px)",
+    transform: "scale(1.02)",
+    willChange: "transform",
+  };
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden">
-      {/* Fondo difuminado global */}
-      <div
-        aria-hidden
-        className="pointer-events-none fixed inset-0 -z-10"
-        style={{
-          backgroundImage: `url(${BG_URL})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          filter: "blur(6px)",
-          transform: "scale(1.03)",
-          willChange: "transform",
-        }}
-      />
-      {/* Overlay muy sutil para legibilidad general */}
-      <div aria-hidden className="fixed inset-0 -z-10 bg-white/10" />
+      {/* Fondo difuminado global (local primero, remoto respaldo) */}
+      <div aria-hidden className="fixed inset-0 -z-20" style={bgStyle} />
 
-      <header className="w-full border-b border-white/40 bg-white/40 sticky top-0 backdrop-blur-md z-10">
+      {/* SIN overlay global para que el fondo se aprecie más */}
+
+      <header className="w-full border-b border-white/40 bg-white/30 sticky top-0 backdrop-blur-md z-10">
         <div className="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-full bg-[#002D72]/20 flex items-center justify-center">
@@ -46,7 +44,7 @@ export function KioskLayout({ title, children, showHeaderActions = true }) {
             </div>
             <div>
               <div className="text-xl font-semibold" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
-              <div className="text-xs text-foreground/80">{title}</div>
+              <div className="text-xs text-foreground/90">{title}</div>
             </div>
           </div>
 
@@ -56,8 +54,8 @@ export function KioskLayout({ title, children, showHeaderActions = true }) {
 
       <main className="flex-1">{children}</main>
 
-      <footer className="w-full border-t border-white/40 bg-white/40 backdrop-blur-md">
-        <div className="max-w-4xl mx-auto px-4 py-2.5 text-center text-sm text-foreground/80">{t.madeBy}</div>
+      <footer className="w-full border-t border-white/40 bg-white/30 backdrop-blur-md">
+        <div className="max-w-4xl mx-auto px-4 py-2.5 text-center text-sm text-foreground/90">{t.madeBy}</div>
       </footer>
     </div>
   );
@@ -274,7 +272,7 @@ export function ScanPage() {
             <div>{t.height}: <b>{r.H} cm</b></div>
             <div>{t.weight}: <b>{r.KG} kg</b></div>
           </div>
-          <div className="text-sm text-foreground/70 mt-2">{r.calibrationOk ? t.calibrOk : t.calibrErr}</div>
+          <div className="text-sm text-foreground/80 mt-2">{r.calibrationOk ? t.calibrOk : t.calibrErr}</div>
           {r.reasons?.length > 0 && (
             <div className="mt-3 text-sm">
               <div className="font-medium mb-1">Detalles:</div>
@@ -358,10 +356,10 @@ export function ScanPage() {
                   {scan?.results ? (
                     <ResultsPanel />
                   ) : (
-                    <div className="text-sm text-foreground/80">Presiona ESCANEAR para obtener resultados.</div>
+                    <div className="text-sm text-foreground/90">Presiona ESCANEAR para obtener resultados.</div>
                   )}
                   <Separator className="my-3" />
-                  <div className="text-xs text-foreground/80">{formatRules()}</div>
+                  <div className="text-xs text-foreground/90">{formatRules()}</div>
                 </CardContent>
               </Card>
             </div>
@@ -418,7 +416,7 @@ export function DetailPage() {
                 <div>{t.height}: <b>{r.H} cm</b></div>
                 <div>{t.weight}: <b>{r.KG} kg</b></div>
               </div>
-              <div className="text-xs text-foreground/80 mt-2">{formatRules()}</div>
+              <div className="text-xs text-foreground/90 mt-2">{formatRules()}</div>
             </CardContent>
           </Card>
 
