@@ -19,6 +19,16 @@ const LOCAL_BG = "/assets/jetsmart_bg.jpg"; // Si existe, se usa primero
 // Más transparentes y compactas; y fondo más visible
 const TRANS_BOX = "bg-white/15 backdrop-blur-sm border border-white/30 shadow-sm rounded-3xl";
 
+// Botón rojo con efecto translúcido estilo glass (inspirado en Apple)
+const BTN_RED_GLASS = {
+  backgroundColor: "rgba(227, 6, 19, 0.85)",
+  color: "white",
+  backdropFilter: "saturate(180%) blur(8px)",
+  WebkitBackdropFilter: "saturate(180%) blur(8px)",
+  border: "1px solid rgba(227, 6, 19, 0.35)",
+  boxShadow: "0 8px 24px rgba(227, 6, 19, 0.25)",
+};
+
 export function KioskLayout({ title, children, showHeaderActions = true }) {
   const { t } = useApp();
   const bgStyle = {
@@ -74,7 +84,7 @@ export function HomePage() {
           <div className="pt-4">
             <Button
               className="h-12 md:h-14 text-lg px-8"
-              style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }}
+              style={BTN_RED_GLASS}
               onClick={() => navigate("/config")}
             >
               {t.start}
@@ -152,7 +162,7 @@ export function ConfigPage() {
               <Button
                 className="h-12 text-lg px-8"
                 disabled={disabled || loading}
-                style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }}
+                style={BTN_RED_GLASS}
                 onClick={async () => {
                   try {
                     setLoading(true);
@@ -296,7 +306,7 @@ export function ScanPage() {
             )}
             <Button
               className="col-span-2 sm:col-span-1 h-12 text-base md:text-lg px-6 md:px-8"
-              style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }}
+              style={BTN_RED_GLASS}
               onClick={() => navigate("/payment")}
             >
               {t.goToPay}
@@ -312,17 +322,17 @@ export function ScanPage() {
       <div className="relative">
         <div className="absolute top-0 left-0 w-12 h-12 z-20" onClick={onSecretClick} aria-label="hotspot" />
       </div>
-      <div className="max-w-5xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-4 py-8 grid md:grid-cols-[1fr,1fr] gap-4 items-start">
         {!started ? (
           <div className={`${TRANS_BOX} mx-auto max-w-md p-5 text-center`}>
             <div className="text-4xl md:text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
             <div className="text-base md:text-lg text-foreground/90">{t.welcome}</div>
-            <Button className="h-12 md:h-14 text-lg px-8 mt-4" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={() => setStarted(true)}>
+            <Button className="h-12 md:h-14 text-lg px-8 mt-4" style={BTN_RED_GLASS} onClick={() => setStarted(true)}>
               {t.scanStart}
             </Button>
           </div>
         ) : (
-          <div className="grid md:grid-cols-[1fr,1fr] gap-3 items-start">
+          <>
             <div className={`${TRANS_BOX} p-3 w-full`}>
               <div className="rounded-3xl overflow-hidden bg-black/80 aspect-video flex items-center justify-center">
                 <video ref={videoRef} className="w-full h-full object-contain" playsInline muted />
@@ -330,7 +340,7 @@ export function ScanPage() {
               <canvas ref={canvasRef} className="hidden" />
 
               <div className="flex gap-2.5 mt-3">
-                <Button className="h-12 text-lg flex-1" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={doCapture}>
+                <Button className="h-12 text-lg flex-1" style={BTN_RED_GLASS} onClick={doCapture}>
                   <Camera className="mr-2" /> {t.scan}
                 </Button>
                 <Button variant="outline" className="h-12 text-lg flex-1" onClick={() => navigate("/")}> {t.back}</Button>
@@ -371,7 +381,7 @@ export function ScanPage() {
                 </CardContent>
               </Card>
             </div>
-          </div>
+          </>
         )}
       </div>
     </KioskLayout>
@@ -428,7 +438,7 @@ export function DetailPage() {
             </CardContent>
           </Card>
 
-          <Card className={`${TRANS_BOX}`}>
+          <Card className={`${TRANS_BOX} mt-3`}>
             <CardHeader>
               <CardTitle>{t.rules}</CardTitle>
             </CardHeader>
@@ -443,7 +453,7 @@ export function DetailPage() {
           </Card>
 
           {r.reasons?.length > 0 && (
-            <Card className={`${TRANS_BOX}`}>
+            <Card className={`${TRANS_BOX} mt-3`}>
               <CardHeader>
                 <CardTitle>Razones</CardTitle>
               </CardHeader>
@@ -459,9 +469,9 @@ export function DetailPage() {
             </Card>
           )}
 
-          <div className={`${TRANS_BOX} p-3 flex gap-3`}>
+          <div className={`${TRANS_BOX} p-3 mt-3 flex gap-3`}>
             <Button variant="outline" className="h-11 px-8" onClick={() => navigate("/scan")}>{t.back}</Button>
-            <Button className="h-11 px-8" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={() => navigate("/payment")}>
+            <Button className="h-11 px-8" style={BTN_RED_GLASS} onClick={() => navigate("/payment")}>
               IR A TARIFAS/PAGO
             </Button>
           </div>
@@ -555,7 +565,7 @@ export function PaymentPage() {
             <div className="flex gap-3 mt-3">
               <Button
                 className="h-12 text-lg flex-1"
-                style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }}
+                style={BTN_RED_GLASS}
                 onClick={() => setPaid(true)}
               >
                 {t.pay}
