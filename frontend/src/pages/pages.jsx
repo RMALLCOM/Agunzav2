@@ -412,7 +412,7 @@ export function DetailPage() {
           </div>
         </div>
 
-        <div className="space-y-3 max-w-md mx-auto md:mx-0">
+        <div className="w-full">
           <Card className={`${TRANS_BOX}`}>
             <CardHeader>
               <CardTitle>{t.class}: {t.suitcase}</CardTitle>
