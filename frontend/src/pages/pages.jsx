@@ -14,10 +14,28 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Camera, TriangleAlert, CheckCircle2, CreditCard, QrCode, ArrowLeft, Plane } from "lucide-react";
 import { uploadImageInChunks, api } from "../lib/api";
 
+const BG_URL = "https://customer-assets.emergentagent.com/job_jetsmart-check/artifacts/9twrevsf_LNDSUCT4PFD5RBV47C53VUVYHE.jpg";
+
 export function KioskLayout({ title, children, showHeaderActions = true }) {
   const { t } = useApp();
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "#F5F7FB" }}>
+    <div className="min-h-screen flex flex-col relative overflow-hidden" style={{ background: "#F5F7FB" }}>
+      {/* Blurred background image across all pages */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 -z-10"
+        style={{
+          backgroundImage: `url(${BG_URL})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "blur(12px)",
+          transform: "scale(1.05)",
+          willChange: "transform",
+        }}
+      />
+      {/* Soft overlay to ensure readability */}
+      <div aria-hidden className="fixed inset-0 -z-10 bg-white/60" />
+
       <header className="w-full border-b bg-white/90 sticky top-0 backdrop-blur z-10">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -31,25 +49,16 @@ export function KioskLayout({ title, children, showHeaderActions = true }) {
           </div>
 
           {showHeaderActions && (
-            <div className="flex items-center gap-3">
-              {/* Intencionalmente ocultado en home y scan landing según requerimiento */}
-            </div>
+            <div className="flex items-center gap-3" />
           )}
         </div>
       </header>
 
       <main className="flex-1">{children}</main>
 
-      <footer className="w-full border-t bg-white">
+      <footer className="w-full border-t bg-white/90 backdrop-blur">
         <div className="max-w-4xl mx-auto px-4 py-3 text-center text-sm text-foreground/60">{t.madeBy}</div>
       </footer>
-
-      {/* Decorative background plane */}
-      <div className="pointer-events-none fixed inset-0 -z-10 opacity-[0.06]" aria-hidden>
-        <div className="absolute right-[-120px] top-24 rotate-12">
-          <Plane size={420} color={JETSMART_COLORS.blue} />
-        </div>
-      </div>
     </div>
   );
 }
@@ -63,7 +72,7 @@ export function HomePage() {
       <div className="max-w-4xl mx-auto px-4 py-16">
         <div className="flex flex-col items-center text-center gap-6 pt-8">
           <div className="text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
-          <div className="text-lg text-foreground/70">{t.welcome}</div>
+          <div className="text-lg text-foreground/80">{t.welcome}</div>
 
           <div className="pt-4 w-full sm:w-auto">
             <Button
@@ -234,7 +243,7 @@ export function ScanPage() {
       setProgress(1);
       const resp = await uploadImageInChunks(blob, (pct) => setProgress(pct));
 
-      // Optional: also trigger local download (mock) so user puede ver archivo
+      // Optional: also trigger local download (mock)
       const now = new Date();
       const ts = now.toISOString().replace(/[:.]/g, "-");
       downloadDataUrl(dataUrl, `equipaje_${ts}.jpg`);
@@ -306,7 +315,7 @@ export function ScanPage() {
         {!started ? (
           <div className="flex flex-col items-center text-center gap-6 pt-8">
             <div className="text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
-            <div className="text-lg text-foreground/70">{t.welcome}</div>
+            <div className="text-lg text-foreground/80">{t.welcome}</div>
             <Button className="h-16 text-lg px-10" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={() => setStarted(true)}>
               {t.scanStart}
             </Button>
