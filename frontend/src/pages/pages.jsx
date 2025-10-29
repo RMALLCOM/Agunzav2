@@ -11,18 +11,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
 import { Separator } from "../components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
-import { Camera, TriangleAlert, CheckCircle2, CreditCard, QrCode, ArrowLeft, Plane } from "lucide-react";
+import { Camera, TriangleAlert, CheckCircle2, CreditCard, QrCode, Plane } from "lucide-react";
 import { uploadImageInChunks, api } from "../lib/api";
 
 const BG_URL = "https://customer-assets.emergentagent.com/job_jetsmart-check/artifacts/du2ocyp9_LNDSUCT4PFD5RBV47C53VUVYHE.jpg";
-// Más transparentes y más pequeñas
-const TRANS_BOX = "bg-white/30 backdrop-blur-sm border border-white/40 shadow-sm rounded-3xl";
+// Más transparentes y compactas; que el fondo se aprecie más
+const TRANS_BOX = "bg-white/25 backdrop-blur-sm border border-white/40 shadow-sm rounded-3xl";
 
 export function KioskLayout({ title, children, showHeaderActions = true }) {
   const { t } = useApp();
   return (
-    <div className="min-h-screen flex flex-col relative overflow-hidden" style={{ background: "#F5F7FB" }}>
-      {/* Fondo difuminado */}
+    <div className="min-h-screen flex flex-col relative overflow-hidden">
+      {/* Fondo difuminado global */}
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 -z-10"
@@ -30,35 +30,34 @@ export function KioskLayout({ title, children, showHeaderActions = true }) {
           backgroundImage: `url(${BG_URL})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          filter: "blur(12px)",
-          transform: "scale(1.05)",
+          filter: "blur(6px)",
+          transform: "scale(1.03)",
           willChange: "transform",
         }}
       />
-      <div aria-hidden className="fixed inset-0 -z-10 bg-white/20" />
+      {/* Overlay muy sutil para legibilidad general */}
+      <div aria-hidden className="fixed inset-0 -z-10 bg-white/10" />
 
-      <header className="w-full border-b bg-white/70 sticky top-0 backdrop-blur z-10">
+      <header className="w-full border-b border-white/40 bg-white/40 sticky top-0 backdrop-blur-md z-10">
         <div className="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-[#002D72]/10 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-full bg-[#002D72]/20 flex items-center justify-center">
               <Plane size={18} color={JETSMART_COLORS.blue} />
             </div>
             <div>
               <div className="text-xl font-semibold" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
-              <div className="text-xs text-muted-foreground">{title}</div>
+              <div className="text-xs text-foreground/80">{title}</div>
             </div>
           </div>
 
-          {showHeaderActions && (
-            <div className="flex items-center gap-3" />
-          )}
+          {showHeaderActions && <div className="flex items-center gap-3" />}
         </div>
       </header>
 
       <main className="flex-1">{children}</main>
 
-      <footer className="w-full border-t bg-white/70 backdrop-blur">
-        <div className="max-w-4xl mx-auto px-4 py-2.5 text-center text-sm text-foreground/70">{t.madeBy}</div>
+      <footer className="w-full border-t border-white/40 bg-white/40 backdrop-blur-md">
+        <div className="max-w-4xl mx-auto px-4 py-2.5 text-center text-sm text-foreground/80">{t.madeBy}</div>
       </footer>
     </div>
   );
@@ -73,7 +72,7 @@ export function HomePage() {
       <div className="max-w-3xl mx-auto px-4 py-10">
         <div className={`${TRANS_BOX} mx-auto max-w-md p-5 text-center`}> 
           <div className="text-4xl md:text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
-          <div className="text-base md:text-lg text-foreground/80 mt-2">{t.welcome}</div>
+          <div className="text-base md:text-lg text-foreground/90 mt-2">{t.welcome}</div>
           <div className="pt-4">
             <Button
               className="h-12 md:h-14 text-lg px-8"
@@ -311,7 +310,7 @@ export function ScanPage() {
         {!started ? (
           <div className={`${TRANS_BOX} mx-auto max-w-md p-5 text-center`}>
             <div className="text-4xl md:text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
-            <div className="text-base md:text-lg text-foreground/80">{t.welcome}</div>
+            <div className="text-base md:text-lg text-foreground/90">{t.welcome}</div>
             <Button className="h-12 md:h-14 text-lg px-8 mt-4" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={() => setStarted(true)}>
               {t.scanStart}
             </Button>
@@ -359,10 +358,10 @@ export function ScanPage() {
                   {scan?.results ? (
                     <ResultsPanel />
                   ) : (
-                    <div className="text-sm text-foreground/70">Presiona ESCANEAR para obtener resultados.</div>
+                    <div className="text-sm text-foreground/80">Presiona ESCANEAR para obtener resultados.</div>
                   )}
                   <Separator className="my-3" />
-                  <div className="text-xs text-foreground/60">{formatRules()}</div>
+                  <div className="text-xs text-foreground/80">{formatRules()}</div>
                 </CardContent>
               </Card>
             </div>
@@ -419,7 +418,7 @@ export function DetailPage() {
                 <div>{t.height}: <b>{r.H} cm</b></div>
                 <div>{t.weight}: <b>{r.KG} kg</b></div>
               </div>
-              <div className="text-xs text-foreground/60 mt-2">{formatRules()}</div>
+              <div className="text-xs text-foreground/80 mt-2">{formatRules()}</div>
             </CardContent>
           </Card>
 
@@ -428,7 +427,7 @@ export function DetailPage() {
               <CardTitle>{t.rules}</CardTitle>
             </CardHeader>
             <CardContent>
-              <ul className="list-disc pl-5 text-sm text-foreground/80">
+              <ul className="list-disc pl-5 text-sm text-foreground/90">
                 <li>L 55 cm</li>
                 <li>W 35 cm</li>
                 <li>H 25 cm</li>
