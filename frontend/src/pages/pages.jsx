@@ -17,7 +17,7 @@ import { uploadImageInChunks, api } from "../lib/api";
 const REMOTE_BG = "https://customer-assets.emergentagent.com/job_jetsmart-check/artifacts/du2ocyp9_LNDSUCT4PFD5RBV47C53VUVYHE.jpg";
 const LOCAL_BG = "/assets/jetsmart_bg.jpg"; // Si existe, se usa primero
 // Más transparentes y compactas; y fondo más visible
-const TRANS_BOX = "bg-white/20 backdrop-blur-sm border border-white/40 shadow-sm rounded-3xl";
+const TRANS_BOX = "bg-white/15 backdrop-blur-sm border border-white/30 shadow-sm rounded-3xl";
 
 export function KioskLayout({ title, children, showHeaderActions = true }) {
   const { t } = useApp();
@@ -25,19 +25,19 @@ export function KioskLayout({ title, children, showHeaderActions = true }) {
     backgroundImage: `url(${LOCAL_BG}), url(${REMOTE_BG})`,
     backgroundSize: "cover, cover",
     backgroundPosition: "center, center",
-    filter: "blur(2px)",
-    transform: "scale(1.02)",
-    willChange: "transform",
+    filter: "none",
+    transform: "none",
+    willChange: "auto",
   };
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden">
-      {/* Fondo difuminado global (local primero, remoto respaldo) */}
+      {/* Fondo global (local primero, remoto respaldo) */}
       <div aria-hidden className="fixed inset-0 -z-20" style={bgStyle} />
 
-      {/* SIN overlay global para que el fondo se aprecie más */}
+      {/* Sin overlay para apreciar al máximo la imagen */}
 
-      <header className="w-full border-b border-white/40 bg-white/30 sticky top-0 backdrop-blur-md z-10">
-        <div className="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between">
+      <header className="w-full border-b border-white/30 bg-white/10 sticky top-0 backdrop-blur-sm z-10">
+        <div className="max-w-4xl mx-auto px-4 py-2 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-full bg-[#002D72]/20 flex items-center justify-center">
               <Plane size={18} color={JETSMART_COLORS.blue} />
@@ -54,8 +54,8 @@ export function KioskLayout({ title, children, showHeaderActions = true }) {
 
       <main className="flex-1">{children}</main>
 
-      <footer className="w-full border-t border-white/40 bg-white/30 backdrop-blur-md">
-        <div className="max-w-4xl mx-auto px-4 py-2.5 text-center text-sm text-foreground/90">{t.madeBy}</div>
+      <footer className="w-full border-t border-white/30 bg-white/10 backdrop-blur-sm">
+        <div className="max-w-4xl mx-auto px-4 py-2 text-center text-sm text-foreground/90">{t.madeBy}</div>
       </footer>
     </div>
   );
@@ -272,7 +272,7 @@ export function ScanPage() {
             <div>{t.height}: <b>{r.H} cm</b></div>
             <div>{t.weight}: <b>{r.KG} kg</b></div>
           </div>
-          <div className="text-sm text-foreground/80 mt-2">{r.calibrationOk ? t.calibrOk : t.calibrErr}</div>
+          <div className="text-sm text-foreground/90 mt-2">{r.calibrationOk ? t.calibrOk : t.calibrErr}</div>
           {r.reasons?.length > 0 && (
             <div className="mt-3 text-sm">
               <div className="font-medium mb-1">Detalles:</div>
