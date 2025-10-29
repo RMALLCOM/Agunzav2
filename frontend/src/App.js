@@ -311,22 +311,25 @@ function FlightConfig({ kiosk }) {
   );
 }
 
-// Welcome screen (Inicio)
-function Welcome({ kiosk }) {
+// Pantalla de inicio del escaneo
+function StartScan({ kiosk }) {
   const nav = useNavigate();
-  const tr = strings[kiosk.lang];
-  const bgUrl = "https://customer-assets.emergentagent.com/job_airport-luggage/artifacts/uqbelias_image%2012.png";
+  const strings = stringsDict[kiosk.lang];
+  
   return (
-    <div className="relative min-h-screen kiosk-bg" style={{ backgroundImage: `url(${bgUrl})` }}>
-      <LangSwitch kiosk={kiosk} id="lang_toggle" />
-      <HiddenSetupHotspot />
-      <div className="hero-overlay absolute inset-0 flex items-center justify-center">
-        <div className="text-center max-w-3xl p-8">
-          <h1 className="text-5xl font-extrabold text-gray-900 mb-4">JetSMART</h1>
-          <p className="text-gray-700 mb-8">Bienvenido</p>
-          <Button id="btn_start" className="text-2xl px-10 py-6" variant="accent" onClick={() => nav("/setup")}>{tr.start}</Button>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 to-blue-700 flex flex-col items-center justify-center text-white">
+      <LangSwitch kiosk={kiosk} />
+      
+      <h1 className="text-8xl font-bold mb-16 text-center">{strings.jetsmartTitle}</h1>
+      
+      <Button 
+        onClick={() => nav("/scan")}
+        className="bg-[#E20C18] hover:bg-[#C70A15] text-white text-3xl px-20 py-10 rounded-xl font-bold shadow-2xl"
+      >
+        {strings.startScan}
+      </Button>
+      
+      <Footer kiosk={kiosk} />
     </div>
   );
 }
