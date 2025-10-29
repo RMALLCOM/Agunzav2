@@ -254,7 +254,7 @@ export function ScanPage() {
     const r = scan.results;
     const ok = r.complies;
     return (
-      <Card className={`${TRANS_BOX} mt-3 overflow-hidden`}>
+      <Card className={`${TRANS_BOX} mt-3`}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             {ok ? (
