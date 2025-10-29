@@ -195,6 +195,25 @@ export function ScanPage() {
   const [captured, setCaptured] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  // Detectar orientación para controlar layout (landscape: lado a lado, portrait: apilado)
+  const [isLandscape, setIsLandscape] = useState(() => {
+    if (typeof window !== "undefined" && window.matchMedia) {
+      return window.matchMedia("(orientation: landscape)").matches;
+    }
+    return false;
+  });
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mq = window.matchMedia("(orientation: landscape)");
+    const handler = (e) => setIsLandscape(e.matches);
+    if (mq.addEventListener) mq.addEventListener("change", handler);
+    else if (mq.addListener) mq.addListener(handler);
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener("change", handler);
+      else if (mq.removeListener) mq.removeListener(handler);
+    };
+  }, []);
+
   const clickCount = useRef(0);
   const timerRef = useRef(null);
   const onSecretClick = () => {
