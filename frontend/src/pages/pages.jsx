@@ -313,7 +313,7 @@ export function ScanPage() {
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-3 mt-3 w-full">
+          <div className={isLandscape ? "grid grid-cols-2 gap-3 mt-3 w-full" : "grid grid-cols-1 gap-3 mt-3 w-full"}>
             {!ok && (
               <Button
                 variant="outline"
