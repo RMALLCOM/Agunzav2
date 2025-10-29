@@ -173,3 +173,5 @@
 ## agent_communication:
   - agent: "main"
     message: "Backend listo. Por favor validar endpoints y flujo de upload; archivos deben guardarse en Escritorio/imagenes_ia o fallback ~/imagenes_ia."
+  - agent: "testing"
+    message: "✅ BACKEND TESTING COMPLETE: All 5 test scenarios passed successfully. Health, rules, config persistence, complete upload flow (start→chunks→finish), and edge cases all working correctly. Files are being saved to /root/imagenes_ia/ directory as expected with equipaje_ prefix. Backend APIs are production-ready."
