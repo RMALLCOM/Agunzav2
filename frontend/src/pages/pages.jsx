@@ -14,7 +14,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Camera, TriangleAlert, CheckCircle2, CreditCard, QrCode, ArrowLeft, Plane } from "lucide-react";
 import { uploadImageInChunks, api } from "../lib/api";
 
-const BG_URL = "https://customer-assets.emergentagent.com/job_jetsmart-check/artifacts/9twrevsf_LNDSUCT4PFD5RBV47C53VUVYHE.jpg";
+const BG_URL = "https://customer-assets.emergentagent.com/job_jetsmart-check/artifacts/du2ocyp9_LNDSUCT4PFD5RBV47C53VUVYHE.jpg";
+const TRANS_BOX = "bg-white/70 backdrop-blur-md border border-white/40 shadow-sm rounded-2xl";
 
 export function KioskLayout({ title, children, showHeaderActions = true }) {
   const { t } = useApp();
@@ -34,9 +35,9 @@ export function KioskLayout({ title, children, showHeaderActions = true }) {
         }}
       />
       {/* Soft overlay to ensure readability */}
-      <div aria-hidden className="fixed inset-0 -z-10 bg-white/60" />
+      <div aria-hidden className="fixed inset-0 -z-10 bg-white/30" />
 
-      <header className="w-full border-b bg-white/90 sticky top-0 backdrop-blur z-10">
+      <header className="w-full border-b bg-white/80 sticky top-0 backdrop-blur z-10">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-full bg-[#002D72]/10 flex items-center justify-center">
@@ -56,8 +57,8 @@ export function KioskLayout({ title, children, showHeaderActions = true }) {
 
       <main className="flex-1">{children}</main>
 
-      <footer className="w-full border-t bg-white/90 backdrop-blur">
-        <div className="max-w-4xl mx-auto px-4 py-3 text-center text-sm text-foreground/60">{t.madeBy}</div>
+      <footer className="w-full border-t bg-white/80 backdrop-blur">
+        <div className="max-w-4xl mx-auto px-4 py-3 text-center text-sm text-foreground/70">{t.madeBy}</div>
       </footer>
     </div>
   );
@@ -69,14 +70,13 @@ export function HomePage() {
 
   return (
     <KioskLayout title={t.welcome} showHeaderActions={false}>
-      <div className="max-w-4xl mx-auto px-4 py-16">
-        <div className="flex flex-col items-center text-center gap-6 pt-8">
+      <div className="max-w-3xl mx-auto px-4 py-16">
+        <div className={`${TRANS_BOX} p-10 text-center`}> 
           <div className="text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
-          <div className="text-lg text-foreground/80">{t.welcome}</div>
-
-          <div className="pt-4 w-full sm:w-auto">
+          <div className="text-lg text-foreground/80 mt-2">{t.welcome}</div>
+          <div className="pt-6">
             <Button
-              className="h-16 text-lg px-10 w-full sm:w-auto"
+              className="h-16 text-lg px-10"
               style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }}
               onClick={() => navigate("/config")}
             >
@@ -110,67 +110,69 @@ export function ConfigPage() {
 
   return (
     <KioskLayout title={t.configTitle}>
-      <div className="max-w-2xl mx-auto px-4 py-8">
-        <div className="grid gap-6">
-          <div className="grid gap-2">
-            <Label>{t.operator}</Label>
-            <Input value={form.operator} onChange={(e) => setForm({ ...form, operator: e.target.value })} className="h-14 text-lg" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="max-w-3xl mx-auto px-4 py-10">
+        <div className={`${TRANS_BOX} p-8`}>
+          <div className="grid gap-6">
             <div className="grid gap-2">
-              <Label>{t.gate}</Label>
-              <Select value={form.gate} onValueChange={(v) => setForm({ ...form, gate: v })}>
-                <SelectTrigger className="h-14 text-lg"><SelectValue placeholder="A1" /></SelectTrigger>
+              <Label>{t.operator}</Label>
+              <Input value={form.operator} onChange={(e) => setForm({ ...form, operator: e.target.value })} className="h-14 text-lg" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid gap-2">
+                <Label>{t.gate}</Label>
+                <Select value={form.gate} onValueChange={(v) => setForm({ ...form, gate: v })}>
+                  <SelectTrigger className="h-14 text-lg"><SelectValue placeholder="A1" /></SelectTrigger>
+                  <SelectContent>
+                    {GATES.map((g) => (
+                      <SelectItem key={g} value={g}>{g}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label>{t.flight}</Label>
+                <Input value={form.flight} onChange={(e) => setForm({ ...form, flight: e.target.value })} className="h-14 text-lg" placeholder="WJ1234" />
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <Label>{t.destination}</Label>
+              <Select value={form.destination} onValueChange={(v) => setForm({ ...form, destination: v })}>
+                <SelectTrigger className="h-14 text-lg"><SelectValue placeholder="SCL" /></SelectTrigger>
                 <SelectContent>
-                  {GATES.map((g) => (
-                    <SelectItem key={g} value={g}>{g}</SelectItem>
+                  {DESTINATIONS.map((d) => (
+                    <SelectItem key={d.code} value={d.code}>{d.code} — {d.name}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-            <div className="grid gap-2">
-              <Label>{t.flight}</Label>
-              <Input value={form.flight} onChange={(e) => setForm({ ...form, flight: e.target.value })} className="h-14 text-lg" placeholder="WJ1234" />
+
+            <div className="flex items-center gap-3">
+              <Checkbox id="intl" checked={form.international} onCheckedChange={(v) => setForm({ ...form, international: Boolean(v) })} />
+              <Label htmlFor="intl">{t.intl}</Label>
             </div>
-          </div>
 
-          <div className="grid gap-2">
-            <Label>{t.destination}</Label>
-            <Select value={form.destination} onValueChange={(v) => setForm({ ...form, destination: v })}>
-              <SelectTrigger className="h-14 text-lg"><SelectValue placeholder="SCL" /></SelectTrigger>
-              <SelectContent>
-                {DESTINATIONS.map((d) => (
-                  <SelectItem key={d.code} value={d.code}>{d.code} — {d.name}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <Checkbox id="intl" checked={form.international} onCheckedChange={(v) => setForm({ ...form, international: Boolean(v) })} />
-            <Label htmlFor="intl">{t.intl}</Label>
-          </div>
-
-          <div className="flex gap-3 pt-2">
-            <Button
-              className="h-14 text-lg px-10"
-              disabled={disabled || loading}
-              style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }}
-              onClick={async () => {
-                try {
-                  setLoading(true);
-                  await api.post("/config", form);
-                  setConfig(form);
-                  navigate("/scan");
-                } finally {
-                  setLoading(false);
-                }
-              }}
-            >
-              {t.save}
-            </Button>
-            <Button variant="outline" className="h-14 text-lg px-8" onClick={() => navigate("/")}>{t.back}</Button>
+            <div className="flex gap-3 pt-2">
+              <Button
+                className="h-14 text-lg px-10"
+                disabled={disabled || loading}
+                style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }}
+                onClick={async () => {
+                  try {
+                    setLoading(true);
+                    await api.post("/config", form);
+                    setConfig(form);
+                    navigate("/scan");
+                  } finally {
+                    setLoading(false);
+                  }
+                }}
+              >
+                {t.save}
+              </Button>
+              <Button variant="outline" className="h-14 text-lg px-8" onClick={() => navigate("/")}>{t.back}</Button>
+            </div>
           </div>
         </div>
       </div>
@@ -261,7 +263,7 @@ export function ScanPage() {
     const r = scan.results;
     const ok = r.complies;
     return (
-      <Card className="mt-4">
+      <Card className={`${TRANS_BOX} mt-4`}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             {ok ? (
@@ -311,43 +313,43 @@ export function ScanPage() {
       <div className="relative">
         <div className="absolute top-0 left-0 w-12 h-12 z-20" onClick={onSecretClick} aria-label="hotspot" />
       </div>
-      <div className="max-w-4xl mx-auto px-4 py-10">
+      <div className="max-w-5xl mx-auto px-4 py-10">
         {!started ? (
-          <div className="flex flex-col items-center text-center gap-6 pt-8">
+          <div className={`${TRANS_BOX} p-10 text-center`}>
             <div className="text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
             <div className="text-lg text-foreground/80">{t.welcome}</div>
-            <Button className="h-16 text-lg px-10" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={() => setStarted(true)}>
+            <Button className="h-16 text-lg px-10 mt-6" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={() => setStarted(true)}>
               {t.scanStart}
             </Button>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-3">
+            <div className={`${TRANS_BOX} p-4`}>
               <div className="rounded-xl overflow-hidden bg-black/80 aspect-video flex items-center justify-center">
                 <video ref={videoRef} className="w-full h-full object-contain" playsInline muted />
               </div>
               <canvas ref={canvasRef} className="hidden" />
 
-              <div className="flex gap-3">
+              <div className="flex gap-3 mt-4">
                 <Button className="h-14 text-lg flex-1" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={doCapture}>
                   <Camera className="mr-2" /> {t.scan}
                 </Button>
                 <Button variant="outline" className="h-14 text-lg flex-1" onClick={() => navigate("/")}> {t.back}</Button>
               </div>
               {progress > 0 && progress < 100 && (
-                <Alert>
+                <Alert className="mt-3">
                   <AlertTitle>Subiendo imagen</AlertTitle>
                   <AlertDescription>Progreso: {progress}%</AlertDescription>
                 </Alert>
               )}
               {captured && (
-                <Alert>
+                <Alert className="mt-3">
                   <AlertTitle>Imagen guardada</AlertTitle>
                   <AlertDescription>Se guardó una copia en Escritorio/imagenes_ia desde el backend. (También descargada localmente como demo)</AlertDescription>
                 </Alert>
               )}
               {error && (
-                <Alert variant="destructive">
+                <Alert className="mt-3" variant="destructive">
                   <AlertTitle>Error</AlertTitle>
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
@@ -355,7 +357,7 @@ export function ScanPage() {
             </div>
 
             <div>
-              <Card>
+              <Card className={`${TRANS_BOX}`}>
                 <CardHeader>
                   <CardTitle>Resultados</CardTitle>
                 </CardHeader>
@@ -400,17 +402,19 @@ export function DetailPage() {
 
   return (
     <KioskLayout title={t.detailTitle}>
-      <div className="max-w-4xl mx-auto px-4 py-8 grid md:grid-cols-2 gap-6">
-        <div className="rounded-xl overflow-hidden bg-black/80 aspect-video flex items-center justify-center">
-          {scan?.dataUrl ? (
-            <img src={scan.dataUrl} alt="equipaje" className="w-full h-full object-contain" />
-          ) : (
-            <div className="text-white/70 text-sm">Sin imagen</div>
-          )}
+      <div className="max-w-5xl mx-auto px-4 py-8 grid md:grid-cols-2 gap-6">
+        <div className={`${TRANS_BOX} p-4`}> 
+          <div className="rounded-xl overflow-hidden bg-black/80 aspect-video flex items-center justify-center">
+            {scan?.dataUrl ? (
+              <img src={scan.dataUrl} alt="equipaje" className="w-full h-full object-contain" />
+            ) : (
+              <div className="text-white/70 text-sm">Sin imagen</div>
+            )}
+          </div>
         </div>
 
         <div className="space-y-4">
-          <Card>
+          <Card className={`${TRANS_BOX}`}>
             <CardHeader>
               <CardTitle>{t.class}: {t.suitcase}</CardTitle>
             </CardHeader>
@@ -425,12 +429,12 @@ export function DetailPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className={`${TRANS_BOX}`}>
             <CardHeader>
               <CardTitle>{t.rules}</CardTitle>
             </CardHeader>
             <CardContent>
-              <ul className="list-disc pl-5 text-sm text-foreground/70">
+              <ul className="list-disc pl-5 text-sm text-foreground/80">
                 <li>L 55 cm</li>
                 <li>W 35 cm</li>
                 <li>H 25 cm</li>
@@ -440,7 +444,7 @@ export function DetailPage() {
           </Card>
 
           {r.reasons?.length > 0 && (
-            <Card>
+            <Card className={`${TRANS_BOX}`}>
               <CardHeader>
                 <CardTitle>Razones</CardTitle>
               </CardHeader>
@@ -456,7 +460,7 @@ export function DetailPage() {
             </Card>
           )}
 
-          <div className="flex gap-3">
+          <div className={`${TRANS_BOX} p-4 flex gap-3`}>
             <Button variant="outline" className="h-12 px-8" onClick={() => navigate("/scan")}>{t.back}</Button>
             <Button className="h-12 px-8" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={() => navigate("/payment")}>
               IR A TARIFAS/PAGO
@@ -495,8 +499,8 @@ export function PaymentPage() {
 
   return (
     <KioskLayout title={t.payTitle}>
-      <div className="max-w-3xl mx-auto px-4 py-8 space-y-6">
-        <Card>
+      <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
+        <Card className={`${TRANS_BOX}`}>
           <CardHeader>
             <CardTitle>Resumen</CardTitle>
           </CardHeader>
@@ -526,7 +530,7 @@ export function PaymentPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className={`${TRANS_BOX}`}>
           <CardHeader>
             <CardTitle>Método de pago</CardTitle>
           </CardHeader>
