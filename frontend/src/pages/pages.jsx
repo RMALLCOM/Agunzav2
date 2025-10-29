@@ -254,7 +254,7 @@ export function ScanPage() {
     const r = scan.results;
     const ok = r.complies;
     return (
-      <Card className={`${TRANS_BOX} mt-3`}>
+      <Card className={`${TRANS_BOX} mt-3 overflow-hidden`}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             {ok ? (
@@ -284,13 +284,21 @@ export function ScanPage() {
             </div>
           )}
 
-          <div className="flex flex-col sm:flex-row gap-3 mt-3">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-3 mt-3">
             {!ok && (
-              <Button variant="outline" className="h-12 text-lg w-full sm:w-auto" onClick={() => navigate("/detail")}>
+              <Button
+                variant="outline"
+                className="min-w-0 basis-full sm:basis-auto h-12 text-base md:text-lg px-6 md:px-8"
+                onClick={() => navigate("/detail")}
+              >
                 {t.whyNo}
               </Button>
             )}
-            <Button className="h-12 text-lg w-full sm:w-auto" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={() => navigate("/payment")}>
+            <Button
+              className="min-w-0 basis-full sm:basis-auto h-12 text-base md:text-lg px-6 md:px-8"
+              style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }}
+              onClick={() => navigate("/payment")}
+            >
               {t.goToPay}
             </Button>
           </div>
