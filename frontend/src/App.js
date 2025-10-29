@@ -99,81 +99,23 @@ const stringsDict = {
   }
 };
 
-// Weight Demo Dialog
-function WeightDemoDialog({ open, onClose, onSetWeight, kiosk }) {
-  const [currentWeight, setCurrentWeight] = useState(0.0);
-  const [isOpen, setIsOpen] = useState(open);
-
-  useEffect(() => {
-    setIsOpen(open);
-    if (open) {
-      setCurrentWeight(0.0);
-    }
-  }, [open]);
-
-  const readWeight = () => {
-    // Generate random weight between 0.0 and 35.0 kg with 1 decimal
-    const weight = Math.round(Math.random() * 350) / 10;
-    setCurrentWeight(weight);
+// Hook para estado global
+function useKiosk() {
+  const [lang, setLang] = useState("es");
+  const [flightConfig, setFlightConfig] = useState(null);
+  const [scanResult, setScanResult] = useState(null);
+  const [capturedImage, setCapturedImage] = useState(null);
+  
+  return { 
+    lang, 
+    setLang, 
+    flightConfig, 
+    setFlightConfig,
+    scanResult,
+    setScanResult,
+    capturedImage,
+    setCapturedImage
   };
-
-  const setWeight = () => {
-    if (currentWeight > 0) {
-      onSetWeight(currentWeight);
-      handleClose();
-    }
-  };
-
-  const handleClose = () => {
-    setIsOpen(false);
-    onClose();
-  };
-
-  if (!isOpen) return null;
-
-  const tr = strings[kiosk.lang] || strings.es;
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
-        <h2 className="text-xl font-bold text-center text-[#1E3F8A] mb-6">
-          {kiosk.lang === 'es' ? 'Peso de maleta (demo)' : 'Bag weight (demo)'}
-        </h2>
-        
-        <div className="bg-gray-50 border-2 border-[#1E3F8A] rounded-lg p-6 text-center mb-6">
-          <div className="text-5xl font-bold text-[#E20C18] mb-2">
-            {currentWeight.toFixed(1)}
-          </div>
-          <div className="text-lg text-gray-600">kg</div>
-        </div>
-
-        <div className="space-y-3">
-          <button
-            onClick={readWeight}
-            className="w-full bg-[#17a2b8] hover:bg-[#138496] text-white font-bold py-3 px-4 rounded-lg"
-          >
-            {kiosk.lang === 'es' ? 'Leer peso' : 'Read weight'}
-          </button>
-          
-          <div className="flex gap-3">
-            <button
-              onClick={handleClose}
-              className="flex-1 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg"
-            >
-              {kiosk.lang === 'es' ? 'Cancelar' : 'Cancel'}
-            </button>
-            <button
-              onClick={setWeight}
-              className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg"
-              disabled={currentWeight === 0}
-            >
-              {kiosk.lang === 'es' ? 'Fijar peso' : 'Set weight'}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
 }
 
 // Global language toggle (for web UI). For PyQt5, TopBar manages this.
