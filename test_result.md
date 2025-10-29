@@ -101,3 +101,66 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+## user_problem_statement: "Kiosko JetSMART para validar equipaje con flujo Inicio → Configuración → Escaneo, fondo difuminado, cámara en streaming y guardado de imágenes JPG en Escritorio/imagenes_ia. Todo local y sin BD remota."
+## backend:
+  - task: "Health & Rules endpoints"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Implementados /api/health y /api/rules (constantes 55/35/25 y 10kg)."
+  - task: "Config persistencia en archivo local"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "GET/POST /api/config guardan en ~/.jetsmart_kiosk/config.json."
+  - task: "Subida en chunks y guardado en Escritorio/imagenes_ia"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "/api/scan/start + /api/scan/chunk + /api/scan/finish. Resuelve Desktop/Escritorio y fallback a ~/imagenes_ia. Devuelve resultados simulados."
+## frontend:
+  - task: "Flujo SPA y UI JetSMART"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/pages.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Inicio minimal, Config y Escaneo con streaming; hotspot triple click a Config; integración con backend para subida en chunks. Fondo difuminado global."
+## metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: false
+## test_plan:
+  current_focus:
+    - "Probar endpoints backend: /api/health, /api/rules"
+    - "Probar /api/config (404→POST→GET)"
+    - "Probar flujo de subida en chunks y /api/scan/finish devuelve resultados"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+## agent_communication:
+  - agent: "main"
+    message: "Backend listo. Por favor validar endpoints y flujo de upload; archivos deben guardarse en Escritorio/imagenes_ia o fallback ~/imagenes_ia."
