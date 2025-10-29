@@ -663,91 +663,129 @@ function DetailScreen({ kiosk }) {
   );
 }
 
-function Payment({ kiosk }) {
+// Pantalla de tarifas y pago
+function TariffsScreen({ kiosk }) {
   const nav = useNavigate();
-  const { state } = useLocation();
-  const result = state?.result || null;
-  const [method, setMethod] = useState(null);
-  const [status, setStatus] = useState(null);
-  const [total, setTotal] = useState(0);
-  const [kioskData, setKioskData] = useState(null);
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const airlines = (await axios.get(`${API}/config/airlines`)).data;
-        const current = airlines.find(a => a.code === "JSM") || airlines[0];
-        const rules = (await axios.get(`${API}/rules/${current.code}`)).data;
-        let overweight = 0; let oversize = 0;
-        if (result) {
-          if (result.weight_kg > rules.max_weight_kg) overweight = (result.weight_kg - rules.max_weight_kg) * rules.overweight_fee_per_kg;
-          const linear = result.dims_cm.length + result.dims_cm.width + result.dims_cm.height;
-          if (linear > rules.max_linear_cm || result.dims_cm.length > rules.dims_cm.length || result.dims_cm.width > rules.dims_cm.width || result.dims_cm.height > rules.dims_cm.height) {
-            oversize = rules.oversize_fee_flat;
-          }
-        }
-        setTotal(Math.max(0, Math.round((overweight + oversize) * 100) / 100));
-        setKioskData({ rules, airline: current });
-      } catch (e) {}
-    };
-    load();
-  }, []);
-
-  const pay = async () => {
-    try {
-      const ss = await axios.post(`${API}/sessions`, { airline_code: kioskData.airline.code, language: "es" });
-      const { data } = await axios.post(`${API}/payments/simulate`, { session_id: ss.data.id, total, method });
-      setStatus(data.status);
-    } catch (e) {
-      setStatus("rejected");
-    }
+  const strings = stringsDict[kiosk.lang];
+  const result = kiosk.scanResult;
+  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [paymentStatus, setPaymentStatus] = useState(null);
+  
+  if (!result) {
+    nav("/start");
+    return null;
+  }
+  
+  // Calcular tarifas
+  const weightExcess = Math.max(0, result.weight - 10);
+  const dimensionExcess = Math.max(0, (result.width + result.length) - 115);
+  const weightFee = weightExcess * 15; // $15 USD per kg
+  const dimensionFee = dimensionExcess * 2; // $2 USD per cm
+  const total = weightFee + dimensionFee;
+  
+  const handlePayment = () => {
+    if (!paymentMethod) return;
+    
+    // Simular procesamiento
+    setTimeout(() => {
+      setPaymentStatus("approved");
+    }, 2000);
   };
-
+  
+  const handleFinish = () => {
+    // Reset y volver al inicio
+    kiosk.setScanResult(null);
+    kiosk.setCapturedImage(null);
+    nav("/start");
+  };
+  
   return (
-    <div className="min-h-screen bg-white">
-      <LangSwitch kiosk={kiosk} id="lang_toggle" />
-      <div className="max-w-3xl mx-auto px-6 py-10">
-        <h2 className="text-3xl font-bold mb-6">{strings[kiosk.lang].payTitle}</h2>
-        {result && (
-          <Card className="mb-6">
-            <CardContent>
-              <div className="breakdown-row"><span>{strings[kiosk.lang].ui.excess_weight}</span><span>{result.weight_kg} kg</span></div>
-              <div className="breakdown-row"><span>{strings[kiosk.lang].ui.excess_dimensions}</span><span>{result.dims_cm.length + result.dims_cm.width + result.dims_cm.height} cm</span></div>
-              <div className="breakdown-row font-bold"><span>{strings[kiosk.lang].ui.total}</span><span>{`$${total.toFixed(2)} ${kioskData?.rules?.currency || "USD"}`}</span></div>
-            </CardContent>
-          </Card>
-        )}
-
-        <div className="mb-4">
-          <label className="block font-semibold mb-2">{strings[kiosk.lang].method}</label>
-          <div className="flex gap-3">
-            <Button variant={method === "card" ? "primary" : "outline"} onClick={() => setMethod("card")} >{strings[kiosk.lang].card}</Button>
-            <Button variant={method === "qr" ? "primary" : "outline"} onClick={() => setMethod("qr")} >{strings[kiosk.lang].qr}</Button>
-          </div>
-        </div>
-
-        {method && (
-          <div className="flex gap-4">
-            <Button id="btn_pay" variant="accent" onClick={pay}>{strings[kiosk.lang].ui?.pay || strings[kiosk.lang].processPayment}</Button>
-            <Button id="btn_back_tariff" variant="ghost" onClick={() => nav(-1)} >{strings[kiosk.lang].ui?.back || strings[kiosk.lang].back}</Button>
-          </div>
-        )}
-
-        {status && (
-          <div className="mt-6">
-            {status === "approved" ? (
-              <div className="badge success">{strings[kiosk.lang].approved}</div>
-            ) : (
-              <div className="badge error">{strings[kiosk.lang].rejected}</div>
-            )}
-            {status === "approved" && (
-              <div className="mt-4 flex gap-3">
-                <Button id="btn_finish_payment" variant="primary" onClick={() => nav("/goodbye")}>{strings[kiosk.lang].ui?.finish || strings[kiosk.lang].finishCta}</Button>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 p-8">
+      <LangSwitch kiosk={kiosk} />
+      
+      <div className="max-w-2xl mx-auto">
+        <h1 className="text-4xl font-bold text-[#1E3F8A] text-center mb-8">{strings.tariffsTitle}</h1>
+        
+        <Card className="shadow-2xl">
+          <CardContent className="p-8">
+            {/* Tabla de tarifas */}
+            <div className="space-y-4 mb-8">
+              <div className="flex justify-between py-2 border-b">
+                <span className="font-semibold">{strings.excessWeight} ({weightExcess.toFixed(1)} kg)</span>
+                <span>${weightFee.toFixed(2)} USD</span>
+              </div>
+              <div className="flex justify-between py-2 border-b">
+                <span className="font-semibold">{strings.excessDimensions} ({dimensionExcess.toFixed(1)} cm)</span>
+                <span>${dimensionFee.toFixed(2)} USD</span>
+              </div>
+              <div className="flex justify-between py-3 border-t-2 border-[#1E3F8A] text-xl font-bold">
+                <span>{strings.totalUSD}</span>
+                <span>${total.toFixed(2)} USD</span>
+              </div>
+            </div>
+            
+            {/* Métodos de pago */}
+            {!paymentStatus && (
+              <div className="mb-8">
+                <p className="font-semibold text-[#1E3F8A] mb-4">Método de pago:</p>
+                <div className="flex gap-4 mb-6">
+                  <Button 
+                    onClick={() => setPaymentMethod("card")}
+                    variant={paymentMethod === "card" ? "default" : "outline"}
+                    className={`flex-1 py-4 ${paymentMethod === "card" 
+                      ? "bg-[#1E3F8A] text-white" 
+                      : "border-[#1E3F8A] text-[#1E3F8A]"}`}
+                  >
+                    {strings.card}
+                  </Button>
+                  <Button 
+                    onClick={() => setPaymentMethod("qr")}
+                    variant={paymentMethod === "qr" ? "default" : "outline"}
+                    className={`flex-1 py-4 ${paymentMethod === "qr" 
+                      ? "bg-[#1E3F8A] text-white" 
+                      : "border-[#1E3F8A] text-[#1E3F8A]"}`}
+                  >
+                    {strings.qr}
+                  </Button>
+                </div>
+                
+                <div className="flex gap-4">
+                  <Button 
+                    onClick={() => nav("/detail")}
+                    variant="outline"
+                    className="flex-1 border-[#1E3F8A] text-[#1E3F8A] hover:bg-[#1E3F8A] hover:text-white py-4"
+                  >
+                    {strings.back}
+                  </Button>
+                  <Button 
+                    onClick={handlePayment}
+                    disabled={!paymentMethod}
+                    className="flex-1 bg-[#E20C18] hover:bg-[#C70A15] text-white py-4 disabled:opacity-50"
+                  >
+                    {strings.pay}
+                  </Button>
+                </div>
               </div>
             )}
-          </div>
-        )}
+            
+            {/* Estado del pago */}
+            {paymentStatus === "approved" && (
+              <div className="text-center">
+                <CheckCircle2 className="w-16 h-16 text-green-600 mx-auto mb-4" />
+                <p className="text-2xl font-bold text-green-600 mb-6">{strings.paymentApproved}</p>
+                <Button 
+                  onClick={handleFinish}
+                  className="bg-green-600 hover:bg-green-700 text-white px-12 py-4 text-lg"
+                >
+                  {strings.finish}
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
+      
+      <Footer kiosk={kiosk} />
     </div>
   );
 }
