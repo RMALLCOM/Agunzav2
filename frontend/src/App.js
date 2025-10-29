@@ -176,129 +176,137 @@ function WelcomeScreen({ kiosk }) {
   );
 }
 
-// Demo Hotspot - 5 taps in 3 seconds to activate demo mode
-function DemoHotspot({ onActivate }) {
-  const [count, setCount] = useState(0);
-  const timerRef = useRef(null);
+// Configurador de vuelo
+function FlightConfig({ kiosk }) {
+  const nav = useNavigate();
+  const strings = stringsDict[kiosk.lang];
+  const [formData, setFormData] = useState({
+    operator: "",
+    gate: "A1", 
+    flightNumber: "",
+    destination: "",
+    international: false
+  });
   
-  const onClick = () => {
-    setCount(c => {
-      const next = c + 1;
-      if (next === 1) {
-        timerRef.current = setTimeout(() => setCount(0), 3000); // 3 seconds
-      }
-      if (next >= 5) { // 5 taps
-        clearTimeout(timerRef.current);
-        setCount(0);
-        onActivate();
-        return 0;
-      }
-      return next;
-    });
+  const gates = ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10"];
+  const destinations = [
+    "Santiago - SCL",
+    "Calama - CJC", 
+    "Antofagasta - ANF",
+    "Iquique - IQQ",
+    "Arica - ARI",
+    "La Serena - LSC",
+    "Valparaíso - VAP",
+    "Temuco - ZCO",
+    "Puerto Montt - PMC",
+    "Punta Arenas - PUQ"
+  ];
+  
+  const handleSave = () => {
+    kiosk.setFlightConfig(formData);
+    nav("/start");
   };
-
-  useEffect(() => () => clearTimeout(timerRef.current), []);
-
+  
   return (
-    <div
-      className="absolute top-2 right-2 w-9 h-9 opacity-0 cursor-pointer z-50"
-      onClick={onClick}
-      title="Área técnica (tocar 5 veces)"
-    />
-  );
-}
-
-// Hidden hotspot (triple tap) - Web UI. In PyQt5 we also implement a similar hidden trigger.
-function HiddenSetupHotspot() {
-  const nav = useNavigate();
-  const [count, setCount] = useState(0);
-  const timerRef = useRef(null);
-  const onClick = () => {
-    setCount(c => {
-      const next = c + 1;
-      if (next === 1) {
-        timerRef.current = setTimeout(() => setCount(0), 1200);
-      }
-      if (next >= 3) {
-        clearTimeout(timerRef.current);
-        setCount(0);
-        nav("/setup");
-      }
-      return next;
-    });
-  };
-  return <div onClick={onClick} className="fixed top-0 left-0 w-14 h-14 z-50" style={{ opacity: 0 }} />;
-}
-
-// Setup Screen
-// Setup (configurador de vuelos). Stores operator, gate, flight, destination, international flag.
-function SetupPage({ kiosk }) {
-  const nav = useNavigate();
-  const tr = strings[kiosk.lang];
-  const [form, setForm] = useState({ operator_name: "", gate: "A1", flight_number: "JAT36", destination: "Antofagasta — ANF", is_international: false });
-
-  const save = async () => {
-    try {
-      const payload = { ...form };
-      const { data } = await axios.post(`${API}/setup`, payload);
-      kiosk.setSetup(data);
-      await axios.post(`${API}/interactions`, { event: "setup_saved_client", payload, setup_id: data.id });
-      nav("/start"); // after setup, go to Start (last time Start shows its CTA)
-    } catch (e) {
-      console.error("setup save failed", e?.message);
-    }
-  };
-
-  return (
-    <div className="min-h-screen" style={{ background: "#F7FAFF" }}>
-      <div className="max-w-3xl mx-auto px-6 py-10">
-        <LangSwitch kiosk={kiosk} id="lang_toggle" />
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-3xl font-extrabold" id="CONFIGURADOR_DE_VUELOS">{tr.setupTitle}</h2>
-        </div>
-        <Card>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 p-8">
+      <LangSwitch kiosk={kiosk} />
+      
+      <div className="max-w-2xl mx-auto">
+        <h1 className="text-4xl font-bold text-[#1E3F8A] text-center mb-12">{strings.configurator}</h1>
+        
+        <Card className="shadow-2xl">
+          <CardContent className="p-8">
+            <div className="space-y-6">
+              {/* Operador */}
               <div>
-                <label className="block text-sm font-semibold mb-1">{tr.operator}</label>
-                <input className="w-full border rounded px-3 py-3 text-lg" value={form.operator_name} onChange={e => setForm({ ...form, operator_name: e.target.value })} />
+                <label className="block text-lg font-semibold text-[#1E3F8A] mb-2">{strings.operator}</label>
+                <input 
+                  type="text"
+                  value={formData.operator}
+                  onChange={(e) => setFormData({...formData, operator: e.target.value})}
+                  className="w-full p-4 border-2 border-[#1E3F8A] rounded-lg text-lg"
+                  placeholder={strings.operator}
+                />
               </div>
+              
+              {/* Puerta */}
               <div>
-                <label className="block text-sm font-semibold mb-1">{tr.gate}</label>
-                <select className="w-full border rounded px-3 py-3 text-lg" value={form.gate} onChange={e => setForm({ ...form, gate: e.target.value })}>
-                  {['A1','A2','A3','A4','A5'].map(opt => (<option key={opt} value={opt}>{opt}</option>))}
+                <label className="block text-lg font-semibold text-[#1E3F8A] mb-2">{strings.gate}</label>
+                <select 
+                  value={formData.gate}
+                  onChange={(e) => setFormData({...formData, gate: e.target.value})}
+                  className="w-full p-4 border-2 border-[#1E3F8A] rounded-lg text-lg"
+                >
+                  {gates.map(gate => (
+                    <option key={gate} value={gate}>{gate}</option>
+                  ))}
                 </select>
               </div>
+              
+              {/* Número de vuelo */}
               <div>
-                <label className="block text-sm font-semibold mb-1">{tr.flight}</label>
-                <select className="w-full border rounded px-3 py-3 text-lg" value={form.flight_number} onChange={e => setForm({ ...form, flight_number: e.target.value })}>
-                  {['JAT36','JAT40','JAT50','JAT811','JAT56'].map(opt => (<option key={opt} value={opt}>{opt}</option>))}
+                <label className="block text-lg font-semibold text-[#1E3F8A] mb-2">{strings.flightNumber}</label>
+                <input 
+                  type="text"
+                  value={formData.flightNumber}
+                  onChange={(e) => setFormData({...formData, flightNumber: e.target.value})}
+                  className="w-full p-4 border-2 border-[#1E3F8A] rounded-lg text-lg"
+                  placeholder="JAT001"
+                />
+              </div>
+              
+              {/* Destino */}
+              <div>
+                <label className="block text-lg font-semibold text-[#1E3F8A] mb-2">{strings.destination}</label>
+                <select 
+                  value={formData.destination}
+                  onChange={(e) => setFormData({...formData, destination: e.target.value})}
+                  className="w-full p-4 border-2 border-[#1E3F8A] rounded-lg text-lg"
+                >
+                  <option value="">{strings.destination}</option>
+                  {destinations.map(dest => (
+                    <option key={dest} value={dest}>{dest}</option>
+                  ))}
                 </select>
               </div>
-              <div>
-                <label className="block text-sm font-semibold mb-1">{tr.dest}</label>
-                <select className="w-full border rounded px-3 py-3 text-lg" value={form.destination} onChange={e => setForm({ ...form, destination: e.target.value })}>
-                  {[
-                    { name: 'Antofagasta', code: 'ANF' },
-                    { name: 'Arica', code: 'ACM' },
-                    { name: 'Temuco', code: 'ZCO' },
-                    { name: 'Valdivia', code: 'ZAL' },
-                    { name: 'Puerto Montt', code: 'PMC' },
-                  ].map(opt => (<option key={opt.code} value={`${opt.name} — ${opt.code}`}>{`${opt.name} — ${opt.code}`}</option>))}
-                </select>
-              </div>
-              <div className="flex items-center gap-3 mt-2">
-                <input id="intl" type="checkbox" className="w-5 h-5" checked={form.is_international} onChange={e => setForm({ ...form, is_international: e.target.checked })} />
-                <label htmlFor="intl" className="text-lg font-semibold">{tr.intl}</label>
+              
+              {/* Internacional */}
+              <div className="flex items-center space-x-3">
+                <input 
+                  type="checkbox"
+                  id="international"
+                  checked={formData.international}
+                  onChange={(e) => setFormData({...formData, international: e.target.checked})}
+                  className="w-6 h-6"
+                />
+                <label htmlFor="international" className="text-lg font-semibold text-[#1E3F8A]">
+                  {strings.international}
+                </label>
               </div>
             </div>
-            <div className="mt-6 flex gap-3">
-              <Button id="btn_save_setup" variant="accent" onClick={save}>{tr.save}</Button>
-              <Button id="btn_back_setup" variant="ghost" onClick={() => nav("/")}>{tr.back}</Button>
+            
+            {/* Botones */}
+            <div className="flex justify-between mt-12">
+              <Button 
+                onClick={() => nav("/")}
+                variant="outline"
+                className="text-lg px-8 py-4 border-2 border-[#1E3F8A] text-[#1E3F8A] hover:bg-[#1E3F8A] hover:text-white"
+              >
+                {strings.back}
+              </Button>
+              
+              <Button 
+                onClick={handleSave}
+                className="bg-[#E20C18] hover:bg-[#C70A15] text-white text-lg px-12 py-4"
+              >
+                {strings.save}
+              </Button>
             </div>
           </CardContent>
         </Card>
       </div>
+      
+      <Footer kiosk={kiosk} />
     </div>
   );
 }
