@@ -790,150 +790,36 @@ function TariffsScreen({ kiosk }) {
   );
 }
 
-function FreeWeigh() {
-  const nav = useNavigate();
-  const [w, setW] = useState(0);
-  useEffect(() => {
-    const id = setInterval(() => setW(Math.round((Math.random() * 12 + 1) * 10) / 10), 1200);
-    return () => clearInterval(id);
-  }, []);
-  return (
-    <div className="min-h-screen flex items-center justify-center" style={{ background: "#F7FAFF" }}>
-      <div className="absolute top-0 right-0 p-4">
-        {/* Language switch placeholder; tie into global state if needed */}
-      </div>
-      <Card className="w-full max-w-xl text-center">
-        <CardContent>
-          <div className="text-6xl font-extrabold mb-6">{w} kg</div>
-          <Button variant="ghost" onClick={() => nav("/start")} >VOLVER</Button>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
-function Train() {
-  const [images, setImages] = useState([]);
-  const [label, setLabel] = useState("maleta");
-  const [log, setLog] = useState([]);
-
-  const onFiles = async (e) => {
-    const files = Array.from(e.target.files || []);
-    for (const f of files) {
-      await axios.post(`${API}/dataset/images`, { label, file_name: f.name });
-      setImages(prev => [...prev, { name: f.name, label }]);
-    }
-  };
-
-  const startTrain = async () => {
-    const { data } = await axios.post(`${API}/train/start`, { airline_code: "JSM" });
-    setLog(prev => [
-      ...prev,
-      `Training ${data.id} for ${data.airline_code} status: ${data.status}`
-    ]);
-  };
-
-  return (
-    <div className="min-h-screen" style={{ background: "#F7FAFF" }}>
-      <div className="absolute top-0 right-0 p-4"></div>
-      <div className="max-w-4xl mx-auto px-6 py-10">
-        <h2 className="text-3xl font-bold mb-4">Entrenamiento de IA</h2>
-        <div className="mb-4">
-          <label className="mr-3 font-semibold">Etiqueta:</label>
-          <select className="border rounded px-3 py-2" value={label} onChange={e => setLabel(e.target.value)}>
-            <option value="maleta">maleta</option>
-            <option value="mochila">mochila</option>
-            <option value="bolso">bolso</option>
-            <option value="otro">otro</option>
-          </select>
-        </div>
-        <input type="file" multiple onChange={onFiles} className="mb-4" />
-        <div className="mb-6">
-          {images.map((im, i) => (
-            <div key={i} className="text-sm text-gray-700">{im.name} - {im.label}</div>
-          ))}
-        </div>
-        <Button variant="primary" onClick={startTrain}>Entrenar YOLO (simulado)</Button>
-        <div className="mt-6 space-y-1 text-sm text-gray-600">
-          {log.map((l, i) => (<div key={i}>{l}</div>))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function RulesPage() {
-  const nav = useNavigate();
-  return (
-    <div className="min-h-screen flex items-center justify-center" style={{ background: "#F7FAFF" }}>
-      <Card className="w-full max-w-2xl">
-        <CardContent>
-          <h2 className="text-3xl font-extrabold text-[#12356F] mb-4">Maleta no permitida</h2>
-          <p className="mb-4">Detalle de equipaje permitido (demo):</p>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>Medidas máximas: 55 cm (largo) × 35 cm (ancho) × 25 cm (alto)</li>
-            <li>Peso máximo: 10 kg</li>
-            <li>Suma lineal máxima: 115 cm</li>
-            <li>Ejemplos: Maleta cabina pequeña, mochila media, bolso de mano</li>
-          </ul>
-          <div className="mt-6 flex gap-3">
-            <Button variant="primary" onClick={() => nav('/scan')}>Comenzar escaneo</Button>
-            <Button variant="ghost" onClick={() => nav('/start')}>Volver</Button>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
-function Goodbye({ kiosk }) {
-  const nav = useNavigate();
-  useEffect(() => {
-    const t = setTimeout(() => nav("/start"), 3000);
-    return () => clearTimeout(t);
-  }, []);
-  return (
-    <div className="min-h-screen flex items-center justify-center" style={{ background: "#F7FAFF" }}>
-      <LangSwitch kiosk={kiosk} id="lang_toggle" />
-      <div className="text-center">
-        <CheckCircle2 className="mx-auto text-green-600" size={64} />
-        <div className="mt-3 text-2xl font-bold">{strings[kiosk.lang].msg?.goodbye || 'Gracias por usar el validador. Buen viaje'}</div>
-        <div className="text-gray-600">{kiosk.lang === 'en' ? 'Returning to Start…' : 'Regresando a Comenzar…'}</div>
-      </div>
-    </div>
-  );
-}
-
-function Shell() {
-  const kiosk = useKiosk();
-  return (
-    <>
-      <Routes>
-        <Route path="/" element={<Welcome kiosk={kiosk} />} />
-        <Route path="/start" element={<StartScan kiosk={kiosk} />} />
-        <Route path="/setup" element={<SetupPage kiosk={kiosk} />} />
-        <Route path="/scan" element={<Scan kiosk={kiosk} />} />
-        <Route path="/why" element={<WhyPage kiosk={kiosk} />} />
-        <Route path="/rules" element={<RulesPage />} />
-        <Route path="/tariffs" element={<Payment kiosk={kiosk} />} />
-        <Route path="/weigh" element={<FreeWeigh />} />
-        <Route path="/train" element={<Train />} />
-        <Route path="/goodbye" element={<Goodbye kiosk={kiosk} />} />
-      </Routes>
-    </>
-  );
-}
-
+// Componente principal
 function App() {
+  const kiosk = useKiosk();
+  
+  // Cargar idioma desde localStorage
   useEffect(() => {
-    axios.get(`${API}/`).catch(() => {});
+    const savedLang = localStorage.getItem("kioskLang");
+    if (savedLang && (savedLang === "es" || savedLang === "en")) {
+      kiosk.setLang(savedLang);
+    }
   }, []);
+  
+  // Guardar idioma en localStorage
+  useEffect(() => {
+    localStorage.setItem("kioskLang", kiosk.lang);
+  }, [kiosk.lang]);
+  
   return (
-    <div className="App">
-      <HashRouter>
-        <Shell />
-      </HashRouter>
-    </div>
+    <HashRouter>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<WelcomeScreen kiosk={kiosk} />} />
+          <Route path="/config" element={<FlightConfig kiosk={kiosk} />} />
+          <Route path="/start" element={<StartScan kiosk={kiosk} />} />
+          <Route path="/scan" element={<ScanScreen kiosk={kiosk} />} />
+          <Route path="/detail" element={<DetailScreen kiosk={kiosk} />} />
+          <Route path="/tariffs" element={<TariffsScreen kiosk={kiosk} />} />
+        </Routes>
+      </div>
+    </HashRouter>
   );
 }
 
