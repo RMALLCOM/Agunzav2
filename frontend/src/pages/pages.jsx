@@ -322,7 +322,7 @@ export function ScanPage() {
             </Button>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 gap-3">
+          <div className="grid md:grid-cols-[1fr,1fr] gap-3 items-start">
             <div className={`${TRANS_BOX} p-3 max-w-md mx-auto md:mx-0`}>
               <div className="rounded-3xl overflow-hidden bg-black/80 aspect-video flex items-center justify-center">
                 <video ref={videoRef} className="w-full h-full object-contain" playsInline muted />
