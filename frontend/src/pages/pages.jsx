@@ -11,11 +11,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
 import { Separator } from "../components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
-import { Camera, TriangleAlert, CheckCircle2, CreditCard, QrCode, ArrowLeft, Plane, Settings } from "lucide-react";
-import { uploadImageInChunks } from "../lib/api";
+import { Camera, TriangleAlert, CheckCircle2, CreditCard, QrCode, ArrowLeft, Plane } from "lucide-react";
+import { uploadImageInChunks, api } from "../lib/api";
 
 export function KioskLayout({ title, children, showHeaderActions = true }) {
-  const { t, lang, setLang, config } = useApp();
+  const { t } = useApp();
   return (
     <div className="min-h-screen flex flex-col" style={{ background: "#F5F7FB" }}>
       <header className="w-full border-b bg-white/90 sticky top-0 backdrop-blur z-10">
@@ -32,25 +32,7 @@ export function KioskLayout({ title, children, showHeaderActions = true }) {
 
           {showHeaderActions && (
             <div className="flex items-center gap-3">
-              <div className="hidden md:flex text-xs text-muted-foreground">
-                {config?.flight ? (
-                  <span>
-                    {config.operator || ""} • {config.flight || ""} • {config.gate || ""} • {config.destination || ""}
-                  </span>
-                ) : (
-                  <span className="text-foreground/60">Configurar vuelo</span>
-                )}
-              </div>
-
-              <Select value={lang} onValueChange={(v) => setLang(v)}>
-                <SelectTrigger className="w-[110px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ES">ES</SelectItem>
-                  <SelectItem value="EN">EN</SelectItem>
-                </SelectContent>
-              </Select>
+              {/* Intencionalmente ocultado en home y scan landing según requerimiento */}
             </div>
           )}
         </div>
@@ -102,6 +84,18 @@ export function ConfigPage() {
   const { t, config, setConfig, DESTINATIONS, GATES } = useApp();
   const navigate = useNavigate();
   const [form, setForm] = useState({ ...config });
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await api.get("/config");
+        if (res?.data) setForm(res.data);
+      } catch (e) {
+        // 404 si no existe, ignorar
+      }
+    })();
+  }, []);
 
   const disabled = useMemo(() => !form.operator || !form.flight || !form.destination || !form.gate, [form]);
 
@@ -152,11 +146,17 @@ export function ConfigPage() {
           <div className="flex gap-3 pt-2">
             <Button
               className="h-14 text-lg px-10"
-              disabled={disabled}
+              disabled={disabled || loading}
               style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }}
-              onClick={() => {
-                setConfig(form);
-                navigate("/scan");
+              onClick={async () => {
+                try {
+                  setLoading(true);
+                  await api.post("/config", form);
+                  setConfig(form);
+                  navigate("/scan");
+                } finally {
+                  setLoading(false);
+                }
               }}
             >
               {t.save}
@@ -234,7 +234,7 @@ export function ScanPage() {
       setProgress(1);
       const resp = await uploadImageInChunks(blob, (pct) => setProgress(pct));
 
-      // Optional: also trigger local download (mock) so user can see file
+      // Optional: also trigger local download (mock) so user puede ver archivo
       const now = new Date();
       const ts = now.toISOString().replace(/[:.]/g, "-");
       downloadDataUrl(dataUrl, `equipaje_${ts}.jpg`);
