@@ -322,7 +322,7 @@ export function ScanPage() {
       <div className="relative">
         <div className="absolute top-0 left-0 w-12 h-12 z-20" onClick={onSecretClick} aria-label="hotspot" />
       </div>
-      <div className="max-w-6xl mx-auto px-4 py-8 grid md:grid-cols-[1fr,1fr] gap-4 items-start">
+      <div className="max-w-6xl mx-auto px-4 py-8">
         {!started ? (
           <div className={`${TRANS_BOX} mx-auto max-w-md p-5 text-center`}>
             <div className="text-4xl md:text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
@@ -411,7 +411,7 @@ export function DetailPage() {
 
   return (
     <KioskLayout title={t.detailTitle}>
-      <div className="max-w-6xl mx-auto px-4 py-8 grid md:grid-cols-[1fr,1fr] gap-4 items-start">
+      <div className="max-w-6xl mx-auto px-4 py-8">
         <div className={`${TRANS_BOX} p-3 w-full`}> 
           <div className="rounded-3xl overflow-hidden bg-black/80 aspect-video flex items-center justify-center">
             {scan?.dataUrl ? (
