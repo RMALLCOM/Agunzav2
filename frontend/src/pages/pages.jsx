@@ -353,7 +353,7 @@ export function ScanPage() {
           </div>
           </div>
         ) : (
-          <>
+          <div className={isLandscape ? "grid grid-cols-2 gap-3" : "grid grid-cols-1 gap-3"}>
             <div className={`${TRANS_BOX} p-3 w-full`}>
               <div className="rounded-3xl overflow-hidden bg-black/80 aspect-video flex items-center justify-center">
                 <video ref={videoRef} className="w-full h-full object-contain" playsInline muted />
@@ -402,7 +402,7 @@ export function ScanPage() {
                 </CardContent>
               </Card>
             </div>
-          </>
+          </div>
         )}
       </div>
     </KioskLayout>
