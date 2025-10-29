@@ -324,7 +324,8 @@ export function ScanPage() {
       </div>
       <div className="max-w-6xl mx-auto px-4 py-8">
         {!started ? (
-          <div className={`${TRANS_BOX} mx-auto max-w-md p-5 text-center`}>
+          <div className="w-full flex justify-center">
+            <div className={`${TRANS_BOX} max-w-md w-full p-5 text-center`}>
             <div className="text-4xl md:text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
             <div className="text-base md:text-lg text-foreground/90">{t.welcome}</div>
             <Button className="h-12 md:h-14 text-lg px-8 mt-4" style={BTN_RED_GLASS} onClick={() => setStarted(true)}>
