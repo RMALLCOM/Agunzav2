@@ -295,7 +295,7 @@ export function ScanPage() {
               </Button>
             )}
             <Button
-              className="min-w-0 basis-full sm:basis-auto h-12 text-base md:text-lg px-6 md:px-8"
+              className="col-span-2 sm:col-span-1 h-12 text-base md:text-lg px-6 md:px-8"
               style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }}
               onClick={() => navigate("/payment")}
             >
