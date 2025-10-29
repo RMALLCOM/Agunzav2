@@ -142,71 +142,38 @@ function Footer({ kiosk }) {
   );
 }
 
-function useKiosk() {
-  const [airline, setAirline] = useState(null);
-  const [rules, setRules] = useState(null);
-  const [lang, setLang] = useState("es");
-  const [session, setSession] = useState(null);
-  const [setup, setSetup] = useState(null);
+// Pantalla de inicio
+function WelcomeScreen({ kiosk }) {
+  const nav = useNavigate();
+  const strings = stringsDict[kiosk.lang];
   
-  // Demo mode state
-  const [demoMode, setDemoMode] = useState(() => {
-    return localStorage.getItem("demoMode") === "1";
-  });
-  const [lastDemoWeight, setLastDemoWeight] = useState(null);
-
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const { data: airlines } = await axios.get(`${API}/config/airlines`);
-        const current = airlines.find(a => a.code === "JSM") || airlines[0];
-        setAirline(current);
-        if (current) {
-          const { data: r } = await axios.get(`${API}/rules/${current.code}`);
-          setRules(r);
-        }
-      } catch (e) {
-        console.error("Failed to load airline/rules", e?.message);
-      }
-      try {
-        const { data } = await axios.get(`${API}/setup`);
-        setSetup(data);
-      } catch (_) {
-        setSetup(null);
-      }
-    };
-    init();
-  }, []);
-
-  const startSession = async () => {
-    if (!airline) return;
-    const { data } = await axios.post(`${API}/sessions`, { airline_code: airline.code, language: lang });
-    setSession(data);
-    return data;
-  };
-
-  const activateDemoMode = () => {
-    setDemoMode(true);
-    setLastDemoWeight(null);
-    localStorage.setItem("demoMode", "1");
-  };
-
-  return { 
-    airline, 
-    rules, 
-    lang, 
-    setLang, 
-    session, 
-    setSession, 
-    startSession, 
-    setup, 
-    setSetup,
-    demoMode,
-    setDemoMode,
-    activateDemoMode,
-    lastDemoWeight,
-    setLastDemoWeight 
-  };
+  const bgImage = "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80";
+  
+  return (
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-blue-900 to-blue-700">
+      {/* Imagen de fondo difuminada */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center opacity-30"
+        style={{ backgroundImage: `url(${bgImage})` }}
+      />
+      
+      <LangSwitch kiosk={kiosk} />
+      
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen text-white px-8">
+        <h1 className="text-8xl font-bold mb-4 text-center">{strings.jetsmartTitle}</h1>
+        <h2 className="text-3xl font-light mb-16 text-center">{strings.welcome}</h2>
+        
+        <Button 
+          onClick={() => nav("/config")}
+          className="bg-[#E20C18] hover:bg-[#C70A15] text-white text-2xl px-16 py-8 rounded-xl font-bold text-center min-h-[80px] shadow-2xl"
+        >
+          {strings.start}
+        </Button>
+      </div>
+      
+      <Footer kiosk={kiosk} />
+    </div>
+  );
 }
 
 // Demo Hotspot - 5 taps in 3 seconds to activate demo mode
