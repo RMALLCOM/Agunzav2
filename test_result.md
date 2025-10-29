@@ -109,33 +109,42 @@
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Implementados /api/health y /api/rules (constantes 55/35/25 y 10kg)."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: GET /api/health returns {status: 'ok'} correctly. GET /api/rules returns exact expected values L=55,W=35,H=25,KG=10. Both endpoints working perfectly."
   - task: "Config persistencia en archivo local"
     implemented: true
     working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "GET/POST /api/config guardan en ~/.jetsmart_kiosk/config.json."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Config persistence working correctly. POST /api/config saves data successfully, GET /api/config returns same data. Minor: Initial GET returned 200 instead of 404 (config file already existed), but core functionality works perfectly."
   - task: "Subida en chunks y guardado en Escritorio/imagenes_ia"
     implemented: true
     working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "/api/scan/start + /api/scan/chunk + /api/scan/finish. Resuelve Desktop/Escritorio y fallback a ~/imagenes_ia. Devuelve resultados simulados."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Complete upload flow working perfectly. POST /api/scan/start creates upload session, POST /api/scan/chunk accepts multiple chunks (tested with 2x102400 bytes), POST /api/scan/finish saves file to /root/imagenes_ia/ with equipaje_ prefix and returns complete results object with all required fields (L,W,H,KG,calibrationOk,reasons,complies,overages). Edge case tested: invalid upload_id returns 404 as expected. Directory verified to exist with saved files."
 ## frontend:
   - task: "Flujo SPA y UI JetSMART"
     implemented: true
