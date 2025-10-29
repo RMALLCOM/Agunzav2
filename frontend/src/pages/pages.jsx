@@ -345,7 +345,7 @@ export function ScanPage() {
                 <Button className="h-12 text-lg flex-1" style={BTN_RED_GLASS} onClick={doCapture}>
                   <Camera className="mr-2" /> {t.scan}
                 </Button>
-                <Button variant="outline" className="h-12 text-lg flex-1" onClick={() => navigate("/")}> {t.back}</Button>
+                <Button variant="outline" className="h-12 text-lg flex-1" onClick={() => setStarted(false)}> {t.back}</Button>
               </div>
               {progress > 0 && progress < 100 && (
                 <Alert className="mt-3">
