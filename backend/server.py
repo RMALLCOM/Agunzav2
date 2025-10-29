@@ -104,33 +104,48 @@ def ensure_output_dir() -> Path:
 
 def server_evaluate_baggage():
     import random
+    # Feature flag temporal: forzar "Cumple" siempre. Cambiar a False cuando se requiera volver a validar real.
+    FORCE_ALWAYS_COMPLIES = True if os.environ.get("ALWAYS_COMPLY", "1") == "1" else False
+
+    # Valores base aleatorios alrededor de la regla
     L = int(round(random.uniform(RULES['L'] - 8, RULES['L'] + 12)))
     W = int(round(random.uniform(RULES['W'] - 6, RULES['W'] + 10)))
     H = int(round(random.uniform(RULES['H'] - 5, RULES['H'] + 8)))
     KG = round(random.uniform(RULES['KG'] - 3, RULES['KG'] + 5), 1)
     calibration_ok = random.random() > 0.1
 
-    overL = max(0, L - RULES['L'])
-    overW = max(0, W - RULES['W'])
-    overH = max(0, H - RULES['H'])
-    overKG = max(0.0, round(KG - RULES['KG'], 1))
-    linear_rule = RULES['L'] + RULES['W'] + RULES['H']
-    linear_sum = L + W + H
-    overLinear = max(0, linear_sum - linear_rule)
+    if FORCE_ALWAYS_COMPLIES:
+        # Forzar que todo cumpla: limitar medidas al máximo permitido y peso a tope permitido.
+        L = min(L, RULES['L'])
+        W = min(W, RULES['W'])
+        H = min(H, RULES['H'])
+        KG = min(KG, float(RULES['KG']))
+        overL = overW = overH = overLinear = 0
+        overKG = 0.0
+        reasons = []
+        complies = True
+        calibration_ok = True
+    else:
+        overL = max(0, L - RULES['L'])
+        overW = max(0, W - RULES['W'])
+        overH = max(0, H - RULES['H'])
+        overKG = max(0.0, round(KG - RULES['KG'], 1))
+        linear_rule = RULES['L'] + RULES['W'] + RULES['H']
+        linear_sum = L + W + H
+        overLinear = max(0, linear_sum - linear_rule)
 
-    reasons = []
-    if overL > 0:
-        reasons.append({"code": "L", "label": f"Excede largo {overL} cm"})
-    if overW > 0:
-        reasons.append({"code": "W", "label": f"Excede ancho {overW} cm"})
-    if overH > 0:
-        reasons.append({"code": "H", "label": f"Excede alto {overH} cm"})
-    if overLinear > 0:
-        reasons.append({"code": "S", "label": f"Excede suma lineal {overLinear} cm"})
-    if overKG > 0:
-        reasons.append({"code": "KG", "label": f"Excede peso {overKG} kg"})
-
-    complies = calibration_ok and overL == 0 and overW == 0 and overH == 0 and overKG == 0
+        reasons = []
+        if overL > 0:
+            reasons.append({"code": "L", "label": f"Excede largo {overL} cm"})
+        if overW > 0:
+            reasons.append({"code": "W", "label": f"Excede ancho {overW} cm"})
+        if overH > 0:
+            reasons.append({"code": "H", "label": f"Excede alto {overH} cm"})
+        if overLinear > 0:
+            reasons.append({"code": "S", "label": f"Excede suma lineal {overLinear} cm"})
+        if overKG > 0:
+            reasons.append({"code": "KG", "label": f"Excede peso {overKG} kg"})
+        complies = calibration_ok and overL == 0 and overW == 0 and overH == 0 and overKG == 0
 
     return {
         "L": L,
