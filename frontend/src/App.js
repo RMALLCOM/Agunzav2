@@ -1,13 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import "./App.css";
 import { HashRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Button } from "./components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
-import { CheckCircle2, CircleAlert, Languages } from "lucide-react";
+import { Card, CardContent } from "./components/ui/card";
+import { CheckCircle2, CircleAlert, Languages, Camera, Download } from "lucide-react";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001/api';
 
 // i18n minimal
 const strings = {
