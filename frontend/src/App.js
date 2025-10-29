@@ -577,125 +577,88 @@ function ScanScreen({ kiosk }) {
   );
 }
 
-// Scan (with Why navigation)
-function Scan({ kiosk }) {
+// Pantalla de detalle de no cumplimiento
+function DetailScreen({ kiosk }) {
   const nav = useNavigate();
-  const tr = strings[kiosk.lang];
-  const videoRef = useRef(null);
-  const canvasRef = useRef(null);
-  const [weight, setWeight] = useState(null);
-  const [dims, setDims] = useState(null);
-  const [result, setResult] = useState(null);
-
-  useEffect(() => {
-    const start = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          await videoRef.current.play();
-        }
-      } catch (e) {
-        console.error("Camera error", e);
-      }
-    };
-    start();
-    return () => {
-      if (videoRef.current?.srcObject) {
-        const tracks = videoRef.current.srcObject.getTracks();
-        tracks.forEach(t => t.stop());
-      }
-    };
-  }, []);
-
-  // Simulate YOLO overlay
-  useEffect(() => {
-    let raf;
-    const draw = () => {
-      const canvas = canvasRef.current;
-      const video = videoRef.current;
-      if (!canvas || !video) { raf = requestAnimationFrame(draw); return; }
-      const ctx = canvas.getContext("2d");
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      // Fake box
-      const x = canvas.width * 0.2; const y = canvas.height * 0.2;
-      const w = canvas.width * 0.6; const h = canvas.height * 0.6;
-      ctx.strokeStyle = "#E20C18"; ctx.lineWidth = 4; ctx.strokeRect(x, y, w, h);
-      ctx.fillStyle = "rgba(226,12,24,0.8)"; ctx.font = "20px sans-serif";
-      ctx.fillRect(x, y - 28, 120, 24);
-      ctx.fillStyle = "#fff"; ctx.fillText("maleta", x + 8, y - 10);
-      raf = requestAnimationFrame(draw);
-    };
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
-
-  const runValidation = async () => {
-    try {
-      const ss = kiosk.session || await kiosk.startSession();
-      const { data } = await axios.post(`${API}/scan`, { session_id: ss.id, weight_kg: weight });
-      setDims(data.dims_cm);
-      setResult(data);
-    } catch (e) {
-      console.error("scan failed", e.message);
-    }
-  };
-
+  const strings = stringsDict[kiosk.lang];
+  const result = kiosk.scanResult;
+  
+  if (!result) {
+    nav("/start");
+    return null;
+  }
+  
   return (
-    <div className="min-h-screen" style={{ backgroundColor: kiosk.airline?.palette?.bg || "#F7FAFF" }}>
-      <HiddenSetupHotspot id="hidden_area_setup" />
-      <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <div className="camera-wrap shadow-xl">
-            <video id="cam_view" ref={videoRef} className="w-full h-[520px] object-cover rounded-2xl" />
-            <canvas ref={canvasRef} className="camera-overlay" />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 p-8">
+      <LangSwitch kiosk={kiosk} />
+      
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-4xl font-bold text-[#1E3F8A] text-center mb-8">{strings.nonComplianceDetail}</h1>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Imagen capturada */}
+          <div>
+            {kiosk.capturedImage && (
+              <img 
+                src={kiosk.capturedImage}
+                alt="Equipaje capturado"
+                className="w-full rounded-lg border-4 border-[#1E3F8A] shadow-xl"
+              />
+            )}
           </div>
-          <div className="flex gap-4 mt-4">
-            <Button id="btn_back_scan" variant="ghost" onClick={() => nav("/start")}>{tr.back}</Button>
-            <Button id="btn_continue_scan" variant="accent" onClick={runValidation}>{tr.scanNow}</Button>
-          </div>
-        </div>
-        <div>
-          <Card>
-            <CardHeader>
-              <CardTitle id="lbl_bagdata_title">{strings[kiosk.lang].ui.bagdata_title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2 text-lg" id="card_measures">
-                <div><b id="lbl_width">{strings[kiosk.lang].ui.width_cm}:</b> <span id="out_width_cm">{dims?.width ?? "-"}</span> cm</div>
-                <div><b id="lbl_length">{strings[kiosk.lang].ui.length_cm}:</b> <span id="out_length_cm">{dims?.length ?? "-"}</span> cm</div>
-                <div><b id="lbl_weight">{strings[kiosk.lang].ui.weight_kg}:</b> <span id="out_weight_kg">{(weight ?? result?.weight_kg) ?? "-"}</span> kg</div>
-                <div><b id="lbl_calibration">{strings[kiosk.lang].ui.calibration}:</b> {strings[kiosk.lang].ui.ok}</div>
-              </div>
-              {result && (
-                <div className="mt-6">
-                  {result.compliant ? (
-                    <>
-                      <div className="badge success">{strings[kiosk.lang].msg?.authorized || strings[kiosk.lang].validationOkSub}</div>
-                      <div className="flex gap-3 mt-6">
-                        <Button id="btn_continue_validate_ok" variant="accent" onClick={() => nav('/goodbye')}>{strings[kiosk.lang].ui?.continue_ok || strings[kiosk.lang].ui?.continue || 'Continuar'}</Button>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="badge error">{strings[kiosk.lang].msg?.not_allowed || strings[kiosk.lang].validationFail}</div>
-                      <ul className="list-disc pl-5 mt-3 text-red-700 space-y-1">
-                        {result.errors.map((e, i) => (<li key={i}>{e}</li>))}
-                      </ul>
-                      <div className="actions-grid mt-6 w-full">
-                        <Button variant="outline" onClick={() => nav('/why', { state: { result, rules: kiosk.rules } })}>{strings[kiosk.lang].why}</Button>
-                        <Button id="btn_continue_to_payment" variant="primary" onClick={() => nav('/tariffs', { state: { result } })}>{strings[kiosk.lang].ui?.continue_to_payment || strings[kiosk.lang].continueToPayment || strings[kiosk.lang].goToPayment}</Button>
-                      </div>
-                    </>
-                  )}
+          
+          {/* Detalles */}
+          <div>
+            <Card className="shadow-xl">
+              <CardContent className="p-6">
+                {/* Datos del equipaje */}
+                <div className="mb-6">
+                  <p className="font-bold text-lg text-[#1E3F8A] mb-2">{strings.bagClass}</p>
+                  
+                  <div className="mb-4">
+                    <p className="font-semibold text-[#1E3F8A] mb-2">{strings.realDimensions}:</p>
+                    <p>L {result.length} / W {result.width} / P {result.weight} {strings.kg}</p>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <p className="font-semibold text-[#1E3F8A] mb-2">{strings.activeRules}:</p>
+                    <p>L 55 / W 35 {strings.cm}, Peso 10 {strings.kg}</p>
+                  </div>
                 </div>
-              )}
-            </CardContent>
-          </Card>
+                
+                {/* Razones de exceso */}
+                <div className="mb-6">
+                  <p className="font-semibold text-red-600 mb-2">{strings.exceedReasons}:</p>
+                  <ul className="list-disc list-inside space-y-1">
+                    {result.excesses?.map((excuse, idx) => (
+                      <li key={idx} className="text-red-600">{excuse}</li>
+                    ))}
+                  </ul>
+                </div>
+                
+                {/* Botones */}
+                <div className="space-y-3">
+                  <Button 
+                    onClick={() => nav("/scan")}
+                    variant="outline"
+                    className="w-full border-[#1E3F8A] text-[#1E3F8A] hover:bg-[#1E3F8A] hover:text-white py-3"
+                  >
+                    {strings.back}
+                  </Button>
+                  <Button 
+                    onClick={() => nav("/tariffs")}
+                    className="w-full bg-[#E20C18] hover:bg-[#C70A15] text-white py-3"
+                  >
+                    {strings.goToTariffs}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
+      
+      <Footer kiosk={kiosk} />
     </div>
   );
 }
