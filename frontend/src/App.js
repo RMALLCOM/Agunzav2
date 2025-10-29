@@ -434,46 +434,145 @@ function CameraCapture({ onCapture, kiosk }) {
   );
 }
 
-// Baggage rules (Why) page
-function WhyPage({ kiosk }) {
+// Pantalla de escaneo
+function ScanScreen({ kiosk }) {
   const nav = useNavigate();
-  const state = window.history.state?.usr || {};
-  const result = state.result || {};
-  const rules = state.rules || {};
-  const dims = result.dims_cm || {};
-  const allowedImg = "https://images.unsplash.com/photo-1670888664952-efff442ec0d2?crop=entropy&cs=srgb&fm=jpg&q=85";
+  const strings = stringsDict[kiosk.lang];
+  const [measurements, setMeasurements] = useState(null);
+  const [isCompliant, setIsCompliant] = useState(null);
+  
+  // Límites permitidos
+  const limits = {
+    width: 35,
+    length: 55, 
+    weight: 10,
+    linearSum: 115
+  };
+  
+  const handleCapture = (results) => {
+    setMeasurements(results);
+    
+    // Validar cumplimiento
+    const excesses = [];
+    if (results.width > limits.width) {
+      excesses.push(`Excede ancho ${(results.width - limits.width).toFixed(1)} cm`);
+    }
+    if (results.length > limits.length) {
+      excesses.push(`Excede largo ${(results.length - limits.length).toFixed(1)} cm`);
+    }
+    if (results.weight > limits.weight) {
+      excesses.push(`Excede peso ${(results.weight - limits.weight).toFixed(1)} kg`);
+    }
+    
+    const linearSum = results.width + results.length;
+    if (linearSum > limits.linearSum) {
+      excesses.push(`Excede suma lineal ${(linearSum - limits.linearSum).toFixed(1)} cm`);
+    }
+    
+    const compliant = excesses.length === 0;
+    setIsCompliant(compliant);
+    
+    // Guardar resultado completo
+    kiosk.setScanResult({
+      ...results,
+      compliant,
+      excesses
+    });
+  };
+  
   return (
-    <div className="min-h-screen" style={{ background: "#F7FAFF" }}>
-      <LangSwitch kiosk={kiosk} id="lang_toggle" />
-      <div className="max-w-3xl mx-auto px-6 py-10">
-        <h2 className="text-3xl font-bold mb-4">{strings[kiosk.lang].whyTitle}</h2>
-        <Card>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-              <div className="space-y-2">
-                <div className="font-semibold">{strings[kiosk.lang].measurement}</div>
-                <div>{strings[kiosk.lang].ui.class_label}: maleta</div>
-                <div>{strings[kiosk.lang].ui.dimensions_label}: L {dims.length ?? "-"} cm, W {dims.width ?? "-"} cm, H {dims.height ?? "-"} cm</div>
-                <div>{strings[kiosk.lang].ui.weight_label}: {result.weight_kg ?? "-"} kg</div>
-                <div className="font-semibold mt-4">{strings[kiosk.lang].activeRules}</div>
-                <div>{strings[kiosk.lang].ui.max_label}: L {rules?.dims_cm?.length ?? "-"} / W {rules?.dims_cm?.width ?? "-"} / H {rules?.dims_cm?.height ?? "-"} cm, {strings[kiosk.lang].ui.weight_label} {rules?.max_weight_kg ?? "-"} kg</div>
-                <div className="font-semibold mt-4">{strings[kiosk.lang].reasons}</div>
-                <ul className="list-disc pl-5 text-red-700">
-                  {(result.errors || []).map((e, i) => (<li key={i}>{e}</li>))}
-                </ul>
-              </div>
-              <div className="w-full flex flex-col items-center md:items-end">
-                <img src={allowedImg} alt="permitido" className="max-h-72 object-contain rounded-xl shadow" />
-                <div className="text-sm text-gray-600 mt-2">{strings[kiosk.lang].ui.allowed_dimensions}: L {rules?.dims_cm?.length ?? "-"} / W {rules?.dims_cm?.width ?? "-"} / H {rules?.dims_cm?.height ?? "-"} cm, {strings[kiosk.lang].ui.weight_label} {rules?.max_weight_kg ?? "-"} kg</div>
-              </div>
-            </div>
-            <div className="mt-6 flex gap-3 justify-end">
-              <Button variant="ghost" className="px-6 py-4" onClick={() => nav(-1)}>{strings[kiosk.lang].ui.back}</Button>
-              <Button variant="primary" className="px-6 py-4" onClick={() => nav("/tariffs", { state: { result } })}>{strings[kiosk.lang].continueToPayment}</Button>
-            </div>
-          </CardContent>
-        </Card>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 p-8">
+      <LangSwitch kiosk={kiosk} />
+      
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-4xl font-bold text-[#1E3F8A] text-center mb-8">{strings.scanTitle}</h1>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Cámara */}
+          <div>
+            <CameraCapture onCapture={handleCapture} kiosk={kiosk} />
+          </div>
+          
+          {/* Mediciones */}
+          <div>
+            <Card className="shadow-xl">
+              <CardContent className="p-6">
+                <h3 className="text-2xl font-bold text-[#1E3F8A] mb-6">{strings.measurements}</h3>
+                
+                {measurements ? (
+                  <div className="space-y-4">
+                    <div className="flex justify-between">
+                      <span className="font-semibold">{strings.width}:</span>
+                      <span>{measurements.width} {strings.cm}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-semibold">{strings.length}:</span>
+                      <span>{measurements.length} {strings.cm}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-semibold">{strings.weight}:</span>
+                      <span>{measurements.weight} {strings.kg}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-semibold">{strings.calibration}:</span>
+                      <span className="text-green-600 font-bold">{strings.ok}</span>
+                    </div>
+                    
+                    {/* Resultado */}
+                    <div className="mt-8 p-4 rounded-lg">
+                      {isCompliant ? (
+                        <div className="text-center">
+                          <CheckCircle2 className="w-16 h-16 text-green-600 mx-auto mb-4" />
+                          <p className="text-2xl font-bold text-green-600 mb-4">✅ Cumple</p>
+                          <Button 
+                            onClick={() => nav("/start")}
+                            className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg"
+                          >
+                            Continuar
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="text-center">
+                          <CircleAlert className="w-16 h-16 text-red-600 mx-auto mb-4" />
+                          <p className="text-2xl font-bold text-red-600 mb-6">{strings.notCompliant}</p>
+                          
+                          <div className="space-y-3">
+                            <Button 
+                              onClick={() => nav("/detail")}
+                              variant="outline" 
+                              className="w-full border-red-600 text-red-600 hover:bg-red-600 hover:text-white py-3"
+                            >
+                              {strings.whyNotCompliant}
+                            </Button>
+                            <Button 
+                              onClick={() => nav("/tariffs")}
+                              className="w-full bg-[#E20C18] hover:bg-[#C70A15] text-white py-3"
+                            >
+                              {strings.continueToPay}
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-gray-500 text-center py-8">{strings.captureSuccess}</p>
+                )}
+                
+                <Button 
+                  onClick={() => nav("/start")}
+                  variant="outline"
+                  className="w-full mt-6 border-[#1E3F8A] text-[#1E3F8A] hover:bg-[#1E3F8A] hover:text-white"
+                >
+                  {strings.back}
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
+      
+      <Footer kiosk={kiosk} />
     </div>
   );
 }
