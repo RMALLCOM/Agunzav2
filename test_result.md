@@ -175,3 +175,6 @@
     message: "Backend listo. Por favor validar endpoints y flujo de upload; archivos deben guardarse en Escritorio/imagenes_ia o fallback ~/imagenes_ia."
   - agent: "testing"
     message: "✅ BACKEND TESTING COMPLETE: All 5 test scenarios passed successfully. Health, rules, config persistence, complete upload flow (start→chunks→finish), and edge cases all working correctly. Files are being saved to /root/imagenes_ia/ directory as expected with equipaje_ prefix. Backend APIs are production-ready."
+  - agent: "main"
+    message: "UI lista con cajas más pequeñas y transparentes. Por favor ejecutar pruebas automáticas de frontend: flujo Inicio → Config → Escaneo (streaming), captura, subida con progreso, llegada de resultados y navegación a Detalle y Pago. Validar también botón secreto (triple click en esquina sup. izq. de streaming) que navega a Config."
+
