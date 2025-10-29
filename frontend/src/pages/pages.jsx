@@ -284,7 +284,7 @@ export function ScanPage() {
             </div>
           )}
 
-          <div className="flex flex-col sm:flex-row flex-wrap gap-3 mt-3">
+          <div className="grid grid-cols-2 gap-3 mt-3 w-full">
             {!ok && (
               <Button
                 variant="outline"
