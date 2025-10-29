@@ -16,7 +16,7 @@ import { uploadImageInChunks, api } from "../lib/api";
 
 const BG_URL = "https://customer-assets.emergentagent.com/job_jetsmart-check/artifacts/du2ocyp9_LNDSUCT4PFD5RBV47C53VUVYHE.jpg";
 // Más transparentes y más pequeñas
-const TRANS_BOX = "bg-white/40 backdrop-blur-sm border border-white/40 shadow-sm rounded-3xl";
+const TRANS_BOX = "bg-white/30 backdrop-blur-sm border border-white/40 shadow-sm rounded-3xl";
 
 export function KioskLayout({ title, children, showHeaderActions = true }) {
   const { t } = useApp();
@@ -35,10 +35,10 @@ export function KioskLayout({ title, children, showHeaderActions = true }) {
           willChange: "transform",
         }}
       />
-      <div aria-hidden className="fixed inset-0 -z-10 bg-white/30" />
+      <div aria-hidden className="fixed inset-0 -z-10 bg-white/20" />
 
-      <header className="w-full border-b bg-white/80 sticky top-0 backdrop-blur z-10">
-        <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+      <header className="w-full border-b bg-white/70 sticky top-0 backdrop-blur z-10">
+        <div className="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-full bg-[#002D72]/10 flex items-center justify-center">
               <Plane size={18} color={JETSMART_COLORS.blue} />
@@ -57,8 +57,8 @@ export function KioskLayout({ title, children, showHeaderActions = true }) {
 
       <main className="flex-1">{children}</main>
 
-      <footer className="w-full border-t bg-white/80 backdrop-blur">
-        <div className="max-w-4xl mx-auto px-4 py-3 text-center text-sm text-foreground/70">{t.madeBy}</div>
+      <footer className="w-full border-t bg-white/70 backdrop-blur">
+        <div className="max-w-4xl mx-auto px-4 py-2.5 text-center text-sm text-foreground/70">{t.madeBy}</div>
       </footer>
     </div>
   );
@@ -70,13 +70,13 @@ export function HomePage() {
 
   return (
     <KioskLayout title={t.welcome} showHeaderActions={false}>
-      <div className="max-w-3xl mx-auto px-4 py-12">
-        <div className={`${TRANS_BOX} mx-auto max-w-lg p-6 text-center`}> 
-          <div className="text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
-          <div className="text-lg text-foreground/80 mt-2">{t.welcome}</div>
-          <div className="pt-5">
+      <div className="max-w-3xl mx-auto px-4 py-10">
+        <div className={`${TRANS_BOX} mx-auto max-w-md p-5 text-center`}> 
+          <div className="text-4xl md:text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
+          <div className="text-base md:text-lg text-foreground/80 mt-2">{t.welcome}</div>
+          <div className="pt-4">
             <Button
-              className="h-14 text-lg px-8"
+              className="h-12 md:h-14 text-lg px-8"
               style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }}
               onClick={() => navigate("/config")}
             >
@@ -109,7 +109,7 @@ export function ConfigPage() {
   return (
     <KioskLayout title={t.configTitle}>
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <div className={`${TRANS_BOX} mx-auto max-w-xl p-5`}>
+        <div className={`${TRANS_BOX} mx-auto max-w-lg p-5`}>
           <div className="grid gap-4">
             <div className="grid gap-2">
               <Label>{t.operator}</Label>
@@ -309,22 +309,22 @@ export function ScanPage() {
       </div>
       <div className="max-w-5xl mx-auto px-4 py-8">
         {!started ? (
-          <div className={`${TRANS_BOX} mx-auto max-w-lg p-6 text-center`}>
-            <div className="text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
-            <div className="text-lg text-foreground/80">{t.welcome}</div>
-            <Button className="h-14 text-lg px-8 mt-5" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={() => setStarted(true)}>
+          <div className={`${TRANS_BOX} mx-auto max-w-md p-5 text-center`}>
+            <div className="text-4xl md:text-5xl font-bold tracking-tight" style={{ color: JETSMART_COLORS.blue }}>JetSMART</div>
+            <div className="text-base md:text-lg text-foreground/80">{t.welcome}</div>
+            <Button className="h-12 md:h-14 text-lg px-8 mt-4" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={() => setStarted(true)}>
               {t.scanStart}
             </Button>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className={`${TRANS_BOX} p-4 max-w-xl`}>
+          <div className="grid md:grid-cols-2 gap-3">
+            <div className={`${TRANS_BOX} p-3 max-w-md mx-auto md:mx-0`}>
               <div className="rounded-3xl overflow-hidden bg-black/80 aspect-video flex items-center justify-center">
                 <video ref={videoRef} className="w-full h-full object-contain" playsInline muted />
               </div>
               <canvas ref={canvasRef} className="hidden" />
 
-              <div className="flex gap-3 mt-3">
+              <div className="flex gap-2.5 mt-3">
                 <Button className="h-12 text-lg flex-1" style={{ backgroundColor: JETSMART_COLORS.red, color: "white" }} onClick={doCapture}>
                   <Camera className="mr-2" /> {t.scan}
                 </Button>
@@ -350,7 +350,7 @@ export function ScanPage() {
               )}
             </div>
 
-            <div className="max-w-xl">
+            <div className="max-w-md mx-auto md:mx-0">
               <Card className={`${TRANS_BOX}`}>
                 <CardHeader>
                   <CardTitle>Resultados</CardTitle>
@@ -396,8 +396,8 @@ export function DetailPage() {
 
   return (
     <KioskLayout title={t.detailTitle}>
-      <div className="max-w-5xl mx-auto px-4 py-8 grid md:grid-cols-2 gap-6">
-        <div className={`${TRANS_BOX} p-4 max-w-xl`}> 
+      <div className="max-w-5xl mx-auto px-4 py-8 grid md:grid-cols-2 gap-3">
+        <div className={`${TRANS_BOX} p-3 max-w-md mx-auto md:mx-0`}> 
           <div className="rounded-3xl overflow-hidden bg-black/80 aspect-video flex items-center justify-center">
             {scan?.dataUrl ? (
               <img src={scan.dataUrl} alt="equipaje" className="w-full h-full object-contain" />
@@ -407,7 +407,7 @@ export function DetailPage() {
           </div>
         </div>
 
-        <div className="space-y-4 max-w-xl">
+        <div className="space-y-3 max-w-md mx-auto md:mx-0">
           <Card className={`${TRANS_BOX}`}>
             <CardHeader>
               <CardTitle>{t.class}: {t.suitcase}</CardTitle>
@@ -494,7 +494,7 @@ export function PaymentPage() {
   return (
     <KioskLayout title={t.payTitle}>
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-4">
-        <Card className={`${TRANS_BOX} max-w-xl`}>
+        <Card className={`${TRANS_BOX} max-w-md mx-auto md:mx-0`}>
           <CardHeader>
             <CardTitle>Resumen</CardTitle>
           </CardHeader>
@@ -524,7 +524,7 @@ export function PaymentPage() {
           </CardContent>
         </Card>
 
-        <Card className={`${TRANS_BOX} max-w-xl`}>
+        <Card className={`${TRANS_BOX} max-w-md mx-auto md:mx-0`}>
           <CardHeader>
             <CardTitle>Método de pago</CardTitle>
           </CardHeader>
